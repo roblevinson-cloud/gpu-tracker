@@ -2,13 +2,11 @@ name: GPU Availability Poll
 
 on:
   schedule:
-    # Runs every 10 minutes (GitHub's practical minimum; exact timing
-    # can drift a few minutes — that's normal and fine for this index).
     - cron: "*/10 * * * *"
-  workflow_dispatch: {}   # lets you also trigger it manually with a button
+  workflow_dispatch: {}
 
 permissions:
-  contents: write   # allows the workflow to save the CSV back to the repo
+  contents: write
 
 jobs:
   poll:
@@ -36,6 +34,6 @@ jobs:
           git config user.name "gpu-tracker-bot"
           git config user.email "actions@github.com"
           git pull --rebase || true
-          git add data/availability_log.csv
+          git add data/
           git commit -m "data point $(date -u +'%Y-%m-%d %H:%M')" || echo "nothing to commit"
           git push
