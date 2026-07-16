@@ -2,8 +2,8 @@ name: GPU Availability Poll
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
-  workflow_dispatch: {}
+    - cron: "0,10,20,30,40,50 * * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
