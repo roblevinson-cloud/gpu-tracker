@@ -1,1 +1,41 @@
+name: GPU Availability Poll
 
+on:
+  schedule:
+    # Runs every 10 minutes (GitHub's practical minimum; exact timing
+    # can drift a few minutes — that's normal and fine for this index).
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}   # lets you also trigger it manually with a button
+
+permissions:
+  contents: write   # allows the workflow to save the CSV back to the repo
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the latest copy of this repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install required library
+        run: pip install requests
+
+      - name: Run the availability check
+        env:
+          LAMBDA_API_KEY: ${{ secrets.LAMBDA_API_KEY }}
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
+        run: python check_availability.py
+
+      - name: Save the new data point back to the repository
+        run: |
+          git config user.name "gpu-tracker-bot"
+          git config user.email "actions@github.com"
+          git pull --rebase || true
+          git add data/availability_log.csv
+          git commit -m "data point $(date -u +'%Y-%m-%d %H:%M')" || echo "nothing to commit"
+          git push
