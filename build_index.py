@@ -269,11 +269,14 @@ def build_providers():
               .unstack(fill_value=0).sort_index())
     prov.to_csv("data/tokens_by_provider.csv")
 
-    top = prov.iloc[-30:].sum().nlargest(8).index
+    top = prov.iloc[-7:].sum().nlargest(8).index
+
+    smoothed = (prov / 1e12).rolling(7, min_periods=3).mean()
+
+    # --- line version ---
     fig, ax = plt.subplots(figsize=(12, 6))
     for p in top:
-        ma = (prov[p] / 1e12).rolling(7, min_periods=3).mean()
-        ax.plot(ma.index, ma, lw=2, label=p)
+        ax.plot(smoothed.index, smoothed[p], lw=2, label=p)
     ax.set_title("OpenRouter Token Volume by Provider (7-day avg)")
     ax.set_ylabel("Tokens per day (trillions)")
     ax.set_ylim(bottom=0)
@@ -285,6 +288,26 @@ def build_providers():
     fig.tight_layout()
     fig.savefig("data/providers_chart.png", dpi=150)
     plt.close(fig)
+
+    # --- stacked version (top 8 + everything else, so height = total) ---
+    rest = smoothed.drop(columns=top).sum(axis=1)
+    stack_df = smoothed[list(top)].copy()
+    stack_df["all others"] = rest
+    stack_df = stack_df.fillna(0)
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.stackplot(stack_df.index, [stack_df[c] for c in stack_df.columns],
+                 labels=list(stack_df.columns), alpha=0.85)
+    ax.set_title("OpenRouter Token Volume by Provider — Stacked (7-day avg)")
+    ax.set_ylabel("Tokens per day (trillions)")
+    ax.set_ylim(bottom=0)
+    ax.legend(loc="upper left", fontsize=9)
+    ax.grid(alpha=0.3)
+    fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
+             ha="right", fontsize=8, color="#888888")
+    fig.autofmt_xdate()
+    fig.tight_layout()
+    fig.savefig("data/providers_chart_stacked.png", dpi=150)
+    plt.close(fig)
     print(f"[providers] OK — top: {', '.join(top[:4])}...")
 
     # Drill-down: top models within selected providers
@@ -294,11 +317,13 @@ def build_providers():
             continue
         models = (sub.groupby(["date", "model"])["tokens"].sum()
                     .unstack(fill_value=0).sort_index())
-        top_m = models.iloc[-30:].sum().nlargest(6).index
+        top_m = models.iloc[-7:].sum().nlargest(8).index
+        sm = (models / 1e12).rolling(7, min_periods=3).mean()
+
+        # line version
         fig, ax = plt.subplots(figsize=(12, 6))
         for m in top_m:
-            ma = (models[m] / 1e12).rolling(7, min_periods=3).mean()
-            ax.plot(ma.index, ma, lw=2, label=m.split("/", 1)[-1])
+            ax.plot(sm.index, sm[m], lw=2, label=m.split("/", 1)[-1])
         ax.set_title(f"{pname.capitalize()} — Token Volume by Model (7-day avg)")
         ax.set_ylabel("Tokens per day (trillions)")
         ax.set_ylim(bottom=0)
@@ -309,6 +334,28 @@ def build_providers():
         fig.autofmt_xdate()
         fig.tight_layout()
         fig.savefig(f"data/provider_{pname}_models_chart.png", dpi=150)
+        plt.close(fig)
+
+        # stacked version (top models + rest, height = provider total)
+        rest_m = sm.drop(columns=top_m).sum(axis=1)
+        sdf = sm[list(top_m)].copy()
+        sdf.columns = [c.split("/", 1)[-1] for c in sdf.columns]
+        if rest_m.abs().sum() > 0:
+            sdf["all others"] = rest_m
+        sdf = sdf.fillna(0)
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.stackplot(sdf.index, [sdf[c] for c in sdf.columns],
+                     labels=list(sdf.columns), alpha=0.85)
+        ax.set_title(f"{pname.capitalize()} — Token Volume by Model, Stacked (7-day avg)")
+        ax.set_ylabel("Tokens per day (trillions)")
+        ax.set_ylim(bottom=0)
+        ax.legend(loc="upper left", fontsize=9)
+        ax.grid(alpha=0.3)
+        fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
+                 ha="right", fontsize=8, color="#888888")
+        fig.autofmt_xdate()
+        fig.tight_layout()
+        fig.savefig(f"data/provider_{pname}_models_chart_stacked.png", dpi=150)
         plt.close(fig)
         print(f"[providers] {pname}: charted {len(top_m)} models")
 
