@@ -129,6 +129,11 @@
   <section>
     <h2>Token demand &mdash; OpenRouter</h2>
     <figure class="chart"><img id="img-tokens" alt="OpenRouter token volume and growth chart"></figure>
+    <div class="grid2">
+      <figure class="chart"><img id="img-providers" alt="Token volume by provider"></figure>
+      <figure class="chart"><img id="img-pricing" alt="Token-weighted average pricing"></figure>
+    </div>
+    <div class="grid2" id="drilldowns"></div>
   </section>
 
   <section id="per-gpu">
@@ -240,6 +245,16 @@ async function init() {
   const tk = document.getElementById("img-tokens");
   tk.src = "data/tokens_chart.png" + bust;
   tk.onerror = () => tk.closest(".chart").classList.add("missing");
+  const pv = document.getElementById("img-providers");
+  pv.src = "data/providers_chart.png" + bust;
+  pv.onerror = () => pv.closest(".chart").classList.add("missing");
+  const pr = document.getElementById("img-pricing");
+  pr.src = "data/pricing_chart.png" + bust;
+  pr.onerror = () => pr.closest(".chart").classList.add("missing");
+  const dd = document.getElementById("drilldowns");
+  for (const prov of ["anthropic", "openai", "google", "deepseek", "moonshotai", "moonshot"]) {
+    addImg(dd, `data/provider_${prov}_models_chart.png`, `${prov} model breakdown`);
+  }
 
   // cards + per-GPU charts
   const board = document.getElementById("board");
