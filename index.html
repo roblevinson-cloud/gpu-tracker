@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPU Availability Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAFBFA;
+    --panel: #FFFFFF;
+    --ink: #1C2B29;
+    --muted: #66756F;
+    --hairline: #E3E8E5;
+    --h100: #2AB5AC;
+    --h200: #7F77DD;
+    --b200: #D85A30;
+    --b300: #E24B4A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* Masthead */
+  header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+    padding: 28px 0 16px;
+    border-bottom: 2px solid var(--ink);
+  }
+  header h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; }
+  header h1 span { color: var(--muted); font-weight: 400; }
+  .stamp {
+    font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--muted);
+  }
+  .stamp b { color: var(--ink); font-weight: 600; }
+
+  /* Telemetry board */
+  .board {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin: 26px 0 8px;
+  }
+  @media (max-width: 820px) { .board { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .board { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-left: 4px solid var(--gpu, var(--ink));
+    border-radius: 6px;
+    padding: 14px 16px 16px;
+  }
+  .card .gpu-name {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--gpu, var(--ink));
+  }
+  .card .big {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 2rem; font-weight: 600; line-height: 1.15; margin-top: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .card .big small { font-size: 0.9rem; color: var(--muted); font-weight: 400; }
+  .gauge {
+    height: 3px; background: var(--hairline); border-radius: 2px;
+    margin: 8px 0 12px; overflow: hidden;
+  }
+  .gauge i { display: block; height: 100%; background: var(--gpu, var(--ink)); width: 0; }
+  .card dl {
+    display: grid; grid-template-columns: auto auto; justify-content: space-between;
+    row-gap: 3px; font-size: 0.78rem;
+  }
+  .card dt { color: var(--muted); }
+  .card dd { font-family: "IBM Plex Mono", monospace; text-align: right; font-variant-numeric: tabular-nums; }
+  .nodata { color: var(--muted); font-size: 0.85rem; margin-top: 10px; }
+
+  /* Chart sections */
+  section { margin-top: 44px; }
+  section h2 {
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    padding-bottom: 8px; border-bottom: 1px solid var(--hairline); margin-bottom: 16px;
+  }
+  .chart {
+    background: var(--panel); border: 1px solid var(--hairline); border-radius: 6px;
+    padding: 8px; margin-bottom: 16px;
+  }
+  .chart img { width: 100%; height: auto; display: block; border-radius: 3px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+  .missing { display: none; }
+
+  footer {
+    margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--hairline);
+    font-size: 0.75rem; color: var(--muted);
+    font-family: "IBM Plex Mono", monospace;
+  }
+  footer a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>GPU Availability Tracker <span>/ on-demand market monitor</span></h1>
+    <div class="stamp">data through <b id="last-date">—</b></div>
+  </header>
+
+  <div class="board" id="board">
+    <!-- cards injected by script -->
+  </div>
+
+  <section>
+    <h2>All vintages</h2>
+    <div class="grid2">
+      <figure class="chart"><img id="img-combined-avail" alt="Combined availability index chart"></figure>
+      <figure class="chart"><img id="img-combined-supply" alt="Combined visible supply chart"></figure>
+    </div>
+  </section>
+
+  <section id="per-gpu">
+    <!-- per-GPU chart pairs injected by script -->
+  </section>
+
+  <footer>
+    Availability = share of checks where a GPU was rentable under the price cap
+    (H100 &lt;$4/hr &middot; H200 &lt;$5.50 &middot; B200 &lt;$8 &middot; B300 &lt;$12) across
+    Vast.ai, Lambda, and RunPod. Supply = deduped GPUs visible on Vast.ai at any price.
+    Polled every 10 minutes &middot; charts rebuilt daily &middot;
+    <a href="data/">raw data</a>
+  </footer>
+
+</div>
+
+<script>
+const GPUS = [
+  { id: "h100", color: "var(--h100)" },
+  { id: "h200", color: "var(--h200)" },
+  { id: "b200", color: "var(--b200)" },
+  { id: "b300", color: "var(--b300)" },
+];
+const bust = "?t=" + Date.now();
+
+function parseCsv(text) {
+  const lines = text.trim().split(/\r?\n/).filter(l => l.length);
+  if (lines.length < 2) return null;
+  const header = lines[0].split(",");
+  const last = lines[lines.length - 1].split(",");
+  const row = {};
+  header.forEach((h, i) => row[h] = last[i]);
+  return row;
+}
+
+async function fetchLast(path) {
+  try {
+    const r = await fetch(path + bust, { cache: "no-store" });
+    if (!r.ok) return null;
+    return parseCsv(await r.text());
+  } catch (e) { return null; }
+}
+
+function fmt(v, digits, suffix) {
+  const n = parseFloat(v);
+  if (!isFinite(n)) return "—";
+  return n.toFixed(digits) + (suffix || "");
+}
+
+async function buildCard(gpu) {
+  const [idx, sup] = await Promise.all([
+    fetchLast(`data/daily_index_${gpu.id}.csv`),
+    fetchLast(`data/daily_supply_${gpu.id}.csv`),
+  ]);
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.style.setProperty("--gpu", gpu.color);
+
+  if (!idx) {
+    card.innerHTML = `<div class="gpu-name">${gpu.id}</div>
+      <div class="nodata">No data yet. Charts appear after the first daily build.</div>`;
+    return { card, date: null };
+  }
+
+  const pct = parseFloat(idx.availability_pct);
+  const avg30 = idx.availability_30d_avg;
+  const gpus = sup ? sup.vast_gpus : null;
+  const under = sup ? sup.vast_gpus_under_cap : null;
+  const med = sup ? sup.vast_median_price : null;
+
+  card.innerHTML = `
+    <div class="gpu-name">${gpu.id}</div>
+    <div class="big">${fmt(pct, 1)}<small>% avail</small></div>
+    <div class="gauge"><i style="width:${isFinite(pct) ? Math.min(100, Math.max(0, pct)) : 0}%"></i></div>
+    <dl>
+      <dt>30-day avg</dt><dd>${fmt(avg30, 1, "%")}</dd>
+      <dt>GPUs on Vast</dt><dd>${gpus != null ? fmt(gpus, 0) : "—"}</dd>
+      <dt>&hellip;under cap</dt><dd>${under != null ? fmt(under, 0) : "—"}</dd>
+      <dt>Median $/hr</dt><dd>${med != null ? fmt(med, 2) : "—"}</dd>
+    </dl>`;
+  return { card, date: idx.timestamp_utc || null };
+}
+
+function addImg(parent, src, alt) {
+  const fig = document.createElement("figure");
+  fig.className = "chart";
+  const img = document.createElement("img");
+  img.alt = alt;
+  img.loading = "lazy";
+  img.src = src + bust;
+  img.onerror = () => fig.classList.add("missing");
+  fig.appendChild(img);
+  parent.appendChild(fig);
+}
+
+async function init() {
+  // combined charts
+  const ca = document.getElementById("img-combined-avail");
+  ca.src = "data/index_chart_combined.png" + bust;
+  ca.onerror = () => ca.closest(".chart").classList.add("missing");
+  const cs = document.getElementById("img-combined-supply");
+  cs.src = "data/supply_chart_combined.png" + bust;
+  cs.onerror = () => cs.closest(".chart").classList.add("missing");
+
+  // cards + per-GPU charts
+  const board = document.getElementById("board");
+  const perGpu = document.getElementById("per-gpu");
+  let latestDate = null;
+
+  for (const gpu of GPUS) {
+    const { card, date } = await buildCard(gpu);
+    board.appendChild(card);
+    if (date && (!latestDate || date > latestDate)) latestDate = date;
+
+    const sec = document.createElement("div");
+    const h = document.createElement("h2");
+    h.textContent = gpu.id.toUpperCase();
+    sec.appendChild(h);
+    const grid = document.createElement("div");
+    grid.className = "grid2";
+    addImg(grid, `data/index_chart_${gpu.id}.png`, `${gpu.id} availability chart`);
+    addImg(grid, `data/supply_chart_${gpu.id}.png`, `${gpu.id} supply depth chart`);
+    sec.appendChild(grid);
+    sec.style.marginTop = "34px";
+    perGpu.appendChild(sec);
+  }
+
+  document.getElementById("last-date").textContent =
+    latestDate ? latestDate.slice(0, 10) : "no data yet";
+}
+init();
+</script>
+</body>
+</html>
