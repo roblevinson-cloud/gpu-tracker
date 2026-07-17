@@ -126,6 +126,11 @@
     <figure class="chart"><img id="img-combined-price" alt="Combined lowest offer price chart"></figure>
   </section>
 
+  <section>
+    <h2>Token demand &mdash; OpenRouter</h2>
+    <figure class="chart"><img id="img-tokens" alt="OpenRouter token volume and growth chart"></figure>
+  </section>
+
   <section id="per-gpu">
     <!-- per-GPU chart pairs injected by script -->
   </section>
@@ -135,6 +140,7 @@
     (H100 &lt;$4/hr &middot; H200 &lt;$5.50 &middot; B200 &lt;$8 &middot; B300 &lt;$12) across
     Vast.ai, Lambda, and RunPod. Supply = deduped GPUs visible on Vast.ai at any price.
     Polled every 10 minutes &middot; charts rebuilt daily &middot;
+    token data: Source: OpenRouter (openrouter.ai/rankings) &middot;
     <a href="data/">raw data</a>
   </footer>
 
@@ -231,6 +237,9 @@ async function init() {
   const cp = document.getElementById("img-combined-price");
   cp.src = "data/price_chart_combined.png" + bust;
   cp.onerror = () => cp.closest(".chart").classList.add("missing");
+  const tk = document.getElementById("img-tokens");
+  tk.src = "data/tokens_chart.png" + bust;
+  tk.onerror = () => tk.closest(".chart").classList.add("missing");
 
   // cards + per-GPU charts
   const board = document.getElementById("board");
