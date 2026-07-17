@@ -30,10 +30,10 @@ GPU_CONFIGS = [
      "name_variants": ["H100 SXM", "H100 NVL", "H100 PCIE", "H100"]},
     {"name": "h200", "min_vram_gb": 141, "price_cap": 5.50,
      "name_variants": ["H200 SXM", "H200 NVL", "H200"]},
-    {"name": "b200", "min_vram_gb": 180, "price_cap": 8.00,
+    {"name": "b200", "min_vram_gb": 180, "price_cap": 5.75,
      "name_variants": ["B200 SXM", "B200"]},
     {"name": "b300", "min_vram_gb": 288, "price_cap": 12.00,
-     "name_variants": ["B300 SXM", "B300", "GB300"]},
+     "name_variants": ["B300 SXM", "B300"]},
 ]
 
 LAMBDA_API_KEY = os.environ.get("LAMBDA_API_KEY", "")
@@ -71,6 +71,12 @@ def fetch_vast_offers(cfg):
     by_machine = {}
     for o in offers:
         if o.get("gpu_ram", 0) < cfg["min_vram_gb"] * 1000 * 0.9:  # MB
+            continue
+        # Skip unreliable hosts: mislabeled GPUs and flaky listings
+        # cluster among low-reliability machines. reliability2 is
+        # Vast's 0-1 host uptime/quality score.
+        rel = o.get("reliability2")
+        if rel is not None and rel < 0.90:
             continue
         mid = o.get("machine_id")
         if mid is None:
