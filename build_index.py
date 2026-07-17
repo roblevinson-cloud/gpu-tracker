@@ -242,6 +242,129 @@ def build_tokens():
           + (f", 30d growth {g.iloc[-1]:+.1f}%" if len(g) else ""))
 
 
+# Kimi is published under Moonshot AI; both slug spellings included
+# so whichever OpenRouter uses will match (missing ones are skipped).
+PROVIDER_DRILLDOWNS = ["anthropic", "openai", "google", "deepseek",
+                       "moonshotai", "moonshot"]
+
+
+def _load_by_model():
+    path = "data/tokens_by_model.csv"
+    if not os.path.exists(path):
+        return None
+    df = pd.read_csv(path, parse_dates=["date"])
+    df["tokens"] = pd.to_numeric(df["tokens"], errors="coerce")
+    df = df.dropna(subset=["date", "tokens"])
+    df = df[df["model"] != "other"]
+    df["provider"] = df["model"].str.split("/").str[0]
+    return df
+
+
+def build_providers():
+    """Token volume by provider (top 8), 7d smoothed."""
+    df = _load_by_model()
+    if df is None or df.empty:
+        return
+    prov = (df.groupby(["date", "provider"])["tokens"].sum()
+              .unstack(fill_value=0).sort_index())
+    prov.to_csv("data/tokens_by_provider.csv")
+
+    top = prov.iloc[-30:].sum().nlargest(8).index
+    fig, ax = plt.subplots(figsize=(12, 6))
+    for p in top:
+        ma = (prov[p] / 1e12).rolling(7, min_periods=3).mean()
+        ax.plot(ma.index, ma, lw=2, label=p)
+    ax.set_title("OpenRouter Token Volume by Provider (7-day avg)")
+    ax.set_ylabel("Tokens per day (trillions)")
+    ax.set_ylim(bottom=0)
+    ax.legend(loc="upper left", fontsize=9)
+    ax.grid(alpha=0.3)
+    fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
+             ha="right", fontsize=8, color="#888888")
+    fig.autofmt_xdate()
+    fig.tight_layout()
+    fig.savefig("data/providers_chart.png", dpi=150)
+    plt.close(fig)
+    print(f"[providers] OK — top: {', '.join(top[:4])}...")
+
+    # Drill-down: top models within selected providers
+    for pname in PROVIDER_DRILLDOWNS:
+        sub = df[df["provider"] == pname]
+        if sub.empty:
+            continue
+        models = (sub.groupby(["date", "model"])["tokens"].sum()
+                    .unstack(fill_value=0).sort_index())
+        top_m = models.iloc[-30:].sum().nlargest(6).index
+        fig, ax = plt.subplots(figsize=(12, 6))
+        for m in top_m:
+            ma = (models[m] / 1e12).rolling(7, min_periods=3).mean()
+            ax.plot(ma.index, ma, lw=2, label=m.split("/", 1)[-1])
+        ax.set_title(f"{pname.capitalize()} — Token Volume by Model (7-day avg)")
+        ax.set_ylabel("Tokens per day (trillions)")
+        ax.set_ylim(bottom=0)
+        ax.legend(loc="upper left", fontsize=9)
+        ax.grid(alpha=0.3)
+        fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
+                 ha="right", fontsize=8, color="#888888")
+        fig.autofmt_xdate()
+        fig.tight_layout()
+        fig.savefig(f"data/provider_{pname}_models_chart.png", dpi=150)
+        plt.close(fig)
+        print(f"[providers] {pname}: charted {len(top_m)} models")
+
+
+def build_pricing():
+    """Token-weighted average price per million tokens across the
+    platform: joins daily prices with daily token volumes."""
+    if not os.path.exists("data/model_prices.csv"):
+        return
+    prices = pd.read_csv("data/model_prices.csv", parse_dates=["date"])
+    for c in ["prompt_usd_per_m", "completion_usd_per_m"]:
+        prices[c] = pd.to_numeric(prices[c], errors="coerce")
+    tok = _load_by_model()
+    if tok is None or prices.empty:
+        return
+
+    merged = prices.merge(tok[["date", "model", "tokens"]],
+                          on=["date", "model"], how="inner")
+    merged = merged.dropna(subset=["tokens"])
+    merged = merged[merged["tokens"] > 0]
+    if merged.empty:
+        print("[pricing] no overlapping price/token days yet "
+              "(token data lags one day; overlap starts tomorrow)")
+        return
+
+    def weighted(g):
+        w = g["tokens"]
+        return pd.Series({
+            "avg_prompt_usd_per_m": (g["prompt_usd_per_m"] * w).sum() / w.sum(),
+            "avg_completion_usd_per_m": (g["completion_usd_per_m"] * w).sum() / w.sum(),
+        })
+
+    daily = merged.groupby("date").apply(weighted, include_groups=False)
+    daily.to_csv("data/pricing_index.csv")
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.plot(daily.index, daily["avg_completion_usd_per_m"], color="#8B3A62",
+            lw=2.5, marker="o", markersize=3, label="Output (completion) $/M tokens")
+    ax.plot(daily.index, daily["avg_prompt_usd_per_m"], color="#B58BA5",
+            lw=2, linestyle="--", marker="o", markersize=3,
+            label="Input (prompt) $/M tokens")
+    ax.set_title("Token-Weighted Average Price on OpenRouter ($/million tokens)")
+    ax.set_ylabel("$ per million tokens")
+    ax.set_ylim(bottom=0)
+    ax.legend(loc="upper left")
+    ax.grid(alpha=0.3)
+    fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
+             ha="right", fontsize=8, color="#888888")
+    fig.autofmt_xdate()
+    fig.tight_layout()
+    fig.savefig("data/pricing_chart.png", dpi=150)
+    plt.close(fig)
+    print(f"[pricing] OK — {len(daily)} days; latest weighted output price "
+          f"${daily['avg_completion_usd_per_m'].iloc[-1]:.2f}/M")
+
+
 def combined_price(results):
     """All vintages' lowest offer price on one chart."""
     have = [(g, d) for g, d in results if "lowest_price" in d.columns
@@ -300,5 +423,7 @@ if __name__ == "__main__":
     combined_price(avail_results)
     combined_supply(supply_results)
     build_tokens()
+    build_providers()
+    build_pricing()
     print(f"\nDone. {len(avail_results)} availability indices, "
           f"{len(supply_results)} supply charts.")
