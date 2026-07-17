@@ -27,7 +27,6 @@ jobs:
           git config user.email "actions@github.com"
           git add data/
           git commit -m "rebuild index charts" || echo "nothing to commit"
-          git commit -m "rebuild index charts" || echo "nothing to commit"
           for i in 1 2 3 4 5; do
             git pull --rebase && git push && break
             echo "push blocked, retrying in 10s..."
