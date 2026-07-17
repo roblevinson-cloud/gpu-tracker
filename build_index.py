@@ -186,6 +186,62 @@ def combined_availability(results):
     plt.close(fig)
 
 
+def build_tokens():
+    """OpenRouter token growth index: daily platform totals, 7d average,
+    and 30d growth rate. Two stacked panels in one PNG."""
+    path = "data/tokens_daily.csv"
+    if not os.path.exists(path):
+        return
+    try:
+        df = pd.read_csv(path, parse_dates=["date"])
+    except Exception as e:
+        print(f"[tokens] could not read {path}: {e}")
+        return
+    df["total_tokens"] = pd.to_numeric(df["total_tokens"], errors="coerce")
+    df = df.dropna(subset=["date", "total_tokens"]).set_index("date").sort_index()
+    if df.empty:
+        print("[tokens] no data yet")
+        return
+
+    t = df["total_tokens"] / 1e12  # trillions/day
+    ma7 = t.rolling(7, min_periods=3).mean()
+    growth30 = ma7.pct_change(30) * 100  # 30-day % change of the 7d avg
+
+    out = pd.DataFrame({"tokens_T": t, "tokens_T_7d": ma7,
+                        "growth_30d_pct": growth30})
+    out.to_csv("data/tokens_index.csv")
+
+    fig, (ax1, ax2) = plt.subplots(
+        2, 1, figsize=(12, 8), sharex=True,
+        gridspec_kw={"height_ratios": [2.2, 1]})
+    ax1.plot(t.index, t, color="lightgray", lw=1, label="Daily total")
+    ax1.plot(ma7.index, ma7, color="#B8860B", lw=2.5, label="7-day average")
+    ax1.set_ylabel("Tokens per day (trillions)")
+    ax1.set_ylim(bottom=0)
+    ax1.legend(loc="upper left")
+    ax1.grid(alpha=0.3)
+    ax1.set_title("OpenRouter Platform Token Volume")
+
+    ax2.plot(growth30.index, growth30, color="#555555", lw=1.8)
+    ax2.axhline(0, color="#999999", lw=1)
+    ax2.set_ylabel("30-day growth (%)")
+    ax2.grid(alpha=0.3)
+
+    fig.text(0.99, 0.01,
+             "Source: OpenRouter (openrouter.ai/rankings)",
+             ha="right", fontsize=8, color="#888888")
+    fig.autofmt_xdate()
+    fig.tight_layout()
+    fig.savefig("data/tokens_chart.png", dpi=150)
+    plt.close(fig)
+
+    latest = ma7.dropna()
+    g = growth30.dropna()
+    print(f"[tokens] OK — {len(df)} days; latest 7d avg "
+          f"{latest.iloc[-1]:.2f}T/day"
+          + (f", 30d growth {g.iloc[-1]:+.1f}%" if len(g) else ""))
+
+
 def combined_price(results):
     """All vintages' lowest offer price on one chart."""
     have = [(g, d) for g, d in results if "lowest_price" in d.columns
@@ -243,5 +299,6 @@ if __name__ == "__main__":
     combined_availability(avail_results)
     combined_price(avail_results)
     combined_supply(supply_results)
+    build_tokens()
     print(f"\nDone. {len(avail_results)} availability indices, "
           f"{len(supply_results)} supply charts.")
