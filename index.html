@@ -103,6 +103,16 @@
   }
   footer a { color: inherit; }
   a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .toggle { float: right; }
+  .toggle button {
+    font-family: "IBM Plex Mono", monospace; font-size: 0.7rem;
+    padding: 3px 10px; cursor: pointer;
+    background: var(--panel); color: var(--muted);
+    border: 1px solid var(--hairline);
+  }
+  .toggle button:first-child { border-radius: 4px 0 0 4px; }
+  .toggle button:last-child { border-radius: 0 4px 4px 0; border-left: none; }
+  .toggle button.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 </style>
 </head>
 <body>
@@ -127,7 +137,11 @@
   </section>
 
   <section>
-    <h2>Token demand &mdash; OpenRouter</h2>
+    <h2>Token demand &mdash; OpenRouter
+      <span class="toggle" role="group" aria-label="Chart style">
+        <button id="btn-lines" class="on" onclick="setStyle('lines')">Lines</button><button id="btn-stacked" onclick="setStyle('stacked')">Stacked</button>
+      </span>
+    </h2>
     <figure class="chart"><img id="img-tokens" alt="OpenRouter token volume and growth chart"></figure>
     <div class="grid2">
       <figure class="chart"><img id="img-providers" alt="Token volume by provider"></figure>
@@ -246,7 +260,9 @@ async function init() {
   tk.src = "data/tokens_chart.png" + bust;
   tk.onerror = () => tk.closest(".chart").classList.add("missing");
   const pv = document.getElementById("img-providers");
-  pv.src = "data/providers_chart.png" + bust;
+  pv.dataset.base = "data/providers_chart";
+  pv.src = pv.dataset.base + ".png" + bust;
+  pv.classList.add("toggleable");
   pv.onerror = () => pv.closest(".chart").classList.add("missing");
   const pr = document.getElementById("img-pricing");
   pr.src = "data/pricing_chart.png" + bust;
@@ -254,6 +270,9 @@ async function init() {
   const dd = document.getElementById("drilldowns");
   for (const prov of ["anthropic", "openai", "google", "deepseek", "moonshotai", "moonshot"]) {
     addImg(dd, `data/provider_${prov}_models_chart.png`, `${prov} model breakdown`);
+    const img = dd.lastElementChild.querySelector("img");
+    img.dataset.base = `data/provider_${prov}_models_chart`;
+    img.classList.add("toggleable");
   }
 
   // cards + per-GPU charts
@@ -283,6 +302,18 @@ async function init() {
     latestDate ? latestDate.slice(0, 10) : "no data yet";
 }
 init();
+
+function setStyle(style) {
+  document.getElementById("btn-lines").classList.toggle("on", style === "lines");
+  document.getElementById("btn-stacked").classList.toggle("on", style === "stacked");
+  const suffix = style === "stacked" ? "_stacked.png" : ".png";
+  document.querySelectorAll("img.toggleable").forEach(img => {
+    const fig = img.closest(".chart");
+    fig.classList.remove("missing");
+    img.onerror = () => fig.classList.add("missing");
+    img.src = img.dataset.base + suffix + bust;
+  });
+}
 </script>
 </body>
 </html>
