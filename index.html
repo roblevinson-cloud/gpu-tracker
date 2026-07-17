@@ -123,6 +123,7 @@
       <figure class="chart"><img id="img-combined-avail" alt="Combined availability index chart"></figure>
       <figure class="chart"><img id="img-combined-supply" alt="Combined visible supply chart"></figure>
     </div>
+    <figure class="chart"><img id="img-combined-price" alt="Combined lowest offer price chart"></figure>
   </section>
 
   <section id="per-gpu">
@@ -227,6 +228,9 @@ async function init() {
   const cs = document.getElementById("img-combined-supply");
   cs.src = "data/supply_chart_combined.png" + bust;
   cs.onerror = () => cs.closest(".chart").classList.add("missing");
+  const cp = document.getElementById("img-combined-price");
+  cp.src = "data/price_chart_combined.png" + bust;
+  cp.onerror = () => cp.closest(".chart").classList.add("missing");
 
   // cards + per-GPU charts
   const board = document.getElementById("board");
