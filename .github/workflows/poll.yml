@@ -29,6 +29,11 @@ jobs:
           RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
         run: python check_availability.py
 
+      - name: Collect inference performance stats
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python check_perf.py
+
       - name: Save the new data point back to the repository
         run: |
           git config user.name "gpu-tracker-bot"
