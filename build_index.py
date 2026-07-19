@@ -19,6 +19,115 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+
+# ============================ DESIGN SYSTEM ============================
+import matplotlib.dates as mdates
+from matplotlib.ticker import FuncFormatter
+
+INK     = "#1C2B29"
+MUTED   = "#66756F"
+FAINT   = "#9AA6A1"
+PAPER   = "#FBFCFB"
+GRID    = "#E7ECE9"
+PALETTE = ["#14B8A9", "#7C6FDE", "#E2703A", "#3B82C4",
+           "#C9962E", "#3F9E6E", "#C75D9C", "#E24B4A", "#7A8894"]
+
+plt.rcParams.update({
+    "figure.facecolor": PAPER,
+    "axes.facecolor": PAPER,
+    "savefig.facecolor": PAPER,
+    "font.family": "DejaVu Sans",
+    "font.size": 11,
+    "axes.edgecolor": GRID,
+    "axes.linewidth": 1.0,
+    "axes.titlesize": 15,
+    "axes.titleweight": "bold",
+    "axes.titlepad": 14,
+    "axes.labelsize": 10.5,
+    "axes.labelcolor": MUTED,
+    "xtick.color": MUTED,
+    "ytick.color": MUTED,
+    "xtick.labelsize": 9.5,
+    "ytick.labelsize": 9.5,
+    "text.color": INK,
+})
+
+PCT_FMT = FuncFormatter(lambda v, _: f"{v:.0f}%")
+USD_FMT = FuncFormatter(lambda v, _: (f"${v:,.2f}" if abs(v) < 20 else f"${v:,.0f}"))
+NUM_FMT = FuncFormatter(lambda v, _: f"{v:,.0f}")
+
+
+def style_axis(ax, ylabel="", yfmt=None, pct=False):
+    """House style: open frame, horizontal grid only, tidy dates."""
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    ax.spines["left"].set_visible(False)
+    ax.spines["bottom"].set_color(GRID)
+    ax.grid(axis="y", color=GRID, lw=1)
+    ax.grid(axis="x", visible=False)
+    ax.tick_params(length=0)
+    if ylabel:
+        ax.set_ylabel(ylabel)
+    if pct:
+        ax.yaxis.set_major_formatter(PCT_FMT)
+    elif yfmt is not None:
+        ax.yaxis.set_major_formatter(yfmt)
+    loc = mdates.AutoDateLocator()
+    ax.xaxis.set_major_locator(loc)
+    ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(loc))
+
+
+def title_block(ax, title, subtitle=""):
+    ax.set_title(title, loc="left", color=INK)
+    if subtitle:
+        ax.text(0, 1.015, subtitle, transform=ax.transAxes,
+                fontsize=10, color=MUTED, va="bottom")
+
+
+def source_note(fig, text="Source: OpenRouter (openrouter.ai/rankings)"):
+    fig.text(0.995, 0.006, text, ha="right", fontsize=8, color=FAINT)
+
+
+def direct_labels(ax, entries, room=0.22):
+    """Label lines at their right endpoints instead of using a legend.
+    entries: list of (label, x_end, y_end, color). Nudges overlaps apart."""
+    entries = [e for e in entries if e[1] is not None and e[2] is not None]
+    if not entries:
+        return
+    x0, x1 = ax.get_xlim()
+    ax.set_xlim(x0, x1 + (x1 - x0) * room)
+    y0, y1 = ax.get_ylim()
+    gap = (y1 - y0) * 0.05
+    entries.sort(key=lambda e: e[2])
+    placed = []
+    for label, x, y, color in entries:
+        yy = y
+        if placed and yy - placed[-1] < gap:
+            yy = placed[-1] + gap
+        placed.append(yy)
+        ax.annotate("  " + label, xy=(mdates.date2num(x), y),
+                    xytext=(mdates.date2num(x), yy),
+                    fontsize=9.5, fontweight=600, color=color, va="center")
+        ax.plot([x], [y], "o", ms=5, color=color, zorder=5)
+
+
+def multiline(ax, frame_or_series, colors=None, lw=2.4):
+    """Plot columns of a DataFrame with house palette and direct labels."""
+    cols = list(frame_or_series.columns)
+    if len(cols) > 9:
+        cols = cols[:9]
+    ends = []
+    for i, c in enumerate(cols):
+        s = frame_or_series[c].dropna()
+        if s.empty:
+            continue
+        color = (colors or PALETTE)[i % len(PALETTE)]
+        ax.plot(s.index, s, lw=lw, color=color, solid_capstyle="round")
+        ends.append((str(c), s.index[-1], float(s.iloc[-1]), color))
+    return ends
+# ======================================================================
+
+
 GPU_COLORS = {
     "h100": "#2ab5ac",
     "h200": "#7f77dd",
@@ -75,36 +184,41 @@ def build_availability(log_path):
 
     daily.to_csv(f"data/daily_index_{gpu}.csv")
 
-    fig, ax = plt.subplots(figsize=(12, 6))
-    color = GPU_COLORS.get(gpu, "#333333")
-    ax.plot(daily.index, daily["availability_pct"], color="lightgray", lw=1,
-            marker="o", markersize=3, label=f"{gpu.upper()} {freq_label} %")
-    ax.plot(daily.index, daily["availability_30d_avg"], color=color, lw=2.5,
-            marker="o", markersize=2,
-            label=f"{gpu.upper()} smoothed" if freq == "h" else f"{gpu.upper()} 30-day average")
-    ax.set_ylabel("% of checks with a GPU available")
-    ax.set_ylim(-2, 102)
-    ax.grid(alpha=0.3)
+    fig, ax = plt.subplots(figsize=(12.5, 6), constrained_layout=True)
+    color = GPU_COLORS.get(gpu, INK)
+    avail = daily["availability_pct"].dropna()
+    sm = daily["availability_30d_avg"].dropna()
+    ax.plot(avail.index, avail, color=GRID, lw=1.4)
+    ax.plot(sm.index, sm, color=color, lw=3, solid_capstyle="round")
+    ax.set_ylim(-2, 108)
+    style_axis(ax, "Available under price cap", pct=True)
+    ends = [("availability", sm.index[-1], float(sm.iloc[-1]), color)] if len(sm) else []
 
-    # Right axis: prices (the 3Fourteen chart-1 layout)
     ax2 = ax.twinx()
-    if daily["lowest_price"].notna().any():
-        ax2.plot(daily.index, daily["lowest_price"], color="#555555", lw=1.8,
-                 marker="o", markersize=2, label="Lowest offer $/GPU-hr (right)")
-    if "median_price" in daily.columns and daily["median_price"].notna().any():
-        ax2.plot(daily.index, daily["median_price"], color="#AAAAAA", lw=1.5,
-                 linestyle="--", marker="o", markersize=2,
-                 label="Vast median $/GPU-hr (right)")
-    ax2.set_ylabel("Price per GPU-hour ($)")
     ax2.set_ylim(bottom=0)
+    if daily["lowest_price"].notna().any():
+        lp = daily["lowest_price"].dropna()
+        ax2.plot(lp.index, lp, color=INK, lw=2)
+        ends.append((f"low ${lp.iloc[-1]:.2f}", lp.index[-1], float(lp.iloc[-1]), INK))
+    if "median_price" in daily.columns and daily["median_price"].notna().any():
+        mp = daily["median_price"].dropna()
+        ax2.plot(mp.index, mp, color=FAINT, lw=2, linestyle=(0, (4, 3)))
+        ends.append((f"median ${mp.iloc[-1]:.2f}", mp.index[-1], float(mp.iloc[-1]), FAINT))
+    for side in ("top", "left", "bottom"):
+        ax2.spines[side].set_visible(False)
+    ax2.spines["right"].set_visible(False)
+    ax2.grid(visible=False)
+    ax2.tick_params(length=0)
+    ax2.set_ylabel("$ per GPU-hour", color=MUTED)
+    ax2.yaxis.set_major_formatter(USD_FMT)
 
-    lines1, labels1 = ax.get_legend_handles_labels()
-    lines2, labels2 = ax2.get_legend_handles_labels()
-    ax.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
-    ax.set_title(f"{gpu.upper()} On-Demand Availability & Price")
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig(f"data/index_chart_{gpu}.png", dpi=150)
+    if ends:
+        direct_labels(ax, ends[:1])
+        direct_labels(ax2, ends[1:], room=0)
+    title_block(ax, f"{gpu.upper()} availability & price",
+                f"Share of checks rentable under cap (left, {freq_label}) · lowest offer and Vast median $/GPU-hr (right)")
+    source_note(fig, "3FR-style index · data: Vast.ai, Lambda, RunPod")
+    fig.savefig(f"data/index_chart_{gpu}.png", dpi=160)
     plt.close(fig)
 
     print(f"[{gpu}] availability OK — {len(df)} checks, "
@@ -136,28 +250,40 @@ def build_supply(log_path):
     daily = df.set_index("timestamp_utc").resample(freq).mean(numeric_only=True)
     daily.to_csv(f"data/daily_supply_{gpu}.csv")
 
-    color = GPU_COLORS.get(gpu, "#333333")
-    fig, ax1 = plt.subplots(figsize=(12, 6))
-    ax1.plot(daily.index, daily["vast_gpus"], color=color, lw=2.5,
-             marker="o", markersize=3, label="Visible GPUs on Vast (any price)")
-    ax1.plot(daily.index, daily["vast_gpus_under_cap"], color=color, lw=1.5,
-             linestyle="--", marker="o", markersize=3, label="Visible GPUs under price cap")
-    ax1.set_ylabel("GPUs listed (daily avg)")
+    color = GPU_COLORS.get(gpu, INK)
+    fig, ax1 = plt.subplots(figsize=(12.5, 6), constrained_layout=True)
+    g_all = daily["vast_gpus"].dropna()
+    g_cap = daily["vast_gpus_under_cap"].dropna()
+    ax1.plot(g_all.index, g_all, color=color, lw=3, solid_capstyle="round")
+    ax1.plot(g_cap.index, g_cap, color=color, lw=2, linestyle=(0, (4, 3)))
     ax1.set_ylim(bottom=0)
-    ax1.grid(alpha=0.3)
+    style_axis(ax1, "GPUs listed", yfmt=NUM_FMT)
+    ends1 = []
+    if len(g_all):
+        ends1.append((f"listed {g_all.iloc[-1]:,.0f}", g_all.index[-1], float(g_all.iloc[-1]), color))
+    if len(g_cap):
+        ends1.append((f"under cap {g_cap.iloc[-1]:,.0f}", g_cap.index[-1], float(g_cap.iloc[-1]), color))
 
     ax2 = ax1.twinx()
-    ax2.plot(daily.index, daily["vast_median_price"], color="#888888", lw=1.5,
-             marker="o", markersize=3, label="Median $/GPU-hr (right)")
-    ax2.set_ylabel("Median price per GPU-hour ($)")
+    mpx = daily["vast_median_price"].dropna()
+    ends2 = []
+    if len(mpx):
+        ax2.plot(mpx.index, mpx, color=FAINT, lw=2)
+        ends2.append((f"median ${mpx.iloc[-1]:.2f}", mpx.index[-1], float(mpx.iloc[-1]), FAINT))
+    for side in ("top", "left", "bottom", "right"):
+        ax2.spines[side].set_visible(False)
+    ax2.grid(visible=False)
+    ax2.tick_params(length=0)
+    ax2.set_ylabel("$ per GPU-hour", color=MUTED)
+    ax2.yaxis.set_major_formatter(USD_FMT)
+    ax2.set_ylim(bottom=0)
 
-    lines1, labels1 = ax1.get_legend_handles_labels()
-    lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
-    ax1.set_title(f"{gpu.upper()} Visible Supply Depth (Vast.ai order book)")
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig(f"data/supply_chart_{gpu}.png", dpi=150)
+    direct_labels(ax1, ends1)
+    direct_labels(ax2, ends2, room=0)
+    title_block(ax1, f"{gpu.upper()} visible supply",
+                "Deduped GPUs listed on Vast.ai at any price vs under the cap · median $/GPU-hr (right)")
+    source_note(fig, "data: Vast.ai order book")
+    fig.savefig(f"data/supply_chart_{gpu}.png", dpi=160)
     plt.close(fig)
 
     latest = daily["vast_gpus"].dropna().iloc[-1]
@@ -170,19 +296,22 @@ def build_supply(log_path):
 def combined_availability(results):
     if not results:
         return
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(12.5, 6), constrained_layout=True)
+    ends = []
     for gpu, daily in results:
-        ax.plot(daily.index, daily["availability_30d_avg"],
-                color=GPU_COLORS.get(gpu, "#333"), lw=2.5,
-                marker="o", markersize=3, label=gpu.upper())
-    ax.set_title("GPU Availability Index — All Vintages (smoothed)")
-    ax.set_ylabel("% of checks with a GPU available")
-    ax.set_ylim(-2, 102)
-    ax.legend(loc="upper left")
-    ax.grid(alpha=0.3)
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig("data/index_chart_combined.png", dpi=150)
+        s = daily["availability_30d_avg"].dropna()
+        if s.empty:
+            continue
+        c = GPU_COLORS.get(gpu, INK)
+        ax.plot(s.index, s, color=c, lw=3, solid_capstyle="round")
+        ends.append((gpu.upper(), s.index[-1], float(s.iloc[-1]), c))
+    ax.set_ylim(-2, 108)
+    style_axis(ax, "Available under price cap", pct=True)
+    direct_labels(ax, ends, room=0.14)
+    title_block(ax, "GPU availability index — all vintages",
+                "Smoothed share of checks with a GPU rentable under each cap")
+    source_note(fig, "data: Vast.ai, Lambda, RunPod")
+    fig.savefig("data/index_chart_combined.png", dpi=160)
     plt.close(fig)
 
 
@@ -212,27 +341,28 @@ def build_tokens():
     out.to_csv("data/tokens_index.csv")
 
     fig, (ax1, ax2) = plt.subplots(
-        2, 1, figsize=(12, 8), sharex=True,
+        2, 1, figsize=(12.5, 8), sharex=True, constrained_layout=True,
         gridspec_kw={"height_ratios": [2.2, 1]})
-    ax1.plot(t.index, t, color="lightgray", lw=1, label="Daily total")
-    ax1.plot(ma7.index, ma7, color="#B8860B", lw=2.5, label="7-day average")
-    ax1.set_ylabel("Tokens per day (trillions)")
+    ax1.plot(t.index, t, color=GRID, lw=1.4)
+    ma = ma7.dropna()
+    ax1.plot(ma.index, ma, color=PALETTE[4], lw=3, solid_capstyle="round")
     ax1.set_ylim(bottom=0)
-    ax1.legend(loc="upper left")
-    ax1.grid(alpha=0.3)
-    ax1.set_title("OpenRouter Platform Token Volume")
+    style_axis(ax1, "Tokens per day (trillions)")
+    if len(ma):
+        direct_labels(ax1, [(f"{ma.iloc[-1]:.2f}T/day", ma.index[-1],
+                             float(ma.iloc[-1]), PALETTE[4])], room=0.12)
+    title_block(ax1, "OpenRouter platform token volume",
+                "Daily total (faint) and 7-day average")
 
-    ax2.plot(growth30.index, growth30, color="#555555", lw=1.8)
-    ax2.axhline(0, color="#999999", lw=1)
-    ax2.set_ylabel("30-day growth (%)")
-    ax2.grid(alpha=0.3)
-
-    fig.text(0.99, 0.01,
-             "Source: OpenRouter (openrouter.ai/rankings)",
-             ha="right", fontsize=8, color="#888888")
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig("data/tokens_chart.png", dpi=150)
+    g = growth30.dropna()
+    ax2.axhline(0, color=FAINT, lw=1)
+    ax2.plot(g.index, g, color=INK, lw=2)
+    style_axis(ax2, "30-day growth", pct=True)
+    if len(g):
+        direct_labels(ax2, [(f"{g.iloc[-1]:+.0f}%", g.index[-1],
+                             float(g.iloc[-1]), INK)], room=0.12)
+    source_note(fig)
+    fig.savefig("data/tokens_chart.png", dpi=160)
     plt.close(fig)
 
     latest = ma7.dropna()
@@ -274,19 +404,15 @@ def build_providers():
     smoothed = (prov / 1e12).rolling(7, min_periods=3).mean()
 
     # --- line version ---
-    fig, ax = plt.subplots(figsize=(12, 6))
-    for p in top:
-        ax.plot(smoothed.index, smoothed[p], lw=2, label=p)
-    ax.set_title("OpenRouter Token Volume by Provider (7-day avg)")
-    ax.set_ylabel("Tokens per day (trillions)")
+    fig, ax = plt.subplots(figsize=(12.5, 6.5), constrained_layout=True)
+    ends = multiline(ax, smoothed[list(top)])
     ax.set_ylim(bottom=0)
-    ax.legend(loc="upper left", fontsize=9)
-    ax.grid(alpha=0.3)
-    fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
-             ha="right", fontsize=8, color="#888888")
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig("data/providers_chart.png", dpi=150)
+    style_axis(ax, "Tokens per day (trillions)")
+    direct_labels(ax, ends, room=0.18)
+    title_block(ax, "Token volume by provider",
+                "7-day average, top providers by recent volume")
+    source_note(fig)
+    fig.savefig("data/providers_chart.png", dpi=160)
     plt.close(fig)
 
     # --- stacked version (top 8 + everything else, so height = total) ---
@@ -294,19 +420,20 @@ def build_providers():
     stack_df = smoothed[list(top)].copy()
     stack_df["all others"] = rest
     stack_df = stack_df.fillna(0)
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(12.5, 6.5), constrained_layout=True)
+    stack_colors = (PALETTE * 2)[:len(stack_df.columns) - 1] + [GRID]
     ax.stackplot(stack_df.index, [stack_df[c] for c in stack_df.columns],
-                 labels=list(stack_df.columns), alpha=0.85)
-    ax.set_title("OpenRouter Token Volume by Provider — Stacked (7-day avg)")
-    ax.set_ylabel("Tokens per day (trillions)")
+                 labels=list(stack_df.columns), colors=stack_colors,
+                 alpha=0.92, linewidth=0)
     ax.set_ylim(bottom=0)
-    ax.legend(loc="upper left", fontsize=9)
-    ax.grid(alpha=0.3)
-    fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
-             ha="right", fontsize=8, color="#888888")
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig("data/providers_chart_stacked.png", dpi=150)
+    style_axis(ax, "Tokens per day (trillions)")
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1], labels[::-1], loc="upper left", fontsize=9,
+              frameon=False, ncol=2)
+    title_block(ax, "Token volume by provider — stacked",
+                "Total height = whole platform · 7-day average")
+    source_note(fig)
+    fig.savefig("data/providers_chart_stacked.png", dpi=160)
     plt.close(fig)
     print(f"[providers] OK — top: {', '.join(top[:4])}...")
 
@@ -321,19 +448,17 @@ def build_providers():
         sm = (models / 1e12).rolling(7, min_periods=3).mean()
 
         # line version
-        fig, ax = plt.subplots(figsize=(12, 6))
-        for m in top_m:
-            ax.plot(sm.index, sm[m], lw=2, label=m.split("/", 1)[-1])
-        ax.set_title(f"{pname.capitalize()} — Token Volume by Model (7-day avg)")
-        ax.set_ylabel("Tokens per day (trillions)")
+        fig, ax = plt.subplots(figsize=(12.5, 6.5), constrained_layout=True)
+        named = sm[list(top_m)].copy()
+        named.columns = [c.split("/", 1)[-1] for c in named.columns]
+        ends = multiline(ax, named)
         ax.set_ylim(bottom=0)
-        ax.legend(loc="upper left", fontsize=9)
-        ax.grid(alpha=0.3)
-        fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
-                 ha="right", fontsize=8, color="#888888")
-        fig.autofmt_xdate()
-        fig.tight_layout()
-        fig.savefig(f"data/provider_{pname}_models_chart.png", dpi=150)
+        style_axis(ax, "Tokens per day (trillions)")
+        direct_labels(ax, ends, room=0.30)
+        title_block(ax, f"{pname.capitalize()} — token volume by model",
+                    "7-day average, top models by recent volume")
+        source_note(fig)
+        fig.savefig(f"data/provider_{pname}_models_chart.png", dpi=160)
         plt.close(fig)
 
         # stacked version (top models + rest, height = provider total)
@@ -343,19 +468,21 @@ def build_providers():
         if rest_m.abs().sum() > 0:
             sdf["all others"] = rest_m
         sdf = sdf.fillna(0)
-        fig, ax = plt.subplots(figsize=(12, 6))
+        fig, ax = plt.subplots(figsize=(12.5, 6.5), constrained_layout=True)
+        n_named = len(sdf.columns) - (1 if "all others" in sdf.columns else 0)
+        s_colors = (PALETTE * 2)[:n_named] + ([GRID] if "all others" in sdf.columns else [])
         ax.stackplot(sdf.index, [sdf[c] for c in sdf.columns],
-                     labels=list(sdf.columns), alpha=0.85)
-        ax.set_title(f"{pname.capitalize()} — Token Volume by Model, Stacked (7-day avg)")
-        ax.set_ylabel("Tokens per day (trillions)")
+                     labels=list(sdf.columns), colors=s_colors,
+                     alpha=0.92, linewidth=0)
         ax.set_ylim(bottom=0)
-        ax.legend(loc="upper left", fontsize=9)
-        ax.grid(alpha=0.3)
-        fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
-                 ha="right", fontsize=8, color="#888888")
-        fig.autofmt_xdate()
-        fig.tight_layout()
-        fig.savefig(f"data/provider_{pname}_models_chart_stacked.png", dpi=150)
+        style_axis(ax, "Tokens per day (trillions)")
+        handles, labels = ax.get_legend_handles_labels()
+        ax.legend(handles[::-1], labels[::-1], loc="upper left", fontsize=9,
+                  frameon=False, ncol=2)
+        title_block(ax, f"{pname.capitalize()} — token volume by model, stacked",
+                    "Total height = provider total · 7-day average")
+        source_note(fig)
+        fig.savefig(f"data/provider_{pname}_models_chart_stacked.png", dpi=160)
         plt.close(fig)
         print(f"[providers] {pname}: charted {len(top_m)} models")
 
@@ -391,25 +518,169 @@ def build_pricing():
     daily = merged.groupby("date").apply(weighted, include_groups=False)
     daily.to_csv("data/pricing_index.csv")
 
-    fig, ax = plt.subplots(figsize=(12, 6))
-    ax.plot(daily.index, daily["avg_completion_usd_per_m"], color="#8B3A62",
-            lw=2.5, marker="o", markersize=3, label="Output (completion) $/M tokens")
-    ax.plot(daily.index, daily["avg_prompt_usd_per_m"], color="#B58BA5",
-            lw=2, linestyle="--", marker="o", markersize=3,
-            label="Input (prompt) $/M tokens")
-    ax.set_title("Token-Weighted Average Price on OpenRouter ($/million tokens)")
-    ax.set_ylabel("$ per million tokens")
+    fig, ax = plt.subplots(figsize=(12.5, 6), constrained_layout=True)
+    out_s = daily["avg_completion_usd_per_m"].dropna()
+    in_s = daily["avg_prompt_usd_per_m"].dropna()
+    ax.plot(out_s.index, out_s, color=PALETTE[6], lw=3, solid_capstyle="round")
+    ax.plot(in_s.index, in_s, color=PALETTE[6], lw=2, alpha=0.55,
+            linestyle=(0, (4, 3)))
     ax.set_ylim(bottom=0)
-    ax.legend(loc="upper left")
-    ax.grid(alpha=0.3)
-    fig.text(0.99, 0.01, "Source: OpenRouter (openrouter.ai/rankings)",
-             ha="right", fontsize=8, color="#888888")
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig("data/pricing_chart.png", dpi=150)
+    style_axis(ax, "$ per million tokens", yfmt=USD_FMT)
+    ends = []
+    if len(out_s):
+        ends.append((f"output ${out_s.iloc[-1]:.2f}", out_s.index[-1],
+                     float(out_s.iloc[-1]), PALETTE[6]))
+    if len(in_s):
+        ends.append((f"input ${in_s.iloc[-1]:.2f}", in_s.index[-1],
+                     float(in_s.iloc[-1]), FAINT))
+    direct_labels(ax, ends, room=0.16)
+    title_block(ax, "Token-weighted average price",
+                "What the market actually pays per million tokens, weighted by usage")
+    source_note(fig)
+    fig.savefig("data/pricing_chart.png", dpi=160)
     plt.close(fig)
     print(f"[pricing] OK — {len(daily)} days; latest weighted output price "
           f"${daily['avg_completion_usd_per_m'].iloc[-1]:.2f}/M")
+
+
+def build_price_history():
+    """Per-model price over time for the highest-volume models, plus a
+    repricing table: each model's first vs latest observed price."""
+    if not os.path.exists("data/model_prices.csv"):
+        return
+    prices = pd.read_csv("data/model_prices.csv", parse_dates=["date"])
+    for c in ["prompt_usd_per_m", "completion_usd_per_m"]:
+        prices[c] = pd.to_numeric(prices[c], errors="coerce")
+    prices = prices.dropna(subset=["date", "completion_usd_per_m"])
+    if prices.empty:
+        return
+    # ignore free-tier zero-price rows for trend purposes
+    priced = prices[prices["completion_usd_per_m"] > 0]
+
+    # Which models to chart: top by recent token volume, that have prices
+    tok = _load_by_model()
+    if tok is not None and not tok.empty:
+        recent = tok[tok["date"] >= tok["date"].max() - pd.Timedelta(days=7)]
+        vol_rank = recent.groupby("model")["tokens"].sum().sort_values(ascending=False)
+        watch = [m for m in vol_rank.index if m in set(priced["model"])][:10]
+    else:
+        latest = priced[priced["date"] == priced["date"].max()]
+        watch = latest.nlargest(10, "completion_usd_per_m")["model"].tolist()
+    if not watch:
+        return
+
+    piv = (priced[priced["model"].isin(watch)]
+           .pivot_table(index="date", columns="model",
+                        values="completion_usd_per_m", aggfunc="last")
+           .sort_index())
+
+    fig, ax = plt.subplots(figsize=(12.5, 6.5), constrained_layout=True)
+    ends = []
+    for i, m in enumerate(watch):
+        if m not in piv.columns:
+            continue
+        s = piv[m].dropna()
+        if s.empty:
+            continue
+        c = PALETTE[i % len(PALETTE)]
+        ax.plot(s.index, s, lw=2.4, color=c, drawstyle="steps-post",
+                solid_capstyle="round")
+        ends.append((m.split("/", 1)[-1], s.index[-1], float(s.iloc[-1]), c))
+    ax.set_ylim(bottom=0)
+    style_axis(ax, "$ per million output tokens", yfmt=USD_FMT)
+    direct_labels(ax, ends, room=0.30)
+    title_block(ax, "Output price history — highest-volume models",
+                "List price over time; steps mark repricings")
+    source_note(fig)
+    fig.savefig("data/price_history_chart.png", dpi=160)
+    plt.close(fig)
+
+    # Repricing table: first vs last observed price per model
+    changes = []
+    for m, g in priced.groupby("model"):
+        g = g.sort_values("date")
+        first, last = g.iloc[0], g.iloc[-1]
+        if first["date"] == last["date"]:
+            continue
+        pct = (last["completion_usd_per_m"] / first["completion_usd_per_m"] - 1) * 100
+        changes.append([m, first["date"].date(), first["completion_usd_per_m"],
+                        last["date"].date(), last["completion_usd_per_m"],
+                        round(pct, 1)])
+    if changes:
+        ch = pd.DataFrame(changes, columns=[
+            "model", "first_date", "first_price", "last_date",
+            "last_price", "pct_change"]).sort_values("pct_change")
+        ch.to_csv("data/price_changes.csv", index=False)
+        cut = (ch["pct_change"] < -1).sum()
+        raised = (ch["pct_change"] > 1).sum()
+        flat = len(ch) - cut - raised
+        print(f"[price-history] {len(ch)} models with 2+ observations: "
+              f"{cut} cut, {raised} raised, {flat} unchanged")
+
+
+def build_perf():
+    """Per-model charts of provider throughput and latency over time.
+    Emits one two-panel PNG per leading model plus a manifest the
+    dashboard reads to know which charts exist."""
+    import json
+    path = "data/perf_log.csv"
+    if not os.path.exists(path):
+        return
+    df = pd.read_csv(path, parse_dates=["timestamp_utc"])
+    df["throughput_tps"] = pd.to_numeric(df["throughput_tps"], errors="coerce")
+    df["latency_s"] = pd.to_numeric(df["latency_s"], errors="coerce")
+    df = df.dropna(subset=["timestamp_utc", "model", "provider"])
+    if df.empty:
+        return
+
+    span_days = (df["timestamp_utc"].max() - df["timestamp_utc"].min()).days
+    freq = "h" if span_days < 3 else "D"
+
+    manifest = []
+    # chart the models with the most observations
+    for model in df["model"].value_counts().index[:8]:
+        sub = df[df["model"] == model]
+        # top 6 providers by observation count for readability
+        provs = sub["provider"].value_counts().index[:6]
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12.5, 8.5), sharex=True,
+                                       constrained_layout=True)
+        drew = False
+        ends1, ends2 = [], []
+        for i, p in enumerate(provs):
+            c = PALETTE[i % len(PALETTE)]
+            ps = sub[sub["provider"] == p].set_index("timestamp_utc")
+            tps = ps["throughput_tps"].resample(freq).mean().dropna()
+            lat = ps["latency_s"].resample(freq).mean().dropna()
+            if len(tps):
+                ax1.plot(tps.index, tps, lw=2.4, color=c, solid_capstyle="round")
+                ends1.append((p, tps.index[-1], float(tps.iloc[-1]), c))
+                drew = True
+            if len(lat):
+                ax2.plot(lat.index, lat, lw=2.4, color=c, solid_capstyle="round")
+                ends2.append((f"{lat.iloc[-1]:.1f}s", lat.index[-1],
+                              float(lat.iloc[-1]), c))
+        if not drew:
+            plt.close(fig)
+            continue
+        ax1.set_ylim(bottom=0)
+        style_axis(ax1, "Throughput (tokens/sec)", yfmt=NUM_FMT)
+        direct_labels(ax1, ends1, room=0.20)
+        title_block(ax1, f"{model} — provider performance",
+                    "Tokens/sec by provider (top) · latency in seconds (bottom)")
+        ax2.set_ylim(bottom=0)
+        style_axis(ax2, "Latency (seconds)")
+        direct_labels(ax2, ends2, room=0.20)
+        source_note(fig)
+        safe = model.replace("/", "_").replace(":", "_")
+        fname = f"data/perf_{safe}_chart.png"
+        fig.savefig(fname, dpi=150)
+        plt.close(fig)
+        manifest.append({"file": fname, "model": model})
+
+    with open("data/perf_manifest.json", "w") as f:
+        json.dump(manifest, f)
+    print(f"[perf] charted {len(manifest)} models "
+          f"({len(df)} observations)")
 
 
 def combined_price(results):
@@ -418,38 +689,44 @@ def combined_price(results):
             and d["lowest_price"].notna().any()]
     if not have:
         return
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(12.5, 6), constrained_layout=True)
+    ends = []
     for gpu, daily in have:
-        ax.plot(daily.index, daily["lowest_price"],
-                color=GPU_COLORS.get(gpu, "#333"), lw=2.5,
-                marker="o", markersize=3, label=gpu.upper())
-    ax.set_title("Lowest On-Demand Offer — All Vintages ($/GPU-hour)")
-    ax.set_ylabel("Lowest offer per GPU-hour ($)")
+        s = daily["lowest_price"].dropna()
+        if s.empty:
+            continue
+        c = GPU_COLORS.get(gpu, INK)
+        ax.plot(s.index, s, color=c, lw=3, solid_capstyle="round")
+        ends.append((f"{gpu.upper()} ${s.iloc[-1]:.2f}", s.index[-1], float(s.iloc[-1]), c))
     ax.set_ylim(bottom=0)
-    ax.legend(loc="upper left")
-    ax.grid(alpha=0.3)
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig("data/price_chart_combined.png", dpi=150)
+    style_axis(ax, "$ per GPU-hour", yfmt=USD_FMT)
+    direct_labels(ax, ends, room=0.16)
+    title_block(ax, "Lowest on-demand offer — all vintages",
+                "Cheapest qualifying rental seen across providers each period")
+    source_note(fig, "data: Vast.ai, Lambda, RunPod")
+    fig.savefig("data/price_chart_combined.png", dpi=160)
     plt.close(fig)
 
 
 def combined_supply(results):
     if not results:
         return
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(12.5, 6), constrained_layout=True)
+    ends = []
     for gpu, daily in results:
-        ax.plot(daily.index, daily["vast_gpus"],
-                color=GPU_COLORS.get(gpu, "#333"), lw=2.5,
-                marker="o", markersize=3, label=gpu.upper())
-    ax.set_title("Visible GPU Supply on Vast.ai — All Vintages (daily avg)")
-    ax.set_ylabel("GPUs listed at any price")
+        s = daily["vast_gpus"].dropna()
+        if s.empty:
+            continue
+        c = GPU_COLORS.get(gpu, INK)
+        ax.plot(s.index, s, color=c, lw=3, solid_capstyle="round")
+        ends.append((f"{gpu.upper()} {s.iloc[-1]:,.0f}", s.index[-1], float(s.iloc[-1]), c))
     ax.set_ylim(bottom=0)
-    ax.legend(loc="upper left")
-    ax.grid(alpha=0.3)
-    fig.autofmt_xdate()
-    fig.tight_layout()
-    fig.savefig("data/supply_chart_combined.png", dpi=150)
+    style_axis(ax, "GPUs listed at any price", yfmt=NUM_FMT)
+    direct_labels(ax, ends, room=0.16)
+    title_block(ax, "Visible GPU supply — all vintages",
+                "Deduped machines listed on Vast.ai, daily average")
+    source_note(fig, "data: Vast.ai order book")
+    fig.savefig("data/supply_chart_combined.png", dpi=160)
     plt.close(fig)
 
 
@@ -472,5 +749,7 @@ if __name__ == "__main__":
     build_tokens()
     build_providers()
     build_pricing()
+    build_price_history()
+    build_perf()
     print(f"\nDone. {len(avail_results)} availability indices, "
           f"{len(supply_results)} supply charts.")
