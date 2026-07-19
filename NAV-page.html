@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APLD — Three-Bucket NAV Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F7F3; --panel:#FFFFFF; --ink:#182238; --muted:#5A6478; --rule:#DDE1E8;
+  --input:#1743C7; --input-bg:#F3F6FF; --linkg:#0E7A46;
+  --amber-bg:#FFF6D6; --amber:#8A6A14;
+  --up:#0E7A46; --down:#B3261E; --ribbon:#182238;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --cond:'IBM Plex Sans Condensed',var(--sans);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+a{color:var(--input)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 80px}
+
+/* masthead */
+.mast{padding:26px 0 14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 18px;border-bottom:2px solid var(--ink)}
+.mast h1{font-family:var(--cond);font-weight:700;font-size:26px;letter-spacing:.02em;text-transform:uppercase}
+.mast .sub{color:var(--muted);font-size:13px}
+.mast .tools{margin-left:auto;display:flex;gap:8px}
+button{font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink);background:var(--panel);border:1px solid var(--ink);padding:6px 12px;cursor:pointer}
+button:hover{background:var(--ink);color:#fff}
+button:focus-visible,input:focus-visible{outline:2px solid var(--input);outline-offset:1px}
+
+/* quote ribbon (signature) */
+.ribbon{position:sticky;top:0;z-index:50;background:var(--ribbon);color:#fff;font-family:var(--mono);font-size:13px;margin:0 -20px;padding:9px 20px;display:flex;flex-wrap:wrap;gap:6px 26px;align-items:baseline;box-shadow:0 2px 8px rgba(24,34,56,.25)}
+.ribbon .q{display:flex;gap:8px;align-items:baseline;white-space:nowrap}
+.ribbon .lab{color:#9AA6BF;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.ribbon .val{font-weight:600;font-size:15px}
+.ribbon .up{color:#7BD8A5}.ribbon .down{color:#F2A19A}
+.tick{transition:background .4s}
+.tick.flash{background:rgba(255,246,214,.25)}
+
+/* sections */
+section{margin-top:34px}
+h2{font-family:var(--cond);font-size:16px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--ink);padding-bottom:5px;margin-bottom:12px;display:flex;align-items:baseline;gap:10px}
+h2 .tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400}
+.note{color:var(--muted);font-size:12.5px;margin:8px 0 0;max-width:900px}
+.legend{font-size:12px;color:var(--muted);margin-top:6px}
+.legend .sw{display:inline-block;width:10px;height:10px;vertical-align:-1px;margin:0 4px 0 10px;border:1px solid var(--rule)}
+
+/* assumption grid */
+.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--rule);padding:12px 14px}
+.card h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+.arow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:3px 0}
+.arow label{font-size:13px}
+input[type=number],input[type=text]{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--input);background:var(--input-bg);border:1px solid var(--rule);border-bottom:1px solid var(--input);padding:3px 6px;width:92px;text-align:right}
+input.key{background:var(--amber-bg);border-bottom-color:var(--amber)}
+input.w60{width:64px} input.w80{width:84px}
+
+/* tables */
+.tblwrap{overflow-x:auto;background:var(--panel);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:860px}
+th{font-family:var(--cond);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;background:var(--ink);color:#fff;padding:7px 8px;text-align:right;font-weight:600;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td{font-family:var(--mono);font-size:12.5px;padding:5px 8px;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}
+td.name{font-family:var(--sans);font-size:13px}
+td input{width:78px}
+tr.total td{font-weight:600;background:#EDF0F6;border-top:1.5px solid var(--ink)}
+td.calc{color:var(--ink)} td.link{color:var(--linkg)}
+select{font-family:var(--mono);font-size:12px;color:var(--input);background:var(--input-bg);border:1px solid var(--rule);padding:2px 4px}
+
+/* bridge + metrics */
+.bridge{background:var(--panel);border:1px solid var(--rule);max-width:560px}
+.brow{display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px;padding:6px 14px;border-bottom:1px solid var(--rule)}
+.brow.total{font-weight:600;background:#EDF0F6;border-top:1.5px solid var(--ink)}
+.brow .l{font-family:var(--sans)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{background:var(--panel);border:1px solid var(--rule);padding:8px 14px}
+.chip .l{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.chip .v{font-family:var(--mono);font-weight:600;font-size:16px}
+
+/* sensitivity grids */
+.sgrid td,.sgrid th{min-width:74px}
+.sgrid td.base{background:var(--amber-bg)}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+.cat{border-left:3px solid var(--linkg);background:var(--panel);border-top:1px solid var(--rule);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:12px 16px;margin-top:14px;max-width:560px}
+.cat .v{font-family:var(--mono);font-weight:600;font-size:18px;color:var(--linkg)}
+footer{margin-top:50px;font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <h1>APLD · Three-Bucket NAV Model</h1>
+  <span class="sub">Companion to the GPU tracker · edit any blue cell, valuation recomputes live</span>
+  <span class="tools">
+    <button id="btnExport">Export settings</button>
+    <button id="btnImport">Import settings</button>
+    <input type="file" id="fileImport" accept=".json" style="display:none">
+    <button id="btnReset">Reset defaults</button>
+  </span>
+</header>
+
+<div class="ribbon" id="ribbon">
+  <span class="q"><span class="lab">Price</span><span class="val" id="rPrice"></span></span>
+  <span class="q"><span class="lab">NAV — cap rate</span><span class="val tick" id="rNavCap"></span><span id="rUpCap"></span></span>
+  <span class="q"><span class="lab">NAV — credit-linked</span><span class="val tick" id="rNavCL"></span><span id="rUpCL"></span></span>
+  <span class="q"><span class="lab">Hedge / 100bps CRWV</span><span class="val tick" id="rHedge"></span></span>
+  <span class="q"><span class="lab">Bldg 3 IG catalyst</span><span class="val tick" id="rCat"></span></span>
+</div>
+
+<section id="assumptions">
+  <h2>Assumptions <span class="tag">blue = input · amber = mark to latest filing</span></h2>
+  <div class="agrid">
+    <div class="card"><h3>Market & corporate</h3>
+      <div class="arow"><label>Share price ($)</label><input type="number" step="0.01" data-k="price"></div>
+      <div class="arow"><label>Diluted shares (M)</label><input type="number" step="1" data-k="shares" class="key"></div>
+      <div class="arow"><label>Corporate cash ($M)</label><input type="number" step="10" data-k="cash" class="key"></div>
+    </div>
+    <div class="card"><h3>Lease economics</h3>
+      <div class="arow"><label>Lease term (yrs)</label><input type="number" step="1" data-k="term"></div>
+      <div class="arow"><label>NOI margin (%)</label><input type="number" step="0.5" data-k="margin"></div>
+      <div class="arow"><label>Capex per MW ($M)</label><input type="number" step="0.5" data-k="capexMW"></div>
+      <div class="arow"><label>New-lease rent ($M/MW/yr)</label><input type="number" step="0.01" data-k="rentNew"></div>
+    </div>
+    <div class="card"><h3>Cap-rate ladder (Bucket 1)</h3>
+      <div class="arow"><label>Base cap rate (%)</label><input type="number" step="0.1" data-k="capBase"></div>
+      <div class="arow"><label>+ under construction (bps)</label><input type="number" step="5" data-k="sprUC"></div>
+      <div class="arow"><label>+ pre-construction (bps)</label><input type="number" step="5" data-k="sprPre"></div>
+      <div class="arow"><label>Bucket-2 cap rate (%)</label><input type="number" step="0.1" data-k="capB2"></div>
+      <div class="arow"><label>Equity discount rate (%)</label><input type="number" step="0.5" data-k="eqDisc"></div>
+    </div>
+    <div class="card"><h3>Credit-linked framework</h3>
+      <div class="arow"><label>15-yr UST (%)</label><input type="number" step="0.05" data-k="ust" class="key"></div>
+      <div class="arow"><label>CRWV spread (bps)</label><input type="number" step="5" data-k="sCW" class="key"></div>
+      <div class="arow"><label>IG spread (bps)</label><input type="number" step="5" data-k="sIG" class="key"></div>
+      <div class="arow"><label>LGD factor (%)</label><input type="number" step="5" data-k="lgd"></div>
+      <div class="arow"><label>Asset premium (bps)</label><input type="number" step="5" data-k="prem"></div>
+      <div class="arow"><label>Terminal value ($M/MW)</label><input type="number" step="0.5" data-k="tvMW" class="key"></div>
+    </div>
+    <div class="card"><h3>Holdco & corporate ($M)</h3>
+      <div class="arow"><label>Converts 2.75% '30</label><input type="number" step="10" data-k="converts"></div>
+      <div class="arow"><label>Bridge facility</label><input type="number" step="10" data-k="bridge" class="key"></div>
+      <div class="arow"><label>Other holdco debt</label><input type="number" step="10" data-k="otherHold" class="key"></div>
+      <div class="arow"><label>Corp G&amp;A / yr</label><input type="number" step="5" data-k="ga" class="key"></div>
+      <div class="arow"><label>G&amp;A multiple (x)</label><input type="number" step="0.5" data-k="gaMult"></div>
+      <div class="arow"><label>Cloud / other value</label><input type="number" step="10" data-k="cloud" class="key"></div>
+    </div>
+    <div class="card"><h3>Risking — Buckets 2 &amp; 3</h3>
+      <div class="arow"><label>B2 yrs to signing</label><input type="number" step="0.25" data-k="b2Yrs"></div>
+      <div class="arow"><label>B3 option value ($M/MW)</label><input type="number" step="0.05" data-k="b3OV" class="key"></div>
+      <div class="arow"><label>B3 probability (%)</label><input type="number" step="5" data-k="b3P"></div>
+    </div>
+  </div>
+</section>
+
+<section id="b1">
+  <h2>Bucket 1 · Signed leases <span class="tag">cap-rate basis · GAV = NOI ÷ (base + status spread)</span></h2>
+  <div class="tblwrap"><table id="tblB1"></table></div>
+  <p class="note">Net equity = GAV − remaining capex − (project debt − project cash) − MAM preferred, × (1 − NCI). Debt / cash / preferred allocations by building are illustrative — reconcile to the latest 10-Q.</p>
+</section>
+
+<section id="cl">
+  <h2>Bucket 1 · Credit-linked basis <span class="tag">rate = UST + tenant spread × LGD + asset premium</span></h2>
+  <div class="tblwrap"><table id="tblCL"></table></div>
+  <p class="note">PV of the lease NOI annuity (delayed by years-to-RFS) plus PV of terminal value at expiry, same capital deductions as above. IG campuses value close to the cap-rate basis; the CoreWeave gap is the credit linkage.</p>
+</section>
+
+<section id="b23">
+  <div class="twocol">
+    <div>
+      <h2>Bucket 2 · Visible capacity</h2>
+      <div class="tblwrap"><table id="tblB2"></table></div>
+      <p class="note" id="b2helper"></p>
+    </div>
+    <div>
+      <h2>Bucket 3 · Pipeline</h2>
+      <div class="tblwrap"><table id="tblB3"></table></div>
+      <p class="note">Option math: MW × $/MW × probability.</p>
+    </div>
+  </div>
+</section>
+
+<section id="nav">
+  <h2>NAV bridge <span class="tag">$M · per share on both bases</span></h2>
+  <div class="twocol">
+    <div class="bridge" id="bridgeBox"></div>
+    <div>
+      <div class="chips" id="chips"></div>
+      <div class="cat">
+        <div class="l" style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Catalyst — Bldg 3 lease assigned to IG-rated CoreWeave sub (MOU 6/5/26)</div>
+        <div class="v" id="catBox"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sens">
+  <h2>Sensitivities</h2>
+  <div class="twocol">
+    <div>
+      <h3 style="font-size:12px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">NAV/share — base cap rate × Bucket-2 realization (cap-rate basis)</h3>
+      <div class="tblwrap"><table class="sgrid" id="tblSensCap"></table></div>
+    </div>
+    <div>
+      <h3 style="font-size:12px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">NAV/share — CRWV spread (credit-linked basis)</h3>
+      <div class="tblwrap"><table class="sgrid" id="tblSensSpr"></table></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Static model — nothing here fetches live data. Mark amber cells to the latest 10-Q / 8-K and live CRWV OAS before relying on the output.
+  Settings persist only via Export / Import (JSON). Not investment advice.
+</footer>
+</div>
+
+<script>
+"use strict";
+/* ---------------- defaults (mirror the Excel workbook) ---------------- */
+const DEF = {
+  price:28.47, shares:305, cash:400,
+  term:15, margin:86, capexMW:12, rentNew:1.70,
+  capBase:7.0, sprUC:50, sprPre:100, capB2:8.0, eqDisc:15,
+  ust:4.50, sCW:525, sIG:60, lgd:50, prem:100, tvMW:12,
+  converts:450, bridge:300, otherHold:0, ga:70, gaMult:8, cloud:250,
+  b2Yrs:2.5, b3OV:0.30, b3P:25,
+  b1:[
+    {name:"Polaris Forge 1 — ELN-02", tenant:"CoreWeave", cls:"CW", status:"op",  mw:100, rev:2750, pct:100, debt:940,  pcash:50,   pref:260, nci:15, yrs:0},
+    {name:"Polaris Forge 1 — ELN-03", tenant:"CoreWeave", cls:"CW", status:"uc",  mw:150, rev:4125, pct:85,  debt:1410, pcash:300,  pref:390, nci:15, yrs:0.5},
+    {name:"Polaris Forge 1 — Bldg 4", tenant:"CoreWeave", cls:"CW", status:"uc",  mw:150, rev:4125, pct:30,  debt:1590, pcash:1500, pref:200, nci:15, yrs:1.0},
+    {name:"Polaris Forge 2",          tenant:"IG Hyperscaler A", cls:"IG", status:"uc",  mw:200, rev:5000, pct:55, debt:0, pcash:100, pref:450, nci:15, yrs:0.75},
+    {name:"Delta Forge 1",            tenant:"IG Hyperscaler B", cls:"IG", status:"pre", mw:300, rev:7500, pct:10, debt:0, pcash:0,   pref:0,   nci:0,  yrs:2.0},
+    {name:"Polaris Forge 3",          tenant:"IG Hyperscaler B", cls:"IG", status:"pre", mw:300, rev:7500, pct:5,  debt:0, pcash:0,   pref:0,   nci:0,  yrs:2.5},
+    {name:"Campus 5 (southern)",      tenant:"IG Hyperscaler",   cls:"IG", status:"pre", mw:200, rev:5200, pct:5,  debt:0, pcash:0,   pref:0,   nci:0,  yrs:2.5}
+  ],
+  b2:[
+    {name:"Ellendale expansion",        mw:600, p:50},
+    {name:"Polaris Forge 2 ROFR",       mw:800, p:60},
+    {name:"Other campus headroom",      mw:200, p:40}
+  ],
+  b3:[
+    {name:"Announced pipeline / load studies", mw:2000},
+    {name:"Land & power bank (long-dated)",    mw:1000, ov:0.15, p:15}
+  ]
+};
+let S = JSON.parse(JSON.stringify(DEF));
+
+/* ---------------- formatting ---------------- */
+const f$ = x => (x<0?"(":"")+"$"+Math.round(Math.abs(x)).toLocaleString("en-US")+(x<0?")":"");
+const fps = x => (x<0?"(":"")+"$"+Math.abs(x).toFixed(2)+(x<0?")":"");
+const fpc = x => (100*x).toFixed(2)+"%";
+const fx  = x => x.toFixed(2)+"x";
+const f1  = x => "$"+x.toFixed(1);
+
+/* ---------------- model ---------------- */
+function calcB1Row(r,a,capBase){
+  const term=a.term, margin=a.margin/100;
+  const noi = r.rev/term*margin;
+  const rate = capBase/100 + (r.status==="op"?0:(r.status==="uc"?a.sprUC:a.sprPre)/10000);
+  const gav = noi/rate;
+  const rem = r.mw*a.capexMW*(1-r.pct/100);
+  const eqPre = gav - rem - (r.debt - r.pcash) - r.pref;
+  return {noi, rate, gav, rem, netDebt:r.debt-r.pcash, eqPre, eq:eqPre*(1-r.nci/100)};
+}
+function calcCLRow(r,a,sCWbps){
+  const term=a.term, margin=a.margin/100;
+  const noi = r.rev/term*margin;
+  const spr = (r.cls==="CW"?sCWbps:a.sIG)/10000;
+  const rate = a.ust/100 + spr*(a.lgd/100) + a.prem/10000;
+  const ann = (1-Math.pow(1+rate,-term))/rate;
+  const pvNoi = noi*ann/Math.pow(1+rate,r.yrs);
+  const pvTV = r.mw*a.tvMW/Math.pow(1+rate,r.yrs+term);
+  const gav = pvNoi+pvTV;
+  const rem = r.mw*a.capexMW*(1-r.pct/100);
+  return {noi, rate, ann, pvNoi, pvTV, gav, rem, eq:(gav-rem-(r.debt-r.pcash)-r.pref)*(1-r.nci/100)};
+}
+function totals(a){
+  const b1 = S.b1.map(r=>calcB1Row(r,a,a.capBase));
+  const cl = S.b1.map(r=>calcCLRow(r,a,a.sCW));
+  const b1T = b1.reduce((s,x)=>s+x.eq,0);
+  const clT = cl.reduce((s,x)=>s+x.eq,0);
+  const devMargin = (a.rentNew*(a.margin/100))/(a.capB2/100) - a.capexMW;
+  const pvF = 1/Math.pow(1+a.eqDisc/100, a.b2Yrs);
+  const b2rows = S.b2.map(r=>({...r, vmw:devMargin*(r.p/100)*pvF, val:r.mw*devMargin*(r.p/100)*pvF}));
+  const b2T = b2rows.reduce((s,x)=>s+x.val,0);
+  const b3rows = S.b3.map(r=>{
+    const ov = r.ov ?? a.b3OV, p = r.p ?? a.b3P;
+    return {...r, ovU:ov, pU:p, val:r.mw*ov*(p/100)};
+  });
+  const b3T = b3rows.reduce((s,x)=>s+x.val,0);
+  const fixed = b3T + a.cloud + a.cash - a.converts - a.bridge - a.otherHold - a.ga*a.gaMult;
+  const navCap = (b1T + b2T + fixed);
+  const navCL  = (clT + b2T + fixed);
+  return {b1,cl,b1T,clT,devMargin,pvF,b2rows,b2T,b3rows,b3T,fixed,
+          navCap, navCL, psCap:navCap/a.shares, psCL:navCL/a.shares};
+}
+function clTotalAtSpread(a,s){ return S.b1.reduce((t,r)=>t+calcCLRow(r,a,s).eq,0); }
+function b1TotalAtCap(a,c){ return S.b1.reduce((t,r)=>t+calcB1Row(r,a,c).eq,0); }
+
+/* ---------------- render ---------------- */
+const $=id=>document.getElementById(id);
+function td(html,cls){return `<td${cls?` class="${cls}"`:""}>${html}</td>`;}
+
+function buildStaticTables(){
+  const statusOpt = v=>['op','uc','pre'].map(s=>`<option value="${s}"${s===v?" selected":""}>${{op:"Operating",uc:"Under constr.",pre:"Pre-constr."}[s]}</option>`).join("");
+  const clsOpt = v=>['CW','IG'].map(s=>`<option value="${s}"${s===v?" selected":""}>${s}</option>`).join("");
+  $("tblB1").innerHTML =
+    `<tr><th>Campus / building</th><th>Tenant</th><th>Status</th><th>MW</th><th>Base rev</th><th>NOI</th><th>Cap</th><th>GAV</th><th>% compl</th><th>Rem capex</th><th>Debt</th><th>Proj cash</th><th>MAM pref</th><th>NCI %</th><th>Net equity</th></tr>` +
+    S.b1.map((r,i)=>`<tr>
+      ${td(r.name,"name")}
+      ${td(`<input type="text" data-b1="${i}" data-f="tenant" value="${r.tenant}" style="width:120px;text-align:left">`)}
+      ${td(`<select data-b1="${i}" data-f="status">${statusOpt(r.status)}</select>`)}
+      ${td(`<input type="number" step="10" data-b1="${i}" data-f="mw" value="${r.mw}" class="w60">`)}
+      ${td(`<input type="number" step="25" data-b1="${i}" data-f="rev" value="${r.rev}">`)}
+      ${td("","calc")+td("","calc")+td("","calc")}
+      ${td(`<input type="number" step="5" data-b1="${i}" data-f="pct" value="${r.pct}" class="w60">`)}
+      ${td("","calc")}
+      ${td(`<input type="number" step="10" data-b1="${i}" data-f="debt" value="${r.debt}" class="key">`)}
+      ${td(`<input type="number" step="10" data-b1="${i}" data-f="pcash" value="${r.pcash}" class="key">`)}
+      ${td(`<input type="number" step="10" data-b1="${i}" data-f="pref" value="${r.pref}" class="key">`)}
+      ${td(`<input type="number" step="5" data-b1="${i}" data-f="nci" value="${r.nci}" class="w60">`)}
+      ${td("","calc")}
+    </tr>`).join("") +
+    `<tr class="total"><td>TOTAL</td><td></td><td></td><td id="b1mw"></td><td id="b1rev"></td><td id="b1noi"></td><td></td><td id="b1gav"></td><td></td><td id="b1rem"></td><td id="b1debt"></td><td id="b1pcash"></td><td id="b1pref"></td><td></td><td id="b1eq"></td></tr>`;
+
+  $("tblCL").innerHTML =
+    `<tr><th>Campus / building</th><th>Class</th><th>Yrs to RFS</th><th>Disc rate</th><th>Annuity</th><th>PV lease NOI</th><th>PV terminal</th><th>GAV (CL)</th><th>Net equity</th></tr>` +
+    S.b1.map((r,i)=>`<tr>
+      ${td(r.name,"name")}
+      ${td(`<select data-b1="${i}" data-f="cls">${clsOpt(r.cls)}</select>`)}
+      ${td(`<input type="number" step="0.25" data-b1="${i}" data-f="yrs" value="${r.yrs}" class="w60">`)}
+      ${td("","calc")+td("","calc")+td("","calc")+td("","calc")+td("","calc")+td("","calc")}
+    </tr>`).join("") +
+    `<tr class="total"><td>TOTAL — credit-linked</td><td></td><td></td><td></td><td></td><td id="clpv"></td><td id="cltv"></td><td id="clgav"></td><td id="cleq"></td></tr>`;
+
+  $("tblB2").innerHTML =
+    `<tr><th>Site / expansion</th><th>MW</th><th>Prob %</th><th>Risked $/MW</th><th>Value</th></tr>` +
+    S.b2.map((r,i)=>`<tr>${td(r.name,"name")}
+      ${td(`<input type="number" step="50" data-b2="${i}" data-f="mw" value="${r.mw}" class="w80 key">`)}
+      ${td(`<input type="number" step="5" data-b2="${i}" data-f="p" value="${r.p}" class="w60 key">`)}
+      ${td("","calc")+td("","calc")}</tr>`).join("") +
+    `<tr class="total"><td>TOTAL</td><td id="b2mw"></td><td></td><td></td><td id="b2val"></td></tr>`;
+
+  $("tblB3").innerHTML =
+    `<tr><th>Pipeline tranche</th><th>MW</th><th>$M/MW</th><th>Prob %</th><th>Value</th></tr>` +
+    S.b3.map((r,i)=>`<tr>${td(r.name,"name")}
+      ${td(`<input type="number" step="100" data-b3="${i}" data-f="mw" value="${r.mw}" class="w80 key">`)}
+      ${td(r.ov!==undefined?`<input type="number" step="0.05" data-b3="${i}" data-f="ov" value="${r.ov}" class="w60">`:`<span class="link" data-b3ov="${i}"></span>`)}
+      ${td(r.p!==undefined?`<input type="number" step="5" data-b3="${i}" data-f="p" value="${r.p}" class="w60">`:`<span class="link" data-b3p="${i}"></span>`)}
+      ${td("","calc")}</tr>`).join("") +
+    `<tr class="total"><td>TOTAL</td><td id="b3mw"></td><td></td><td></td><td id="b3val"></td></tr>`;
+
+  document.querySelectorAll("#assumptions input").forEach(inp=>{ inp.value = S[inp.dataset.k]; });
+}
+
+function render(){
+  const a=S, T=totals(a);
+  /* bucket 1 rows */
+  const rowsB1=$("tblB1").rows;
+  T.b1.forEach((x,i)=>{
+    const c=rowsB1[i+1].cells;
+    c[5].textContent=f$(x.noi); c[6].textContent=(100*x.rate).toFixed(2)+"%"; c[7].textContent=f$(x.gav);
+    c[9].textContent=f$(x.rem); c[14].textContent=f$(x.eq); c[14].style.fontWeight="600";
+  });
+  $("b1mw").textContent=S.b1.reduce((s,r)=>s+ +r.mw,0).toLocaleString();
+  $("b1rev").textContent=f$(S.b1.reduce((s,r)=>s+ +r.rev,0));
+  $("b1noi").textContent=f$(T.b1.reduce((s,x)=>s+x.noi,0));
+  $("b1gav").textContent=f$(T.b1.reduce((s,x)=>s+x.gav,0));
+  $("b1rem").textContent=f$(T.b1.reduce((s,x)=>s+x.rem,0));
+  $("b1debt").textContent=f$(S.b1.reduce((s,r)=>s+ +r.debt,0));
+  $("b1pcash").textContent=f$(S.b1.reduce((s,r)=>s+ +r.pcash,0));
+  $("b1pref").textContent=f$(S.b1.reduce((s,r)=>s+ +r.pref,0));
+  $("b1eq").textContent=f$(T.b1T);
+
+  /* credit-linked rows */
+  const rowsCL=$("tblCL").rows;
+  T.cl.forEach((x,i)=>{
+    const c=rowsCL[i+1].cells;
+    c[3].textContent=fpc(x.rate); c[4].textContent=fx(x.ann);
+    c[5].textContent=f$(x.pvNoi); c[6].textContent=f$(x.pvTV);
+    c[7].textContent=f$(x.gav); c[8].textContent=f$(x.eq); c[8].style.fontWeight="600";
+  });
+  $("clpv").textContent=f$(T.cl.reduce((s,x)=>s+x.pvNoi,0));
+  $("cltv").textContent=f$(T.cl.reduce((s,x)=>s+x.pvTV,0));
+  $("clgav").textContent=f$(T.cl.reduce((s,x)=>s+x.gav,0));
+  $("cleq").textContent=f$(T.clT);
+
+  /* bucket 2 & 3 */
+  const rowsB2=$("tblB2").rows;
+  T.b2rows.forEach((x,i)=>{ rowsB2[i+1].cells[3].textContent=f1(x.vmw); rowsB2[i+1].cells[4].textContent=f$(x.val); });
+  $("b2mw").textContent=T.b2rows.reduce((s,x)=>s+ +x.mw,0).toLocaleString();
+  $("b2val").textContent=f$(T.b2T);
+  $("b2helper").textContent=`Dev margin $${T.devMargin.toFixed(1)}M/MW unrisked (GAV $${((a.rentNew*a.margin/100)/(a.capB2/100)).toFixed(1)}M − capex $${a.capexMW.toFixed(1)}M) × probability × PV factor ${T.pvF.toFixed(2)}.`;
+  const rowsB3=$("tblB3").rows;
+  T.b3rows.forEach((x,i)=>{
+    const c=rowsB3[i+1].cells;
+    const ovSpan=c[2].querySelector("span"), pSpan=c[3].querySelector("span");
+    if(ovSpan) ovSpan.textContent=x.ovU.toFixed(2);
+    if(pSpan) pSpan.textContent=x.pU+"%";
+    c[4].textContent=f$(x.val);
+  });
+  $("b3mw").textContent=T.b3rows.reduce((s,x)=>s+ +x.mw,0).toLocaleString();
+  $("b3val").textContent=f$(T.b3T);
+
+  /* NAV bridge */
+  const items=[["Bucket 1 — contracted (cap-rate | credit-linked)", `${f$(T.b1T)} | ${f$(T.clT)}`],
+    ["Bucket 2 — visible capacity (risked)", f$(T.b2T)],
+    ["Bucket 3 — pipeline option value", f$(T.b3T)],
+    ["Cloud / other segments", f$(a.cloud)],
+    ["Corporate cash", f$(a.cash)],
+    ["Less: converts", f$(-a.converts)],
+    ["Less: bridge", f$(-a.bridge)],
+    ["Less: other holdco", f$(-a.otherHold)],
+    ["Less: capitalized G&A", f$(-a.ga*a.gaMult)]];
+  $("bridgeBox").innerHTML = items.map(x=>`<div class="brow"><span class="l">${x[0]}</span><span>${x[1]}</span></div>`).join("")
+    + `<div class="brow total"><span class="l">Equity NAV (cap-rate | credit-linked)</span><span>${f$(T.navCap)} | ${f$(T.navCL)}</span></div>`
+    + `<div class="brow total"><span class="l">Per share</span><span>${fps(T.psCap)} | ${fps(T.psCL)}</span></div>`;
+
+  /* chips */
+  const tev = a.price*a.shares + a.converts+a.bridge+a.otherHold
+            + S.b1.reduce((s,r)=>s+r.debt-r.pcash,0) + S.b1.reduce((s,r)=>s+ +r.pref,0)
+            + (T.b1.reduce((s,x)=>s+x.eqPre,0)-T.b1T) - a.cash;
+  const mwC=S.b1.reduce((s,r)=>s+ +r.mw,0);
+  const noiC=T.b1.reduce((s,x)=>s+x.noi,0);
+  const remC=T.b1.reduce((s,x)=>s+x.rem,0);
+  $("chips").innerHTML=[
+    ["TEV", f$(tev)],
+    ["TEV / contracted MW", f1(tev/mwC)+"M"],
+    ["Implied stab. cap rate", fpc(noiC/tev)],
+    ["Capex-adj. cap rate", fpc(noiC/(tev+remC))],
+    ["TEV / backlog", (tev/S.b1.reduce((s,r)=>s+ +r.rev,0)).toFixed(2)+"x"]
+  ].map(x=>`<div class="chip"><div class="l">${x[0]}</div><div class="v">${x[1]}</div></div>`).join("");
+
+  /* catalyst */
+  const bldg3=S.b1[1];
+  const cur=calcCLRow(bldg3,a,a.sCW);
+  const ig=calcCLRow({...bldg3,cls:"IG"},a,a.sCW);
+  const upl=(ig.gav-cur.gav)*(1-bldg3.nci/100);
+  $("catBox").textContent=`${f$(upl)}M · ${fps(upl/a.shares)} per share`;
+
+  /* sensitivities */
+  const caps=[6.0,6.5,7.0,7.5,8.0,8.5], scal=[0.5,0.75,1.0,1.25,1.5];
+  $("tblSensCap").innerHTML =
+    `<tr><th>Cap ↓ / B2 →</th>${scal.map(s=>`<th>${(100*s)}%</th>`).join("")}</tr>` +
+    caps.map(c=>`<tr><td>${c.toFixed(1)}%</td>${scal.map(s=>{
+      const v=(b1TotalAtCap(a,c)+T.b2T*s+T.fixed)/a.shares;
+      const base=(Math.abs(c-a.capBase)<.01&&s===1.0);
+      return td(fps(v),base?"base":"");
+    }).join("")}</tr>`).join("");
+
+  const sprs=[-200,-100,0,100,200,300].map(d=>a.sCW+d).filter(s=>s>0);
+  $("tblSensSpr").innerHTML =
+    `<tr><th>CRWV spread</th><th>NAV/share</th><th>vs base</th></tr>` +
+    sprs.map(s=>{
+      const v=(clTotalAtSpread(a,s)+T.b2T+T.fixed)/a.shares;
+      return `<tr><td>${s} bps</td>${td(fps(v),s===a.sCW?"base":"")}${td(s===a.sCW?"—":fps(v-T.psCL))}</tr>`;
+    }).join("");
+  const hedge=((clTotalAtSpread(a,a.sCW-100)-clTotalAtSpread(a,a.sCW+100))/2)/a.shares;
+
+  /* ribbon */
+  $("rPrice").textContent=fps(a.price);
+  $("rNavCap").textContent=fps(T.psCap);
+  $("rNavCL").textContent=fps(T.psCL);
+  const up=(v)=>{const u=v/a.price-1;return `<span class="${u>=0?"up":"down"}">${u>=0?"+":""}${(100*u).toFixed(0)}%</span>`;};
+  $("rUpCap").innerHTML=up(T.psCap); $("rUpCL").innerHTML=up(T.psCL);
+  $("rHedge").textContent=fps(hedge);
+  $("rCat").textContent=fps(upl/a.shares)+"/sh";
+  document.querySelectorAll(".tick").forEach(el=>{el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),350);});
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.k!==undefined){ S[t.dataset.k]=parseFloat(t.value)||0; render(); return; }
+  const f=t.dataset.f;
+  if(t.dataset.b1!==undefined){
+    const r=S.b1[+t.dataset.b1];
+    r[f]=(f==="tenant"||f==="status"||f==="cls")?t.value:(parseFloat(t.value)||0);
+    render(); return;
+  }
+  if(t.dataset.b2!==undefined){ S.b2[+t.dataset.b2][f]=parseFloat(t.value)||0; render(); return; }
+  if(t.dataset.b3!==undefined){ S.b3[+t.dataset.b3][f]=parseFloat(t.value)||0; render(); return; }
+});
+
+$("btnExport").onclick=()=>{
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const aEl=document.createElement("a");
+  aEl.href=URL.createObjectURL(blob); aEl.download="apld-model-settings.json"; aEl.click();
+  URL.revokeObjectURL(aEl.href);
+};
+$("btnImport").onclick=()=>$("fileImport").click();
+$("fileImport").onchange=e=>{
+  const file=e.target.files[0]; if(!file)return;
+  const rd=new FileReader();
+  rd.onload=()=>{ try{ S=JSON.parse(rd.result); buildStaticTables(); render(); }catch(err){ alert("Could not read that file — export a fresh settings file and edit that."); } };
+  rd.readAsText(file); e.target.value="";
+};
+$("btnReset").onclick=()=>{ S=JSON.parse(JSON.stringify(DEF)); buildStaticTables(); render(); };
+
+buildStaticTables();
+render();
+</script>
+</body>
+</html>
