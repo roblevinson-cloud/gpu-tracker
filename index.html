@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,7 +148,13 @@
       <figure class="chart"><img id="img-providers" alt="Token volume by provider"></figure>
       <figure class="chart"><img id="img-pricing" alt="Token-weighted average pricing"></figure>
     </div>
+    <figure class="chart"><img id="img-price-history" alt="Per-model output price history"></figure>
     <div class="grid2" id="drilldowns"></div>
+  </section>
+
+  <section>
+    <h2>Inference performance &mdash; OpenRouter</h2>
+    <div class="grid2" id="perf-charts"></div>
   </section>
 
   <section id="per-gpu">
@@ -267,6 +274,19 @@ async function init() {
   const pr = document.getElementById("img-pricing");
   pr.src = "data/pricing_chart.png" + bust;
   pr.onerror = () => pr.closest(".chart").classList.add("missing");
+  const ph = document.getElementById("img-price-history");
+  ph.src = "data/price_history_chart.png" + bust;
+  ph.onerror = () => ph.closest(".chart").classList.add("missing");
+  try {
+    const pm = await fetch("data/perf_manifest.json" + bust, { cache: "no-store" });
+    if (pm.ok) {
+      const entries = await pm.json();
+      const pc = document.getElementById("perf-charts");
+      for (const e of entries) {
+        addImg(pc, e.file, `${e.model} provider performance`);
+      }
+    }
+  } catch (err) { /* no perf data yet */ }
   const dd = document.getElementById("drilldowns");
   for (const prov of ["anthropic", "openai", "google", "deepseek", "moonshotai", "moonshot"]) {
     addImg(dd, `data/provider_${prov}_models_chart.png`, `${prov} model breakdown`);
