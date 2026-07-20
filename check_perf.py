@@ -50,20 +50,51 @@ def pick_models():
     return ranked
 
 
-def _find_metric(d, needle):
-    """Search a dict (one level of nesting) for a numeric value whose key
-    contains `needle`. Defensive against schema differences."""
-    flat = dict(d)
-    for v in list(d.values()):
-        if isinstance(v, dict):
-            flat.update(v)
-    for k, v in flat.items():
-        if needle in k.lower() and isinstance(v, (int, float)):
-            return float(v)
-    return None
+def _flatten(d, prefix="", depth=0, out=None):
+    """Flatten nested dicts/lists (3 levels) to dotted-path -> numeric value."""
+    if out is None:
+        out = {}
+    if depth > 3:
+        return out
+    if isinstance(d, dict):
+        items = d.items()
+    elif isinstance(d, list):
+        items = enumerate(d)
+    else:
+        return out
+    for k, v in items:
+        path = f"{prefix}.{k}" if prefix else str(k)
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            out[path.lower()] = float(v)
+        elif isinstance(v, str):
+            try:
+                out[path.lower()] = float(v)
+            except ValueError:
+                pass
+        elif isinstance(v, (dict, list)):
+            _flatten(v, path, depth + 1, out)
+    return out
 
 
-def fetch_endpoints(model):
+THROUGHPUT_NEEDLES = ["throughput", "tokens_per_second", "tokens_per_sec",
+                      "tok_per_sec", "tps"]
+LATENCY_NEEDLES = ["ttft", "time_to_first", "latency"]
+
+
+def _pick(flat, needles):
+    """Prefer p50/median variants, then any match."""
+    candidates = [(k, v) for k, v in flat.items()
+                  if any(n in k for n in needles)]
+    if not candidates:
+        return None
+    for pref in ("p50", "median"):
+        for k, v in candidates:
+            if pref in k:
+                return v
+    return candidates[0][1]
+
+
+def fetch_endpoints(model, debug=False):
     url = f"https://openrouter.ai/api/v1/models/{model}/endpoints"
     headers = {"Authorization": f"Bearer {API_KEY}"} if API_KEY else {}
     r = requests.get(url, headers=headers, timeout=TIMEOUT)
@@ -73,12 +104,24 @@ def fetch_endpoints(model):
     out = []
     for ep in endpoints:
         provider = (ep.get("provider_name") or ep.get("name") or "unknown")
-        tps = _find_metric(ep, "throughput")
-        lat = _find_metric(ep, "latency")
+        flat = _flatten(ep)
+        tps = _pick(flat, THROUGHPUT_NEEDLES)
+        lat = _pick(flat, LATENCY_NEEDLES)
         if lat is not None and lat > 100:   # ms → seconds
             lat = lat / 1000.0
         if tps is not None or lat is not None:
             out.append((provider, tps, lat))
+    if debug and endpoints and not out:
+        # No metrics matched: print the field names we actually received
+        sample = _flatten(endpoints[0])
+        keys = sorted(sample.keys())
+        print(f"[perf][debug] {model}: no metric fields matched. "
+              f"Numeric fields present on first endpoint:")
+        for k in keys[:60]:
+            print(f"[perf][debug]   {k}")
+        if not keys:
+            print("[perf][debug]   (no numeric fields at all — stats may "
+                  "not be exposed on this endpoint)")
     return out
 
 
@@ -90,9 +133,9 @@ def main():
 
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     rows = []
-    for m in models:
+    for i, m in enumerate(models):
         try:
-            for provider, tps, lat in fetch_endpoints(m):
+            for provider, tps, lat in fetch_endpoints(m, debug=(i == 0)):
                 rows.append({
                     "timestamp_utc": timestamp,
                     "model": m,
