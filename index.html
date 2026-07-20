@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GPU Availability Tracker</title>
-<a href="apld-valuation.html">APLD NAV model</a>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -143,6 +141,9 @@
       <span class="toggle" role="group" aria-label="Chart style">
         <button id="btn-lines" class="on" onclick="setStyle('lines')">Lines</button><button id="btn-stacked" onclick="setStyle('stacked')">Stacked</button>
       </span>
+      <span class="toggle" role="group" aria-label="Scale" style="margin-right:10px">
+        <button id="btn-linear" class="on" onclick="setScale('linear')">Linear</button><button id="btn-log" onclick="setScale('log')">Log</button>
+      </span>
     </h2>
     <figure class="chart"><img id="img-tokens" alt="OpenRouter token volume and growth chart"></figure>
     <div class="grid2">
@@ -265,7 +266,10 @@ async function init() {
   cp.src = "data/price_chart_combined.png" + bust;
   cp.onerror = () => cp.closest(".chart").classList.add("missing");
   const tk = document.getElementById("img-tokens");
-  tk.src = "data/tokens_chart.png" + bust;
+  tk.dataset.base = "data/tokens_chart";
+  tk.dataset.scaleOnly = "1";
+  tk.classList.add("toggleable");
+  tk.src = tk.dataset.base + ".png" + bust;
   tk.onerror = () => tk.closest(".chart").classList.add("missing");
   const pv = document.getElementById("img-providers");
   pv.dataset.base = "data/providers_chart";
@@ -324,16 +328,40 @@ async function init() {
 }
 init();
 
-function setStyle(style) {
-  document.getElementById("btn-lines").classList.toggle("on", style === "lines");
-  document.getElementById("btn-stacked").classList.toggle("on", style === "stacked");
-  const suffix = style === "stacked" ? "_stacked.png" : ".png";
+let chartStyle = "lines";
+let chartScale = "linear";
+
+function refreshCharts() {
+  document.getElementById("btn-lines").classList.toggle("on", chartStyle === "lines");
+  document.getElementById("btn-stacked").classList.toggle("on", chartStyle === "stacked");
+  document.getElementById("btn-linear").classList.toggle("on", chartScale === "linear");
+  document.getElementById("btn-log").classList.toggle("on", chartScale === "log");
   document.querySelectorAll("img.toggleable").forEach(img => {
     const fig = img.closest(".chart");
     fig.classList.remove("missing");
     img.onerror = () => fig.classList.add("missing");
+    let suffix;
+    if (img.dataset.scaleOnly) {
+      suffix = chartScale === "log" ? "_log.png" : ".png";
+    } else if (chartScale === "log") {
+      suffix = "_log.png";                    // log implies lines
+    } else {
+      suffix = chartStyle === "stacked" ? "_stacked.png" : ".png";
+    }
     img.src = img.dataset.base + suffix + bust;
   });
+}
+
+function setStyle(style) {
+  chartStyle = style;
+  if (style === "stacked") chartScale = "linear";  // stacked areas need linear
+  refreshCharts();
+}
+
+function setScale(scale) {
+  chartScale = scale;
+  if (scale === "log") chartStyle = "lines";       // log view uses lines
+  refreshCharts();
 }
 </script>
 </body>
