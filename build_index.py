@@ -367,6 +367,29 @@ def build_tokens():
     fig.savefig("data/tokens_chart.png", dpi=150)
     plt.close(fig)
 
+    # Log-scale variant: exponential growth reads as a straight line
+    fig, (ax1, ax2) = plt.subplots(
+        2, 1, figsize=(10.5, 9), sharex=True, constrained_layout=True,
+        gridspec_kw={"height_ratios": [2.2, 1]})
+    pos = t[t > 0]
+    ax1.plot(pos.index, pos, color=GRID, lw=1.4)
+    map_ = ma[ma > 0]
+    ax1.plot(map_.index, map_, color=PALETTE[4], lw=3, solid_capstyle="round")
+    ax1.set_yscale("log")
+    style_axis(ax1, "Tokens per day (trillions, log scale)")
+    ax1.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
+    if len(map_):
+        direct_labels(ax1, [(f"{map_.iloc[-1]:.2f}T/day", map_.index[-1],
+                             float(map_.iloc[-1]), PALETTE[4])], room=0.12)
+    title_block(ax1, "OpenRouter platform token volume",
+                "Log scale — constant growth rate appears as a straight line")
+    ax2.axhline(0, color=FAINT, lw=1)
+    ax2.plot(g.index, g, color=INK, lw=2)
+    style_axis(ax2, "30-day growth", pct=True)
+    source_note(fig)
+    fig.savefig("data/tokens_chart_log.png", dpi=150)
+    plt.close(fig)
+
     latest = ma7.dropna()
     g = growth30.dropna()
     print(f"[tokens] OK — {len(df)} days; latest 7d avg "
@@ -417,6 +440,20 @@ def build_providers():
     fig.savefig("data/providers_chart.png", dpi=150)
     plt.close(fig)
 
+    # log-scale line variant
+    fig, ax = plt.subplots(figsize=(10.5, 6.4), constrained_layout=True)
+    logframe = smoothed[list(top)].where(smoothed[list(top)] > 0)
+    ends = multiline(ax, logframe)
+    ax.set_yscale("log")
+    style_axis(ax, "Tokens per day (trillions, log scale)")
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
+    direct_labels(ax, ends, room=0.18)
+    title_block(ax, "Token volume by provider",
+                "Log scale — parallel lines mean equal growth rates")
+    source_note(fig)
+    fig.savefig("data/providers_chart_log.png", dpi=150)
+    plt.close(fig)
+
     # --- stacked version (top 8 + everything else, so height = total) ---
     rest = smoothed.drop(columns=top).sum(axis=1)
     stack_df = smoothed[list(top)].copy()
@@ -461,6 +498,19 @@ def build_providers():
                     "7-day average, top models by recent volume")
         source_note(fig)
         fig.savefig(f"data/provider_{pname}_models_chart.png", dpi=150)
+        plt.close(fig)
+
+        # log-scale line variant
+        fig, ax = plt.subplots(figsize=(10.5, 6.4), constrained_layout=True)
+        ends = multiline(ax, named.where(named > 0))
+        ax.set_yscale("log")
+        style_axis(ax, "Tokens per day (trillions, log scale)")
+        ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
+        direct_labels(ax, ends, room=0.30)
+        title_block(ax, f"{pname.capitalize()} — token volume by model",
+                    "Log scale — parallel lines mean equal growth rates")
+        source_note(fig)
+        fig.savefig(f"data/provider_{pname}_models_chart_log.png", dpi=150)
         plt.close(fig)
 
         # stacked version (top models + rest, height = provider total)
