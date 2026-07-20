@@ -49,6 +49,8 @@
   }
   @media (max-width: 820px) { .board { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 460px) { .board { grid-template-columns: 1fr; } }
+  .board3 { grid-template-columns: repeat(3, 1fr); margin-top: 0; }
+  @media (max-width: 820px) { .board3 { grid-template-columns: 1fr; } }
   .card {
     background: var(--panel);
     border: 1px solid var(--hairline);
@@ -103,6 +105,16 @@
   }
   footer a { color: inherit; }
   a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .jump {
+    display: flex; flex-wrap: wrap; gap: 4px 14px;
+    padding: 10px 0 0;
+    font-family: "IBM Plex Mono", monospace; font-size: 0.72rem;
+  }
+  .jump a {
+    color: var(--muted); text-decoration: none;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .jump a:hover { color: var(--ink); text-decoration: underline; }
   .toggle { float: right; }
   .toggle button {
     font-family: "IBM Plex Mono", monospace; font-size: 0.7rem;
@@ -123,11 +135,24 @@
     <div class="stamp">data through <b id="last-date">—</b></div>
   </header>
 
+  <nav class="jump" aria-label="Sections">
+    <a href="#all-vintages">Vintages</a>
+    <a href="#gpu-h100">H100</a>
+    <a href="#gpu-h200">H200</a>
+    <a href="#gpu-b200">B200</a>
+    <a href="#gpu-b300">B300</a>
+    <a href="#tokens">Tokens</a>
+    <a href="#perf">Performance</a>
+  </nav>
+
   <div class="board" id="board">
     <!-- cards injected by script -->
   </div>
+  <div class="board board3" id="token-board">
+    <!-- token summary cards injected by script -->
+  </div>
 
-  <section>
+  <section id="all-vintages">
     <h2>All vintages</h2>
     <div class="grid2">
       <figure class="chart"><img id="img-combined-avail" alt="Combined availability index chart"></figure>
@@ -136,7 +161,11 @@
     <figure class="chart"><img id="img-combined-price" alt="Combined lowest offer price chart"></figure>
   </section>
 
-  <section>
+  <section id="per-gpu">
+    <!-- per-GPU chart pairs injected by script -->
+  </section>
+
+  <section id="tokens">
     <h2>Token demand &mdash; OpenRouter
       <span class="toggle" role="group" aria-label="Chart style">
         <button id="btn-lines" class="on" onclick="setStyle('lines')">Lines</button><button id="btn-stacked" onclick="setStyle('stacked')">Stacked</button>
@@ -154,21 +183,18 @@
     <div class="grid2" id="drilldowns"></div>
   </section>
 
-  <section>
+  <section id="perf">
     <h2>Inference performance &mdash; OpenRouter</h2>
     <div class="grid2" id="perf-charts"></div>
   </section>
 
-  <section id="per-gpu">
-    <!-- per-GPU chart pairs injected by script -->
-  </section>
-
   <footer>
-    Availability = share of checks where a GPU was rentable under the price cap
-    (H100 &lt;$4/hr &middot; H200 &lt;$5.50 &middot; B200 &lt;$8 &middot; B300 &lt;$12) across
-    Vast.ai, Lambda, and RunPod. Supply = deduped GPUs visible on Vast.ai at any price.
-    Polled every 10 minutes &middot; charts rebuilt daily &middot;
-    token data: Source: OpenRouter (openrouter.ai/rankings) &middot;
+    <b>GPU:</b> availability = share of checks with a GPU rentable under the cap
+    (H100 &lt;$4 &middot; H200 &lt;$5.50 &middot; B200 &lt;$5.75 &middot; B300 &lt;$12 per hr)
+    across Vast.ai, Lambda, RunPod &middot; supply = deduped GPUs listed on Vast.ai at any price
+    &middot; polled every 10 min.<br>
+    <b>Tokens:</b> volume, prices, and inference stats &mdash;
+    Source: OpenRouter (openrouter.ai/rankings) &middot; charts rebuilt daily &middot;
     <a href="data/">raw data</a>
   </footer>
 
@@ -311,6 +337,7 @@ async function init() {
     if (date && (!latestDate || date > latestDate)) latestDate = date;
 
     const sec = document.createElement("div");
+    sec.id = "gpu-" + gpu.id;
     const h = document.createElement("h2");
     h.textContent = gpu.id.toUpperCase();
     sec.appendChild(h);
@@ -325,6 +352,34 @@ async function init() {
 
   document.getElementById("last-date").textContent =
     latestDate ? latestDate.slice(0, 10) : "no data yet";
+
+  // Token market summary cards
+  const [ti, pi] = await Promise.all([
+    fetchLast("data/tokens_index.csv"),
+    fetchLast("data/pricing_index.csv"),
+  ]);
+  const tb = document.getElementById("token-board");
+  const mk = (color, name, big, small, rows) => {
+    const c = document.createElement("div");
+    c.className = "card";
+    c.style.setProperty("--gpu", color);
+    c.innerHTML = `<div class="gpu-name">${name}</div>
+      <div class="big">${big}<small>${small}</small></div>
+      <dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`;
+    tb.appendChild(c);
+  };
+  if (ti) {
+    mk("#C9962E", "token volume", fmt(ti.tokens_T_7d, 2), "T/day",
+       [["daily raw", fmt(ti.tokens_T, 2, "T")]]);
+    const g = parseFloat(ti.growth_30d_pct);
+    mk("#1C2B29", "token growth",
+       isFinite(g) ? (g >= 0 ? "+" : "") + g.toFixed(1) : "—", "% /30d",
+       [["source", "OpenRouter"]]);
+  }
+  if (pi) {
+    mk("#C75D9C", "weighted price", fmt(pi.avg_completion_usd_per_m, 2), " $/M out",
+       [["input $/M", fmt(pi.avg_prompt_usd_per_m, 2)]]);
+  }
 }
 init();
 
