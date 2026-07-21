@@ -36,6 +36,4 @@ jobs:
           git config user.name "token-price-bot"
           git config user.email "actions@github.com"
           git add data/token_prices.csv charts/ TOKEN_PRICE_SUMMARY.md
-          git commit -m "token prices $(date -u +'%Y-%m-%d %H:%M')" || echo "nothing to commit"
-          git pull --rebase origin main || true
-          git push
+          git commit -m "token prices $(date -u +'%Y-
