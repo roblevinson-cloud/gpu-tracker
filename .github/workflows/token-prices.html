@@ -1,0 +1,41 @@
+name: Track token prices
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # every 6 hours
+  workflow_dispatch: {}       # manual "Run workflow" button
+
+permissions:
+  contents: write
+
+concurrency:
+  group: token-prices
+  cancel-in-progress: false
+
+jobs:
+  poll-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml pandas matplotlib
+
+      - name: Fetch prices from OpenRouter
+        run: python fetch_token_prices.py
+
+      - name: Rebuild charts and summary
+        run: python build_token_index.py
+
+      - name: Commit results
+        run: |
+          git config user.name "token-price-bot"
+          git config user.email "actions@github.com"
+          git add data/token_prices.csv charts/ TOKEN_PRICE_SUMMARY.md
+          git commit -m "token prices $(date -u +'%Y-%m-%d %H:%M')" || echo "nothing to commit"
+          git pull --rebase origin main || true
+          git push
