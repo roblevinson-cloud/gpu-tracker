@@ -1,1 +1,46 @@
+# Provider -> region mapping (case-insensitive substring match). Edit freely.
+# Regions: US, EU, CN, ASIA, DECENTRALIZED, UNKNOWN
+
+US:
+  - deepinfra
+  - together
+  - fireworks
+  - parasail
+  - hyperbolic
+  - baseten
+  - groq
+  - cerebras
+  - lambda
+  - crusoe
+  - featherless
+  - inference.net
+  - azure
+  - amazon
+  - bedrock
+  - google
+  - vertex
+  - sambanova
+  - friendli
+
+EU:
+  - nebius
+  - ovh
+  - scaleway
+  - ionos
+
+CN:
+  - siliconflow
+  - moonshot
+  - deepseek
+  - alibaba
+  - novita
+  - zhipu
+  - z.ai
+
+ASIA:
+  - gmicloud
+
+DECENTRALIZED:
+  - chutes
+  - targon
 
