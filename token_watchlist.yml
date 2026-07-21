@@ -1,1 +1,25 @@
+# Models to track on OpenRouter.
+# Slug = the openrouter.ai/models page URL (author/model-name).
+# Slugs that don't exist yet are skipped safely — fine to list future models.
+
+open_models:
+  - moonshotai/kimi-k3          # weights due July 27 — populates once hosts serve it
+  - moonshotai/kimi-k2.6
+  - moonshotai/kimi-k2.5
+  - deepseek/deepseek-v4-pro
+  - deepseek/deepseek-v4-flash
+  - z-ai/glm-5.2
+  - zai/glm-5.2                 # slug variant fallback; 404s skipped silently
+  - nvidia/nemotron-3-ultra
+  - minimax/minimax-m3
+
+closed_benchmarks:
+  - anthropic/claude-fable-5
+  - anthropic/claude-opus-4.8
+  - anthropic/claude-sonnet-4.6
+  - openai/gpt-5.5
+  - openai/gpt-5.6-sol          # slug guess; skipped if not found
+
+# Blend ratio for "blended $/M tokens" (typical agent/chat workload)
+input_output_ratio: [3, 1]
 
