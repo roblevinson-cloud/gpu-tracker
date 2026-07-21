@@ -2,8 +2,8 @@ name: Track token prices
 
 on:
   schedule:
-    - cron: "17 */6 * * *"   # every 6 hours
-  workflow_dispatch: {}       # manual "Run workflow" button
+    - cron: "17 */6 * * *"
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -33,7 +33,12 @@ jobs:
 
       - name: Commit results
         run: |
-          git config user.name "token-price-bot"
-          git config user.email "actions@github.com"
+          git config user.name token-price-bot
+          git config user.email actions@github.com
           git add data/token_prices.csv charts/ TOKEN_PRICE_SUMMARY.md
-          git commit -m "token prices $(date -u +'%Y-
+          git commit -m token-price-update || echo skip
+          for i in 1 2 3 4 5; do
+            git pull --rebase && git push && break
+            echo retrying
+            sleep 10
+          done
