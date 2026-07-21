@@ -132,7 +132,8 @@
 
   <header>
     <h1>GPU Availability Tracker <span>/ on-demand market monitor</span></h1>
-    <div class="stamp">data through <b id="last-date">—</b></div>
+    <div class="stamp">data through <b id="last-date">—</b>
+      &nbsp;&middot;&nbsp; <a href="apld-valuation.html" style="color:var(--ink)">APLD NAV model &rarr;</a></div>
   </header>
 
   <nav class="jump" aria-label="Sections">
@@ -142,7 +143,9 @@
     <a href="#gpu-b200">B200</a>
     <a href="#gpu-b300">B300</a>
     <a href="#tokens">Tokens</a>
+    <a href="#token-prices">Token Prices</a>
     <a href="#perf">Performance</a>
+    <a href="apld-valuation.html">APLD &#8599;</a>
   </nav>
 
   <div class="board" id="board">
@@ -181,6 +184,19 @@
     </div>
     <figure class="chart"><img id="img-price-history" alt="Per-model output price history"></figure>
     <div class="grid2" id="drilldowns"></div>
+  </section>
+
+  <section id="token-prices">
+    <h2>Token prices &mdash; watchlist</h2>
+    <figure class="chart"><img id="img-tp-history" alt="Watchlist per-model price history"></figure>
+    <div class="grid2">
+      <figure class="chart"><img id="img-tp-openclosed" alt="Open vs closed model price convergence"></figure>
+      <figure class="chart"><img id="img-tp-region" alt="Regional price comparison"></figure>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
+      Curated watchlist &middot; per-host prices polled every 6h &middot;
+      <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/TOKEN_PRICE_SUMMARY.md" style="color:inherit">latest summary</a>
+    </p>
   </section>
 
   <section id="perf">
@@ -318,6 +334,13 @@ async function init() {
       }
     }
   } catch (err) { /* no perf data yet */ }
+  for (const [id, file] of [["img-tp-history", "charts/price_history.png"],
+                             ["img-tp-openclosed", "charts/open_vs_closed.png"],
+                             ["img-tp-region", "charts/region_comparison.png"]]) {
+    const el = document.getElementById(id);
+    el.src = file + bust;
+    el.onerror = () => el.closest(".chart").classList.add("missing");
+  }
   const dd = document.getElementById("drilldowns");
   for (const prov of ["anthropic", "openai", "google", "deepseek", "moonshotai", "moonshot"]) {
     addImg(dd, `data/provider_${prov}_models_chart.png`, `${prov} model breakdown`);
