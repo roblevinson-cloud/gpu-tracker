@@ -1,0 +1,68 @@
+# ============================================================
+# ASSUMPTIONS DRIVING THE PROVIDER ECONOMICS MODULE
+# Edit any value, commit, then run Build Index Chart to recompute.
+# Each entry: what it is, my current best guess, and why.
+# ============================================================
+
+# ---- Layer 1: Revenue ----
+
+# Workload mix of input (prompt) vs output (completion) tokens.
+# OpenRouter volumes are total tokens; prices are split. We blend.
+# Guess 3:1 — chat/agent workloads are input-heavy; typical published
+# traffic mixes run 3-5:1 input:output. Agentic coding runs higher.
+input_output_ratio: [3, 1]
+
+# Models priced at/below this ($ per M blended) count as free/subsidized.
+# Their tokens are in "total" but excluded from "paid" revenue.
+# Guess 0.01 — catches $0 free tiers without excluding cheap real models.
+free_price_threshold_usd_per_m: 0.01
+
+# ---- Layer 2: Serving cost & margin ----
+
+# GPU vintage whose rental price proxies serving cost.
+# "h100" is the most liquid merchant benchmark; frontier-scale open
+# models increasingly need h200/b200 — switch this to stress-test.
+cost_gpu_vintage: h100
+
+# Fallback $/GPU-hour if your tracker has no price data for that vintage.
+# Guess 2.50 — near your tracker's observed H100 low offers.
+fallback_gpu_usd_per_hr: 2.50
+
+# GPUs per serving node. 8x is the standard inference node (HGX/DGX).
+node_gpus: 8
+
+# Concurrent request streams per node under batched serving.
+# The single most sensitive assumption -> we output a BAND, not a point.
+# Guess 50-150: vLLM/TensorRT-LLM production configs typically run
+# 32-256 concurrent sequences; big MoE models sit lower, small dense
+# models higher. Mid = 100.
+concurrency_low: 50
+concurrency_high: 150
+
+# ---- Layer 3: Energy ----
+
+# Per-GPU board power draw, watts. H100 SXM TDP = 700W (Nvidia spec).
+# B200 ~1000W, B300 ~1400W - change with cost_gpu_vintage if you switch.
+gpu_tdp_watts: 700
+
+# Node overhead multiplier: CPUs, NICs, fans, storage on top of GPUs.
+# Guess 1.5 - an 8x700W node draws ~8-9kW wall power in practice.
+node_overhead_factor: 1.5
+
+# Datacenter PUE (facility power / IT power).
+# Guess 1.3 - modern AI DCs report 1.1-1.4; industry average is higher.
+pue: 1.3
+
+# Industrial electricity price, $/kWh.
+# Guess 0.08 - US industrial average ~$0.07-0.09 (EIA); hyperscaler
+# PPAs often lower, retail colo higher.
+electricity_usd_per_kwh: 0.08
+
+# ---- Layer 4: Growth decomposition ----
+
+# Assumed growth rate of deployed inference compute, % per year.
+# Token growth ABOVE this is attributed to efficiency + utilization.
+# Guess 200 (= 3x/yr) - direction from Nvidia DC shipment growth and
+# hyperscaler capex; genuinely uncertain, so move it and watch the
+# residual shift. This is the roughest layer.
+fleet_growth_pct_per_year: 200
