@@ -1,17 +1,13 @@
 """
-OpenRouter Token Usage Collector
---------------------------------
-Pulls platform-wide daily token totals from OpenRouter's official
-datasets API (the data behind openrouter.ai/rankings) and stores:
-
-  data/tokens_by_model.csv : one row per (date, model) — full fidelity
-  data/tokens_daily.csv    : one row per date — platform totals
-
-First run backfills from 2025-01-01. Later runs only fetch recent days.
-Requires OPENROUTER_API_KEY (free key from openrouter.ai).
-
-Attribution requirement: when republishing, cite
-"Source: OpenRouter (openrouter.ai/rankings)".
+OpenRouter Token Usage + Price Collector
+----------------------------------------
+1) Pulls platform-wide daily token totals (backfills from 2025-01-01
+   on first run) into:
+     data/tokens_by_model.csv  and  data/tokens_daily.csv
+2) Snapshots every model's list price daily into:
+     data/model_prices.csv
+Requires OPENROUTER_API_KEY.
+Attribution: Source: OpenRouter (openrouter.ai/rankings).
 """
 
 import csv
@@ -22,17 +18,18 @@ from datetime import date, datetime, timedelta
 import requests
 
 API_URL = "https://openrouter.ai/api/v1/datasets/rankings-daily"
+MODELS_URL = "https://openrouter.ai/api/v1/models"
 API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 DATASET_START = date(2025, 1, 1)
-CHUNK_DAYS = 30          # request window size
-REQUEST_PAUSE = 2.5      # seconds between requests (limit: 30/min)
+CHUNK_DAYS = 30
+REQUEST_PAUSE = 2.5
 
 BY_MODEL_FILE = os.path.join("data", "tokens_by_model.csv")
 DAILY_FILE = os.path.join("data", "tokens_daily.csv")
+PRICES_FILE = os.path.join("data", "model_prices.csv")
 
 
 def extract_tokens(row):
-    """Token count field, defensively: prefer explicit total, else sum parts."""
     for key in ("total_tokens", "tokens", "token_count", "count"):
         if row.get(key) is not None:
             try:
@@ -49,7 +46,6 @@ def extract_tokens(row):
 
 
 def fetch_window(start, end):
-    """Fetch one date window; returns list of (date, model, tokens)."""
     r = requests.get(
         API_URL,
         headers={"Authorization": f"Bearer {API_KEY}"},
@@ -79,27 +75,65 @@ def load_existing():
     return existing
 
 
+def snapshot_prices():
+    """Append today's per-model pricing ($/million tokens). One per day."""
+    today = date.today().isoformat()
+    existing_dates = set()
+    if os.path.exists(PRICES_FILE):
+        with open(PRICES_FILE, newline="") as f:
+            existing_dates = {row["date"] for row in csv.DictReader(f)}
+    if today in existing_dates:
+        print("[prices] today already snapshotted")
+        return
+    try:
+        headers = {"Authorization": f"Bearer {API_KEY}"} if API_KEY else {}
+        r = requests.get(MODELS_URL, headers=headers, timeout=60)
+        r.raise_for_status()
+        models = r.json().get("data", [])
+    except Exception as e:
+        print(f"[prices] fetch failed: {e}")
+        return
+    rows = []
+    for m in models:
+        mid = m.get("id") or ""
+        pricing = m.get("pricing") or {}
+        try:
+            prompt = float(pricing.get("prompt") or 0) * 1e6
+            completion = float(pricing.get("completion") or 0) * 1e6
+        except (TypeError, ValueError):
+            continue
+        if mid:
+            rows.append([today, mid, round(prompt, 4), round(completion, 4)])
+    file_exists = os.path.exists(PRICES_FILE)
+    with open(PRICES_FILE, "a", newline="") as f:
+        w = csv.writer(f)
+        if not file_exists:
+            w.writerow(["date", "model", "prompt_usd_per_m",
+                        "completion_usd_per_m"])
+        w.writerows(rows)
+    print(f"[prices] snapshotted {len(rows)} models for {today}")
+
+
 def main():
     if not API_KEY:
-        print("OPENROUTER_API_KEY not set — skipping token collection.")
+        print("OPENROUTER_API_KEY not set - skipping token collection.")
         return
-
     os.makedirs("data", exist_ok=True)
     existing = load_existing()
 
-    # Figure out where to start: 2 days before the last stored date, to
-    # pick up any late revisions, or the dataset floor on first run.
     if existing:
         last = max(d for d, _ in existing.keys())
         start = max(DATASET_START,
-                    datetime.strptime(last, "%Y-%m-%d").date() - timedelta(days=2))
+                    datetime.strptime(last, "%Y-%m-%d").date()
+                    - timedelta(days=2))
     else:
         start = DATASET_START
-        print(f"First run: backfilling from {DATASET_START} (may take a few minutes)")
+        print(f"First run: backfilling from {DATASET_START}")
 
-    end_goal = date.today() - timedelta(days=1)  # last complete UTC day
+    end_goal = date.today() - timedelta(days=1)
     if start > end_goal:
-        print("Already up to date.")
+        print("Token data already up to date.")
+        snapshot_prices()
         return
 
     cursor = start
@@ -111,20 +145,18 @@ def main():
             for d, model, tokens in rows:
                 existing[(d, model)] = tokens
             fetched += len(rows)
-            print(f"  {cursor} → {window_end}: {len(rows)} rows")
+            print(f"  {cursor} -> {window_end}: {len(rows)} rows")
         except Exception as e:
-            print(f"  {cursor} → {window_end}: FAILED ({e}) — continuing")
+            print(f"  {cursor} -> {window_end}: FAILED ({e}) - continuing")
         cursor = window_end + timedelta(days=1)
         time.sleep(REQUEST_PAUSE)
 
-    # Write full per-model file, sorted
     with open(BY_MODEL_FILE, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["date", "model", "tokens"])
         for (d, model), tokens in sorted(existing.items()):
             w.writerow([d, model, tokens])
 
-    # Aggregate to daily platform totals
     daily = {}
     for (d, model), tokens in existing.items():
         rec = daily.setdefault(d, {"total": 0, "top50": 0, "other": 0})
@@ -133,16 +165,14 @@ def main():
             rec["other"] += tokens
         else:
             rec["top50"] += tokens
-
     with open(DAILY_FILE, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["date", "total_tokens", "top50_tokens", "other_tokens"])
         for d in sorted(daily):
             rec = daily[d]
             w.writerow([d, rec["total"], rec["top50"], rec["other"]])
-
-    print(f"Done. {fetched} rows fetched this run; "
-          f"{len(daily)} days stored ({min(daily)} → {max(daily)}).")
+    print(f"Done. {fetched} rows fetched; {len(daily)} days stored.")
+    snapshot_prices()
 
 
 if __name__ == "__main__":
