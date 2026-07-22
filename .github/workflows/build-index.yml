@@ -16,12 +16,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pandas matplotlib requests
+      - run: pip install pandas matplotlib requests pyyaml
       - name: Collect OpenRouter token data
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: python check_tokens.py
       - run: python build_index.py
+      - run: python build_growth_table.py
+      - run: python build_economics.py
       - run: |
           git config user.name "gpu-tracker-bot"
           git config user.email "actions@github.com"
