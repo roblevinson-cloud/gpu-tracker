@@ -199,4 +199,48 @@ def build():
         # ---------- Layer 3: energy efficiency ----------
         node_kw = (A["node_gpus"] * A["gpu_tdp_watts"] / 1000
                    * A["node_overhead_factor"] * A["pue"])
-        conc_mid = (A
+        conc_mid = (A["concurrency_low"] + A["concurrency_high"]) / 2
+        tokens_per_kwh = (tps * conc_mid * 3600 / node_kw).dropna()
+        energy_cost_m = (node_kw * A["electricity_usd_per_kwh"] * 1e6 /
+                         (tps * conc_mid * 3600))
+        fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+        ax.plot(tokens_per_kwh.index, tokens_per_kwh / 1000,
+                color=TEAL, lw=3)
+        ax.set_ylim(bottom=0)
+        style(ax, "Thousand tokens per kWh")
+        ax.set_title("Energy efficiency of serving", loc="left")
+        sub(ax, f"Node draw {node_kw:.1f} kW incl overhead+PUE - energy "
+                f"~${energy_cost_m.dropna().iloc[-1]:.2f}/M tokens at "
+                f"${A['electricity_usd_per_kwh']}/kWh")
+        save(fig, "data/econ_efficiency_chart.png")
+        print(f"[econ] efficiency OK - "
+              f"{tokens_per_kwh.iloc[-1] / 1000:.0f}K tokens/kWh")
+    else:
+        print("[econ] no perf_log yet - skipping margin & efficiency")
+
+    # ---------- Layer 4: growth decomposition ----------
+    td = pd.read_csv("data/tokens_daily.csv", parse_dates=["date"])
+    td["total_tokens"] = pd.to_numeric(td["total_tokens"], errors="coerce")
+    s = td.dropna().set_index("date")["total_tokens"].sort_index()
+    ma7 = s.rolling(7, min_periods=3).mean()
+    chg90 = ma7.pct_change(90).dropna()
+    if len(chg90):
+        ann = (1 + chg90) ** (365 / 90) - 1
+        fleet = A["fleet_growth_pct_per_year"] / 100
+        residual = ((1 + ann) / (1 + fleet) - 1) * 100
+        fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+        ax.axhline(0, color="#9AA6A1", lw=1)
+        ax.plot(residual.index, residual, color=GOLD, lw=3)
+        style(ax, "Implied efficiency growth (% per year)")
+        ax.set_title("Token growth beyond assumed compute growth",
+                     loc="left")
+        sub(ax, f"Annualized 90d token growth minus "
+                f"{A['fleet_growth_pct_per_year']}%/yr assumed fleet "
+                "growth - includes OpenRouter share gains (roughest layer)")
+        save(fig, "data/econ_growth_chart.png")
+        print(f"[econ] decomposition OK - residual "
+              f"{residual.iloc[-1]:+.0f}%/yr")
+
+
+if __name__ == "__main__":
+    build()
