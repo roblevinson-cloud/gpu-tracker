@@ -199,6 +199,27 @@
     </p>
   </section>
 
+  <section id="economics">
+    <h2>Provider economics &mdash; implied</h2>
+    <div class="grid2">
+      <figure class="chart"><img id="img-econ-rev" alt="Implied token revenue"></figure>
+      <figure class="chart"><img id="img-econ-revper" alt="Revenue per million tokens"></figure>
+    </div>
+    <div class="grid2">
+      <figure class="chart"><img id="img-econ-margin" alt="Serving cost vs market price"></figure>
+      <figure class="chart"><img id="img-econ-eff" alt="Energy efficiency and growth decomposition"></figure>
+    </div>
+    <figure class="chart"><img id="img-econ-growth" alt="Token growth decomposition"></figure>
+    <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
+      Estimates, not measurements &middot; driven by
+      <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/economics_assumptions.yml" style="color:inherit">economics_assumptions.yml</a>
+      &middot; observable merchant token market only
+    </p>
+  </section>
+
+
+  
+  
   <section id="perf">
     <h2>Inference performance &mdash; OpenRouter</h2>
     <div class="grid2" id="perf-charts"></div>
@@ -441,6 +462,20 @@ function setScale(scale) {
   if (scale === "log") chartStyle = "lines";       // log view uses lines
   refreshCharts();
 }
+  for (const [id, file] of [
+  ["img-econ-rev", "data/econ_revenue_chart.png"],
+  ["img-econ-revper", "data/econ_revper_chart.png"],
+  ["img-econ-margin", "data/econ_margin_chart.png"],
+  ["img-econ-eff", "data/econ_efficiency_chart.png"],
+  ["img-econ-growth", "data/econ_growth_chart.png"],
+]) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.src = file + bust;
+    el.onerror = () => el.closest(".chart").classList.add("missing");
+  }
+}
+
 </script>
 </body>
 </html>
