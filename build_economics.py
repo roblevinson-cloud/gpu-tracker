@@ -218,25 +218,29 @@ def build():
     else:
         print("[econ] no perf_log yet - skipping margin & efficiency")
 
-    # ---------- Layer 4: growth decomposition ----------
+# ---------- Layer 4: growth decomposition ----------
+    import numpy as np
     td = pd.read_csv("data/tokens_daily.csv", parse_dates=["date"])
     td["total_tokens"] = pd.to_numeric(td["total_tokens"], errors="coerce")
     s = td.dropna().set_index("date")["total_tokens"].sort_index()
     ma7 = s.rolling(7, min_periods=3).mean()
-    chg90 = ma7.pct_change(90).dropna()
-    if len(chg90):
-        ann = (1 + chg90) ** (365 / 90) - 1
-        fleet = A["fleet_growth_pct_per_year"] / 100
-        residual = ((1 + ann) / (1 + fleet) - 1) * 100
+    ratio = ma7 / ma7.shift(90)
+    ann_log = np.log(ratio) * (365 / 90) * 100     # continuous %/yr
+    fleet_log = np.log(1 + A["fleet_growth_pct_per_year"] / 100) * 100
+    residual = (ann_log - fleet_log).dropna()
+    if len(residual) > 30:
+        residual = residual.iloc[30:]              # drop dataset-birth base effects
+    residual = residual.rolling(14, min_periods=5).mean().dropna()
+    if len(residual):
         fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
         ax.axhline(0, color="#9AA6A1", lw=1)
         ax.plot(residual.index, residual, color=GOLD, lw=3)
-        style(ax, "Implied efficiency growth (% per year)")
+        style(ax, "Implied efficiency growth (%/yr, continuous)")
         ax.set_title("Token growth beyond assumed compute growth",
                      loc="left")
-        sub(ax, f"Annualized 90d token growth minus "
-                f"{A['fleet_growth_pct_per_year']}%/yr assumed fleet "
-                "growth - includes OpenRouter share gains (roughest layer)")
+        sub(ax, f"Log growth rates, 14d smoothed - minus "
+                f"{A['fleet_growth_pct_per_year']}%/yr assumed fleet growth "
+                "- includes OpenRouter share gains (roughest layer)")
         save(fig, "data/econ_growth_chart.png")
         print(f"[econ] decomposition OK - residual "
               f"{residual.iloc[-1]:+.0f}%/yr")
