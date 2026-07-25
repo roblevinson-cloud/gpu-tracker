@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-07-25 07:36 UTC · latest snapshot: 2026-07-25 07:36:13 · 14 snapshots since 2026-07-21_
+_Last updated: 2026-07-25 15:51 UTC · latest snapshot: 2026-07-25 15:51:37 · 15 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -12,11 +12,11 @@ _Last updated: 2026-07-25 07:36 UTC · latest snapshot: 2026-07-25 07:36:13 · 1
 | deepseek/deepseek-v4-pro | open | $0.72 | DeepSeek ($0.54) | 18 |
 | minimax/minimax-m3 | open | $0.49 | GMICloud ($0.42) | 9 |
 | moonshotai/kimi-k2.5 | open | $0.84 | DigitalOcean ($0.79) | 10 |
-| moonshotai/kimi-k2.6 | open | $1.28 | Baidu ($1.16) | 21 |
+| moonshotai/kimi-k2.6 | open | $1.27 | Baidu ($1.16) | 21 |
 | moonshotai/kimi-k3 | open | $6.00 | Moonshot AI ($6.00) | 1 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 5 |
 | openai/gpt-5.6-sol | closed | $9.38 | OpenAI ($5.62) | 5 |
-| z-ai/glm-5.2 | open | $1.16 | Novita ($1.16) | 33 |
+| z-ai/glm-5.2 | open | $1.10 | StreamLake ($1.09) | 33 |
 
 **Closed/open price multiple right now: 7.9x** (closed median $11.00 vs open $1.39)
 
@@ -27,7 +27,7 @@ _Last updated: 2026-07-25 07:36 UTC · latest snapshot: 2026-07-25 07:36:13 · 1
 | ASIA | 4 | 0.73 | $0.63 |
 | DECENTRALIZED | 3 | 0.94 | $1.37 |
 | CN | 20 | 1.00 | $1.23 |
-| UNKNOWN | 57 | 1.00 | $1.35 |
+| UNKNOWN | 57 | 1.00 | $1.34 |
 | US | 24 | 1.03 | $1.87 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
