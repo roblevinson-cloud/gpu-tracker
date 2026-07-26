@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-07-25 21:12 UTC · latest snapshot: 2026-07-25 21:12:37 · 16 snapshots since 2026-07-21_
+_Last updated: 2026-07-26 09:02 UTC · latest snapshot: 2026-07-26 09:02:28 · 17 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -16,18 +16,18 @@ _Last updated: 2026-07-25 21:12 UTC · latest snapshot: 2026-07-25 21:12:37 · 1
 | moonshotai/kimi-k3 | open | $6.00 | Moonshot AI ($6.00) | 1 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 5 |
 | openai/gpt-5.6-sol | closed | $9.38 | OpenAI ($5.62) | 5 |
-| z-ai/glm-5.2 | open | $1.09 | StreamLake ($1.07) | 33 |
+| z-ai/glm-5.2 | open | $1.05 | Novita ($1.05) | 33 |
 
-**Closed/open price multiple right now: 7.9x** (closed median $11.00 vs open $1.39)
+**Closed/open price multiple right now: 8.0x** (closed median $11.00 vs open $1.37)
 
 ## Regional comparison (open models, same model+quant only)
 
 | Region | Offers | Rel. price (1.0=parity) | Median $/M |
 |---|---|---|---|
-| ASIA | 4 | 0.73 | $0.63 |
+| ASIA | 4 | 0.75 | $0.63 |
 | DECENTRALIZED | 3 | 0.94 | $1.37 |
 | CN | 20 | 1.00 | $1.23 |
-| UNKNOWN | 57 | 1.00 | $1.34 |
+| UNKNOWN | 57 | 1.00 | $1.30 |
 | US | 24 | 1.03 | $1.87 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
