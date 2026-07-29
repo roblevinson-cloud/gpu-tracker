@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-07-28 21:50 UTC · latest snapshot: 2026-07-28 21:50:28 · 24 snapshots since 2026-07-21_
+_Last updated: 2026-07-29 10:16 UTC · latest snapshot: 2026-07-29 10:16:35 · 25 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -9,14 +9,14 @@ _Last updated: 2026-07-28 21:50 UTC · latest snapshot: 2026-07-28 21:50:28 · 2
 | anthropic/claude-opus-4.8 | closed | $10.00 | Amazon Bedrock ($10.00) | 7 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Anthropic ($6.00) | 8 |
 | deepseek/deepseek-v4-flash | open | $0.11 | DeepInfra ($0.11) | 21 |
-| deepseek/deepseek-v4-pro | open | $0.72 | DeepSeek ($0.54) | 17 |
+| deepseek/deepseek-v4-pro | open | $0.72 | DeepSeek ($0.54) | 18 |
 | minimax/minimax-m3 | open | $0.49 | GMICloud ($0.42) | 9 |
 | moonshotai/kimi-k2.5 | open | $0.84 | DigitalOcean ($0.79) | 10 |
 | moonshotai/kimi-k2.6 | open | $1.27 | Baidu ($1.16) | 22 |
-| moonshotai/kimi-k3 | open | $6.00 | Modal ($6.00) | 9 |
+| moonshotai/kimi-k3 | open | $6.00 | DigitalOcean ($6.00) | 8 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 5 |
 | openai/gpt-5.6-sol | closed | $9.38 | OpenAI ($5.62) | 5 |
-| z-ai/glm-5.2 | open | $1.18 | CoreWeave ($1.18) | 34 |
+| z-ai/glm-5.2 | open | $1.15 | Novita ($1.14) | 33 |
 
 **Closed/open price multiple right now: 7.7x** (closed median $11.00 vs open $1.43)
 
@@ -24,12 +24,11 @@ _Last updated: 2026-07-28 21:50 UTC · latest snapshot: 2026-07-28 21:50:28 · 2
 
 | Region | Offers | Rel. price (1.0=parity) | Median $/M |
 |---|---|---|---|
-| ASIA | 4 | 0.70 | $0.63 |
+| ASIA | 4 | 0.73 | $0.63 |
 | DECENTRALIZED | 3 | 0.95 | $1.37 |
-| CN | 20 | 1.00 | $1.22 |
-| EU | 1 | 1.00 | $6.00 |
-| UNKNOWN | 61 | 1.00 | $1.34 |
-| US | 28 | 1.02 | $2.15 |
+| CN | 21 | 1.00 | $1.27 |
+| UNKNOWN | 62 | 1.00 | $1.36 |
+| US | 27 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
 
