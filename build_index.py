@@ -96,7 +96,7 @@ def source_note(fig, text="Source: OpenRouter (openrouter.ai/rankings)"):
     fig.text(0.006, 0.006, text, ha="left", fontsize=9.5, color=FAINT)
 
 
-def direct_labels(ax, entries, room=0.22):
+def direct_labels(ax, entries, room=0.22, fontsize=13, ms=6):
     """Label lines at their right endpoints instead of using a legend.
     entries: list of (label, x_end, y_end, color). Nudges overlaps apart."""
     entries = [e for e in entries if e[1] is not None and e[2] is not None]
@@ -115,8 +115,8 @@ def direct_labels(ax, entries, room=0.22):
         placed.append(yy)
         ax.annotate("  " + label, xy=(mdates.date2num(x), y),
                     xytext=(mdates.date2num(x), yy),
-                    fontsize=13, fontweight=600, color=color, va="center")
-        ax.plot([x], [y], "o", ms=6, color=color, zorder=5)
+                    fontsize=fontsize, fontweight=600, color=color, va="center")
+        ax.plot([x], [y], "o", ms=ms, color=color, zorder=5)
 
 
 def _load_yaml(path):
@@ -898,10 +898,11 @@ def build_hardware_value(avail_results):
             price = daily["lowest_price"]
         if price is None:
             continue
-        s = (price / pflops).dropna()
+        s = price.dropna()
         if s.empty:
             continue
-        series[gpu] = {"usd_per_pflop": s, "launch": launch}
+        series[gpu] = {"price": s, "usd_per_pflop": s / pflops,
+                       "launch": launch, "sp": sp}
     if not series:
         print("[hardware] no priced vintages — skipping")
         return
@@ -975,9 +976,72 @@ def build_hardware_value(avail_results):
     fig.savefig("data/depreciation_chart.png", dpi=150)
     plt.close(fig)
 
+    # --- Chart 3: value lenses — which resource is the market pricing? ---
+    # Same rental prices normalized three ways. The lens with the
+    # flattest lines (smallest spread) is what buyers actually pay for.
+    lenses = [
+        ("PER UNIT OF COMPUTE",
+         "$ / PFLOP-hr, best precision",
+         lambda sp: (float(sp["fp4_dense_tflops"]) / 1000.0
+                     if sp.get("fp4_dense_tflops")
+                     else float(sp["fp8_dense_tflops"]) / 1000.0),
+         FuncFormatter(lambda v, _: f"${v:.2f}")),
+        ("PER GB OF HBM",
+         "cents / GB-hr",
+         lambda sp: float(sp["hbm_gb"]),
+         FuncFormatter(lambda v, _: f"{v * 100:.1f}¢")),
+        ("PER TB/S BANDWIDTH",
+         "$ / (TB/s)-hr",
+         lambda sp: float(sp["bandwidth_tbps"]),
+         FuncFormatter(lambda v, _: f"${v:.2f}")),
+    ]
+    fig, axes = plt.subplots(1, 3, figsize=(10.5, 5.6))
+    fig.subplots_adjust(top=0.76, bottom=0.15, left=0.075, right=0.985,
+                        wspace=0.42)
+    spreads = []
+    for ax, (name, unit, denom_fn, yfmt) in zip(axes, lenses):
+        latest = {}
+        ends = []
+        for gpu, d in series.items():
+            try:
+                denom = denom_fn(d["sp"])
+            except (KeyError, TypeError, ValueError):
+                continue        # spec missing this field — skip the line
+            if not denom:
+                continue
+            s = d["price"] / denom
+            c = GPU_COLORS.get(gpu, INK)
+            ax.plot(s.index, s, color=c, lw=2.4, solid_capstyle="round")
+            latest[gpu] = float(s.iloc[-1])
+            ends.append((gpu.upper(), s.index[-1], float(s.iloc[-1]), c))
+        ax.set_ylim(bottom=0)
+        style_axis(ax, unit, yfmt=yfmt)
+        direct_labels(ax, ends, room=0.42, fontsize=10, ms=4)
+        ax.set_title(name, loc="left", fontsize=11, fontweight=600,
+                     color=MUTED, pad=8)
+        if len(latest) >= 2:
+            mx, mn = max(latest.values()), min(latest.values())
+            if mn > 0:
+                spread = mx / mn
+                spreads.append(f"{name.split()[-1].lower()} {spread:.2f}x")
+                ax.annotate(f"spread {spread:.2f}×",
+                            xy=(0.05, 0.04), xycoords="axes fraction",
+                            ha="left", va="bottom", fontsize=11,
+                            fontweight=600, color=INK)
+    fig.text(0.0075, 0.965, "Value lenses — what is the market pricing?",
+             fontsize=21, fontweight="bold", color=INK, va="top", ha="left")
+    fig.text(0.0075, 0.875, "Same rentals, three normalizations · "
+             "the flattest panel (smallest spread) = the resource buyers actually pay for",
+             fontsize=12.5, color=MUTED, va="top", ha="left")
+    source_note(fig, "specs: gpu_specs.yml · data: Vast.ai order book")
+    fig.savefig("data/value_lenses_chart.png", dpi=150)
+    plt.close(fig)
+
     msg = f"[hardware] OK — {len(series)} vintages"
     if fitted:
         msg += f" · {fitted}"
+    if spreads:
+        msg += " · lens spreads: " + ", ".join(spreads)
     print(msg)
 
 

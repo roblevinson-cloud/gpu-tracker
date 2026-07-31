@@ -79,6 +79,12 @@ race on pushes.
   vintage exponential fit -> %/yr + half-life). Uses median Vast
   price, falls back to lowest offer. hardware_value.csv exported.
   Caveat printed on chart: FP8 metric doesn't credit B300's FP4/mem.
+  Also value_lenses_chart.png (added later 2026-07-31): same rentals
+  normalized per best-precision FLOP (FP4 where supported), per GB
+  HBM, per TB/s bandwidth — with a max/min spread stat per panel.
+  Flattest lens = what the market prices (HBM, at first fit: 1.25x
+  vs compute 3.62x). Needs fp4_dense_tflops/hbm_gb/bandwidth_tbps
+  in gpu_specs.yml; lines skip silently if fields absent.
 - **Bugfix 2026-07-31**: per-GPU availability charts' right-axis
   price lines were invisible since launch (ax2.set_ylim called
   before plotting froze autoscale at 0-1). Now set after plotting.

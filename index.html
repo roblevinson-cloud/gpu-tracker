@@ -190,10 +190,12 @@
       <figure class="chart"><img id="img-pflop" alt="Price per dense-FP8 PFLOP-hour across vintages"></figure>
       <figure class="chart"><img id="img-depr" alt="Rental value vs hardware age with fitted depreciation curve"></figure>
     </div>
+    <figure class="chart"><img id="img-lenses" alt="Value lenses: rental price per unit of compute, per GB of HBM, and per TB/s of bandwidth"></figure>
     <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
       Median Vast.ai $/GPU-hr normalized by dense-FP8 compute &middot; specs &amp; launch dates editable in
       <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/gpu_specs.yml" style="color:inherit">gpu_specs.yml</a>
-      &middot; B300 caveat: FP8 metric doesn't credit its FP4/memory gains
+      &middot; B300 caveat: FP8 metric doesn't credit its FP4/memory gains &middot;
+      value lenses: same rentals per best-precision FLOP / per GB HBM / per TB/s &mdash; the flattest lens is what the market prices
     </p>
   </section>
 
@@ -586,6 +588,7 @@ function setScale(scale) {
   ["img-econ-growth", "data/econ_growth_chart.png"],
   ["img-pflop", "data/pflop_price_chart.png"],
   ["img-depr", "data/depreciation_chart.png"],
+  ["img-lenses", "data/value_lenses_chart.png"],
 ]) {
   const el = document.getElementById(id);
   if (el) {

@@ -14,20 +14,39 @@
 #   Used as age zero for the depreciation curve.
 #   H100 Oct 2022 (shipments started), H200 Apr 2024,
 #   B200 Feb 2025 (HGX systems), B300 Oct 2025 (2H'25 ramp).
+#
+# fp4_dense_tflops: dense NVFP4 TFLOPS. Blackwell only - Hopper has
+#   no FP4 tensor hardware, so omit it there (the "best precision"
+#   lens falls back to FP8). B200 HGX ~9 PF dense; B300 ~15 PF dense.
+#
+# hbm_gb / bandwidth_tbps: memory capacity and bandwidth per Nvidia
+#   datasheets (SXM/HGX configs, which is what Vast hosts run).
+#   Used by the value-lenses chart: whichever lens shows the FLATTEST
+#   prices across vintages is the resource the market is pricing.
 # ============================================================
 
 h100:
   fp8_dense_tflops: 1979
   launch: 2022-10-01
+  hbm_gb: 80
+  bandwidth_tbps: 3.35
 
 h200:
   fp8_dense_tflops: 1979   # same Hopper compute die as H100
   launch: 2024-04-01
+  hbm_gb: 141
+  bandwidth_tbps: 4.8
 
 b200:
   fp8_dense_tflops: 4500
+  fp4_dense_tflops: 9000
   launch: 2025-02-01
+  hbm_gb: 192
+  bandwidth_tbps: 8.0
 
 b300:
   fp8_dense_tflops: 4500   # FP8 ~= B200; Ultra's gain is FP4 + memory
+  fp4_dense_tflops: 15000
   launch: 2025-10-01
+  hbm_gb: 288
+  bandwidth_tbps: 8.0
