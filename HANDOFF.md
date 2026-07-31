@@ -1,7 +1,7 @@
 # GPU Tracker — System Handoff
 
 One-page state of the system. Update when architecture changes.
-Last updated: 2026-07-22.
+Last updated: 2026-07-31.
 
 ## What this is
 Self-updating compute-market monitor. Tracks GPU rental availability/
@@ -69,14 +69,31 @@ race on pushes.
   gracefully if inputs missing.
 - **build_growth_table.py** — OPTIONAL; only if file exists (writes
   growth_table.json for the dashboard table). May not be installed.
+- **Chart annotations** — events.yml (repo root): dated markers drawn
+  as dashed vlines on chart families via show_on tags (gpu/h100/…/
+  tokens/prices/all). $ in labels auto-escaped for mathtext.
+- **Hardware value module** (in build_index.py, added 2026-07-31) —
+  driven by gpu_specs.yml (dense-FP8 TFLOPS + volume-launch dates):
+  pflop_price_chart.png ($/PFLOP-hr by vintage) and
+  depreciation_chart.png ($/PFLOP-hr vs hardware age with cross-
+  vintage exponential fit -> %/yr + half-life). Uses median Vast
+  price, falls back to lowest offer. hardware_value.csv exported.
+  Caveat printed on chart: FP8 metric doesn't credit B300's FP4/mem.
+- **Bugfix 2026-07-31**: per-GPU availability charts' right-axis
+  price lines were invisible since launch (ax2.set_ylim called
+  before plotting froze autoscale at 0-1). Now set after plotting.
 
 ## Dashboard (index.html)
 Single page, self-contained. Cards (GPU + token summary), jump nav,
-sections: All vintages -> per-GPU -> Token demand (Lines/Stacked +
-Linear/Log toggles; log forces lines) -> Token prices watchlist ->
-Provider economics -> Inference performance. Charts are pre-rendered
-PNGs with cache-busting; missing images auto-hide. APLD link in
-header + nav.
+sections: All vintages -> per-GPU -> Hardware value -> Token demand
+(Lines/Stacked + Linear/Log toggles; log forces lines) -> Token
+prices watchlist -> Provider economics -> Inference performance.
+Charts are pre-rendered PNGs with cache-busting; missing images
+auto-hide. APLD link in header + nav.
+Added 2026-07-31: 7-day delta chips on GPU + token cards (▲/▼ vs the
+row ≥7 days back in the daily CSVs; price deltas neutral-colored),
+and a data-freshness badge in the header (latest data/ commit time
+via the public GitHub API; green ≤45m, amber ≤3h, red beyond).
 
 ## Secrets (repo Settings -> Actions)
 LAMBDA_API_KEY, RUNPOD_API_KEY (read-only), OPENROUTER_API_KEY.

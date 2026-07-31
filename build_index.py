@@ -14,10 +14,16 @@ Combined:
 import glob
 import os
 
+import numpy as np
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+try:
+    import yaml
+except ImportError:      # annotations/specs simply skip if pyyaml missing
+    yaml = None
 
 
 # ============================ DESIGN SYSTEM ============================
@@ -113,6 +119,59 @@ def direct_labels(ax, entries, room=0.22):
         ax.plot([x], [y], "o", ms=6, color=color, zorder=5)
 
 
+def _load_yaml(path):
+    if yaml is None or not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        print(f"[yaml] could not parse {path}: {e}")
+        return None
+
+
+def load_events():
+    """events.yml -> [(timestamp, label, {tags})]. Empty list if absent."""
+    raw = _load_yaml("events.yml") or []
+    events = []
+    for ev in raw:
+        try:
+            d = pd.to_datetime(str(ev.get("date")))
+            label = str(ev.get("label", "")).strip()
+            tags = {str(t).lower() for t in (ev.get("show_on") or ["all"])}
+            events.append((d, label, tags))
+        except Exception as e:
+            print(f"[events] skipping bad entry {ev}: {e}")
+    return events
+
+
+EVENTS = load_events()
+
+
+def draw_events(ax, *tags):
+    """Dashed vertical markers from events.yml on charts whose family
+    matches the event's show_on list ('all' matches everything)."""
+    if not EVENTS:
+        return
+    want = {t.lower() for t in tags} | {"all"}
+    x0, x1 = ax.get_xlim()
+    y0, y1 = ax.get_ylim()
+    for d, label, evtags in EVENTS:
+        if not (evtags & want):
+            continue
+        x = mdates.date2num(d)
+        if not (x0 <= x <= x1):
+            continue
+        ax.axvline(d, color=FAINT, lw=1.2, linestyle=(0, (2, 3)), zorder=1)
+        if label:
+            # escape $ so matplotlib doesn't treat it as mathtext
+            ax.annotate(label.replace("$", r"\$"), xy=(x, y1), xycoords="data",
+                        xytext=(4, -4), textcoords="offset points",
+                        rotation=90, va="top", ha="left",
+                        fontsize=9.5, color=MUTED, zorder=1,
+                        annotation_clip=True)
+
+
 def multiline(ax, frame_or_series, colors=None, lw=2.8):
     """Plot columns of a DataFrame with house palette and direct labels."""
     cols = list(frame_or_series.columns)
@@ -197,7 +256,6 @@ def build_availability(log_path):
     ends = [("availability", sm.index[-1], float(sm.iloc[-1]), color)] if len(sm) else []
 
     ax2 = ax.twinx()
-    ax2.set_ylim(bottom=0)
     if daily["lowest_price"].notna().any():
         lp = daily["lowest_price"].dropna()
         ax2.plot(lp.index, lp, color=INK, lw=2)
@@ -206,6 +264,7 @@ def build_availability(log_path):
         mp = daily["median_price"].dropna()
         ax2.plot(mp.index, mp, color=FAINT, lw=2, linestyle=(0, (4, 3)))
         ends.append((f"median ${mp.iloc[-1]:.2f}", mp.index[-1], float(mp.iloc[-1]), FAINT))
+    ax2.set_ylim(bottom=0)   # after plotting, so autoscale still works
     for side in ("top", "left", "bottom"):
         ax2.spines[side].set_visible(False)
     ax2.spines["right"].set_visible(False)
@@ -217,6 +276,7 @@ def build_availability(log_path):
     if ends:
         direct_labels(ax, ends[:1])
         direct_labels(ax2, ends[1:], room=0)
+    draw_events(ax, gpu, "gpu")
     title_block(ax, f"{gpu.upper()} availability & price",
                 f"Share of checks rentable under cap (left, {freq_label}) · lowest offer and Vast median $/GPU-hr (right)")
     source_note(fig, "3FR-style index · data: Vast.ai, Lambda, RunPod")
@@ -282,6 +342,7 @@ def build_supply(log_path):
 
     direct_labels(ax1, ends1)
     direct_labels(ax2, ends2, room=0)
+    draw_events(ax1, gpu, "gpu")
     title_block(ax1, f"{gpu.upper()} visible supply",
                 "Deduped GPUs listed on Vast.ai at any price vs under the cap · median $/GPU-hr (right)")
     source_note(fig, "data: Vast.ai order book")
@@ -310,6 +371,7 @@ def combined_availability(results):
     ax.set_ylim(-2, 108)
     style_axis(ax, "Available under price cap", pct=True)
     direct_labels(ax, ends, room=0.14)
+    draw_events(ax, "gpu")
     title_block(ax, "GPU availability index — all vintages",
                 "Smoothed share of checks with a GPU rentable under each cap")
     source_note(fig, "data: Vast.ai, Lambda, RunPod")
@@ -353,6 +415,7 @@ def build_tokens():
     if len(ma):
         direct_labels(ax1, [(f"{ma.iloc[-1]:.2f}T/day", ma.index[-1],
                              float(ma.iloc[-1]), PALETTE[4])], room=0.12)
+    draw_events(ax1, "tokens")
     title_block(ax1, "OpenRouter platform token volume",
                 "Daily total (faint) and 7-day average")
 
@@ -381,6 +444,7 @@ def build_tokens():
     if len(map_):
         direct_labels(ax1, [(f"{map_.iloc[-1]:.2f}T/day", map_.index[-1],
                              float(map_.iloc[-1]), PALETTE[4])], room=0.12)
+    draw_events(ax1, "tokens")
     title_block(ax1, "OpenRouter platform token volume",
                 "Log scale — constant growth rate appears as a straight line")
     ax2.axhline(0, color=FAINT, lw=1)
@@ -586,6 +650,7 @@ def build_pricing():
         ends.append((f"input ${in_s.iloc[-1]:.2f}", in_s.index[-1],
                      float(in_s.iloc[-1]), FAINT))
     direct_labels(ax, ends, room=0.16)
+    draw_events(ax, "prices")
     title_block(ax, "Token-weighted average price",
                 "What the market actually pays per million tokens, weighted by usage")
     source_note(fig)
@@ -641,6 +706,7 @@ def build_price_history():
     ax.set_ylim(bottom=0)
     style_axis(ax, "$ per million output tokens", yfmt=USD_FMT)
     direct_labels(ax, ends, room=0.30)
+    draw_events(ax, "prices")
     title_block(ax, "Output price history — highest-volume models",
                 "List price over time; steps mark repricings")
     source_note(fig)
@@ -753,6 +819,7 @@ def combined_price(results):
     ax.set_ylim(bottom=0)
     style_axis(ax, "$ per GPU-hour", yfmt=USD_FMT)
     direct_labels(ax, ends, room=0.16)
+    draw_events(ax, "gpu")
     title_block(ax, "Lowest on-demand offer — all vintages",
                 "Cheapest qualifying rental seen across providers each period")
     source_note(fig, "data: Vast.ai, Lambda, RunPod")
@@ -775,11 +842,143 @@ def combined_supply(results):
     ax.set_ylim(bottom=0)
     style_axis(ax, "GPUs listed at any price", yfmt=NUM_FMT)
     direct_labels(ax, ends, room=0.16)
+    draw_events(ax, "gpu")
     title_block(ax, "Visible GPU supply — all vintages",
                 "Deduped machines listed on Vast.ai, daily average")
     source_note(fig, "data: Vast.ai order book")
     fig.savefig("data/supply_chart_combined.png", dpi=150)
     plt.close(fig)
+
+
+# ------------------------- hardware value ----------------------------
+
+def style_axis_numeric(ax, ylabel="", xlabel="", yfmt=None):
+    """House style for non-date x-axes (e.g. hardware age)."""
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    ax.spines["left"].set_visible(False)
+    ax.spines["bottom"].set_color(GRID)
+    ax.grid(axis="y", color=GRID, lw=1)
+    ax.grid(axis="x", visible=False)
+    ax.tick_params(length=0)
+    if ylabel:
+        ax.set_ylabel(ylabel)
+    if xlabel:
+        ax.set_xlabel(xlabel)
+    if yfmt is not None:
+        ax.yaxis.set_major_formatter(yfmt)
+
+
+def build_hardware_value(avail_results):
+    """Two charts driven by gpu_specs.yml:
+      data/pflop_price_chart.png    $/dense-FP8-PFLOP-hour over time
+      data/depreciation_chart.png   $/PFLOP-hr vs hardware age + decay fit
+    Uses median Vast price (falls back to lowest offer). Skips quietly
+    if specs or price data are missing."""
+    specs = _load_yaml("gpu_specs.yml") or {}
+    if not specs or not avail_results:
+        print("[hardware] no gpu_specs.yml or no availability data — skipping")
+        return
+
+    series = {}
+    for gpu, daily in avail_results:
+        sp = specs.get(gpu)
+        if not sp:
+            continue
+        try:
+            pflops = float(sp["fp8_dense_tflops"]) / 1000.0
+            launch = pd.to_datetime(str(sp["launch"]))
+        except Exception as e:
+            print(f"[hardware] bad spec for {gpu}: {e}")
+            continue
+        price = None
+        if "median_price" in daily.columns and daily["median_price"].notna().any():
+            price = daily["median_price"]
+        elif "lowest_price" in daily.columns and daily["lowest_price"].notna().any():
+            price = daily["lowest_price"]
+        if price is None:
+            continue
+        s = (price / pflops).dropna()
+        if s.empty:
+            continue
+        series[gpu] = {"usd_per_pflop": s, "launch": launch}
+    if not series:
+        print("[hardware] no priced vintages — skipping")
+        return
+
+    wide = pd.DataFrame({g: d["usd_per_pflop"] for g, d in series.items()})
+    wide.to_csv("data/hardware_value.csv")
+
+    # --- Chart 1: price of compute over time ---
+    fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+    ends = []
+    for gpu, d in series.items():
+        s = d["usd_per_pflop"]
+        c = GPU_COLORS.get(gpu, INK)
+        ax.plot(s.index, s, color=c, lw=3, solid_capstyle="round")
+        ends.append((f"{gpu.upper()} ${s.iloc[-1]:.2f}", s.index[-1],
+                     float(s.iloc[-1]), c))
+    ax.set_ylim(bottom=0)
+    style_axis(ax, "$ per dense-FP8 PFLOP-hour", yfmt=USD_FMT)
+    direct_labels(ax, ends, room=0.16)
+    draw_events(ax, "gpu")
+    title_block(ax, "Price of compute — $/PFLOP-hour",
+                "Median Vast.ai $/GPU-hr ÷ dense FP8 PFLOPS · same y-axis = comparable compute")
+    source_note(fig, "specs: gpu_specs.yml (dense FP8) · data: Vast.ai order book")
+    fig.savefig("data/pflop_price_chart.png", dpi=150)
+    plt.close(fig)
+
+    # --- Chart 2: depreciation — $/PFLOP-hr vs hardware age ---
+    fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+    xs_all, ys_all = [], []
+    x_max = 0.0
+    for gpu, d in series.items():
+        s = d["usd_per_pflop"]
+        age = np.asarray((s.index - d["launch"]).days) / 365.25
+        c = GPU_COLORS.get(gpu, INK)
+        ax.plot(age, s.values, color=c, lw=3, solid_capstyle="round")
+        ax.plot([age[-1]], [s.iloc[-1]], "o", ms=6, color=c, zorder=5)
+        ax.annotate(f"  {gpu.upper()}", xy=(age[-1], float(s.iloc[-1])),
+                    fontsize=13, fontweight=600, color=c, va="center")
+        xs_all.extend(age.tolist())
+        ys_all.extend(s.values.tolist())
+        x_max = max(x_max, float(age.max()))
+
+    xs = np.array(xs_all)
+    ys = np.array(ys_all)
+    mask = np.isfinite(xs) & np.isfinite(ys) & (ys > 0)
+    fitted = ""
+    if mask.sum() >= 10 and len(series) >= 2:
+        b, a = np.polyfit(xs[mask], np.log(ys[mask]), 1)
+        if b < 0:
+            xf = np.linspace(0, xs[mask].max() * 1.02, 120)
+            ax.plot(xf, np.exp(a + b * xf), color=INK, lw=1.6,
+                    linestyle=(0, (5, 4)), zorder=2)
+            annual_pct = (1 - np.exp(b)) * 100
+            half_life_mo = np.log(0.5) / b * 12
+            fitted = (f"fit: −{annual_pct:.0f}%/yr · "
+                      f"half-life ≈ {half_life_mo:.0f} months")
+            ax.annotate(fitted, xy=(0.97, 0.08), xycoords="axes fraction",
+                        ha="right", va="bottom", fontsize=13, fontweight=600,
+                        color=INK)
+
+    ax.set_xlim(0, x_max * 1.14)
+    ax.set_ylim(bottom=0)
+    style_axis_numeric(ax, "$ per dense-FP8 PFLOP-hour", yfmt=USD_FMT)
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}y"))
+    ax.annotate("hardware age since volume launch", xy=(0.5, -0.09),
+                xycoords="axes fraction", ha="center", va="top",
+                fontsize=11, color=MUTED, annotation_clip=False)
+    title_block(ax, "Rental value vs hardware age",
+                "Each vintage plotted against years since launch · dashed = cross-vintage exponential fit")
+    source_note(fig, "specs & launch dates: gpu_specs.yml · data: Vast.ai order book")
+    fig.savefig("data/depreciation_chart.png", dpi=150)
+    plt.close(fig)
+
+    msg = f"[hardware] OK — {len(series)} vintages"
+    if fitted:
+        msg += f" · {fitted}"
+    print(msg)
 
 
 if __name__ == "__main__":
@@ -798,6 +997,7 @@ if __name__ == "__main__":
     combined_availability(avail_results)
     combined_price(avail_results)
     combined_supply(supply_results)
+    build_hardware_value(avail_results)
     build_tokens()
     build_providers()
     build_pricing()

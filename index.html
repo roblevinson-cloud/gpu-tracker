@@ -41,6 +41,21 @@
     font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--muted);
   }
   .stamp b { color: var(--ink); font-weight: 600; }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    display: inline-block; margin-right: 5px; vertical-align: 1px;
+  }
+  .dot.ok { background: #3F9E6E; }
+  .dot.warn { background: #C9962E; }
+  .dot.bad { background: #E24B4A; }
+  .delta {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem; font-weight: 500; margin-left: 6px;
+    white-space: nowrap;
+  }
+  .delta.up { color: #3F9E6E; }
+  .delta.down { color: #E24B4A; }
+  .delta.flat { color: var(--muted); }
 
   /* Telemetry board */
   .board {
@@ -132,7 +147,7 @@
 
   <header>
     <h1>GPU Availability Tracker <span>/ on-demand market monitor</span></h1>
-    <div class="stamp">data through <b id="last-date">—</b>
+    <div class="stamp"><span id="fresh"></span>data through <b id="last-date">—</b>
       &nbsp;&middot;&nbsp; <a href="apld-valuation.html" style="color:var(--ink)">APLD NAV model &rarr;</a></div>
   </header>
 
@@ -142,6 +157,7 @@
     <a href="#gpu-h200">H200</a>
     <a href="#gpu-b200">B200</a>
     <a href="#gpu-b300">B300</a>
+    <a href="#hardware">Hardware</a>
     <a href="#tokens">Tokens</a>
     <a href="#token-prices">Token Prices</a>
     <a href="#perf">Performance</a>
@@ -166,6 +182,19 @@
 
   <section id="per-gpu">
     <!-- per-GPU chart pairs injected by script -->
+  </section>
+
+  <section id="hardware">
+    <h2>Hardware value</h2>
+    <div class="grid2">
+      <figure class="chart"><img id="img-pflop" alt="Price per dense-FP8 PFLOP-hour across vintages"></figure>
+      <figure class="chart"><img id="img-depr" alt="Rental value vs hardware age with fitted depreciation curve"></figure>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
+      Median Vast.ai $/GPU-hr normalized by dense-FP8 compute &middot; specs &amp; launch dates editable in
+      <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/gpu_specs.yml" style="color:inherit">gpu_specs.yml</a>
+      &middot; B300 caveat: FP8 metric doesn't credit its FP4/memory gains
+    </p>
   </section>
 
   <section id="tokens">
@@ -246,22 +275,71 @@ const GPUS = [
 ];
 const bust = "?t=" + Date.now();
 
-function parseCsv(text) {
+function parseRows(text) {
   const lines = text.trim().split(/\r?\n/).filter(l => l.length);
   if (lines.length < 2) return null;
   const header = lines[0].split(",");
-  const last = lines[lines.length - 1].split(",");
-  const row = {};
-  header.forEach((h, i) => row[h] = last[i]);
-  return row;
+  return lines.slice(1).map(l => {
+    const cells = l.split(",");
+    const row = {};
+    header.forEach((h, i) => row[h] = cells[i]);
+    return row;
+  });
 }
 
-async function fetchLast(path) {
+async function fetchRows(path) {
   try {
     const r = await fetch(path + bust, { cache: "no-store" });
     if (!r.ok) return null;
-    return parseCsv(await r.text());
+    return parseRows(await r.text());
   } catch (e) { return null; }
+}
+
+async function fetchLast(path) {
+  const rows = await fetchRows(path);
+  return rows ? rows[rows.length - 1] : null;
+}
+
+// Latest row at least `days` older than the final row (daily data).
+function rowDaysBack(rows, col, days) {
+  if (!rows || rows.length < 2) return null;
+  const last = new Date(String(rows[rows.length - 1][col]).slice(0, 10));
+  if (isNaN(last)) return null;
+  const target = new Date(last);
+  target.setDate(target.getDate() - days);
+  for (let i = rows.length - 2; i >= 0; i--) {
+    const d = new Date(String(rows[i][col]).slice(0, 10));
+    if (!isNaN(d) && d <= target) return rows[i];
+  }
+  return null;
+}
+
+// Small colored ▲/▼ chip for a 7-day change. goodUp: is rising good?
+// neutral: arrows only, no judgment color (used for prices).
+function deltaChip(cur, prev, opts) {
+  const o = opts || {};
+  const digits = o.digits != null ? o.digits : 1;
+  const a = parseFloat(cur), b = parseFloat(prev);
+  if (!isFinite(a) || !isFinite(b)) return "";
+  const d = a - b;
+  if (Math.abs(d) < Math.pow(10, -digits) / 2)
+    return '<span class="delta flat">&middot; flat 7d</span>';
+  const up = d > 0;
+  const cls = o.neutral ? "flat" : (up === (o.goodUp !== false) ? "up" : "down");
+  return `<span class="delta ${cls}">${up ? "▲" : "▼"} ${up ? "+" : ""}${d.toFixed(digits)}${o.suffix || ""} 7d</span>`;
+}
+
+// Percent-change variant (for volumes).
+function pctChip(cur, prev, opts) {
+  const o = opts || {};
+  const a = parseFloat(cur), b = parseFloat(prev);
+  if (!isFinite(a) || !isFinite(b) || b === 0) return "";
+  const d = (a / b - 1) * 100;
+  if (Math.abs(d) < 0.05)
+    return '<span class="delta flat">&middot; flat 7d</span>';
+  const up = d > 0;
+  const cls = o.neutral ? "flat" : (up === (o.goodUp !== false) ? "up" : "down");
+  return `<span class="delta ${cls}">${up ? "▲" : "▼"} ${up ? "+" : ""}${d.toFixed(1)}% 7d</span>`;
 }
 
 function fmt(v, digits, suffix) {
@@ -270,11 +348,30 @@ function fmt(v, digits, suffix) {
   return n.toFixed(digits) + (suffix || "");
 }
 
+// Data-freshness badge: time since the last data commit on GitHub.
+async function freshness() {
+  try {
+    const r = await fetch("https://api.github.com/repos/roblevinson-cloud/gpu-tracker/commits?per_page=1&path=data");
+    if (!r.ok) return;
+    const j = await r.json();
+    if (!j.length) return;
+    const t = new Date(j[0].commit.committer.date);
+    const mins = Math.round((Date.now() - t.getTime()) / 60000);
+    if (!isFinite(mins) || mins < 0) return;
+    const label = mins < 60 ? `${mins}m` : mins < 2880 ? `${Math.round(mins / 60)}h` : `${Math.round(mins / 1440)}d`;
+    const cls = mins <= 45 ? "ok" : mins <= 180 ? "warn" : "bad";
+    document.getElementById("fresh").innerHTML =
+      `<i class="dot ${cls}"></i>updated ${label} ago &nbsp;&middot;&nbsp; `;
+  } catch (e) { /* badge is optional */ }
+}
+
 async function buildCard(gpu) {
-  const [idx, sup] = await Promise.all([
-    fetchLast(`data/daily_index_${gpu.id}.csv`),
-    fetchLast(`data/daily_supply_${gpu.id}.csv`),
+  const [idxRows, supRows] = await Promise.all([
+    fetchRows(`data/daily_index_${gpu.id}.csv`),
+    fetchRows(`data/daily_supply_${gpu.id}.csv`),
   ]);
+  const idx = idxRows ? idxRows[idxRows.length - 1] : null;
+  const sup = supRows ? supRows[supRows.length - 1] : null;
 
   const card = document.createElement("div");
   card.className = "card";
@@ -286,21 +383,31 @@ async function buildCard(gpu) {
     return { card, date: null };
   }
 
+  const idxPrev = rowDaysBack(idxRows, "timestamp_utc", 7);
+  const supPrev = rowDaysBack(supRows, "timestamp_utc", 7);
+
   const pct = parseFloat(idx.availability_pct);
   const avg30 = idx.availability_30d_avg;
   const gpus = sup ? sup.vast_gpus : null;
   const under = sup ? sup.vast_gpus_under_cap : null;
   const med = sup ? sup.vast_median_price : null;
 
+  const availChip = deltaChip(idx.availability_pct,
+    idxPrev && idxPrev.availability_pct, { digits: 1, goodUp: true });
+  const supChip = deltaChip(gpus, supPrev && supPrev.vast_gpus,
+    { digits: 0, goodUp: true });
+  const priceChip = deltaChip(med, supPrev && supPrev.vast_median_price,
+    { digits: 2, neutral: true, suffix: "" });
+
   card.innerHTML = `
     <div class="gpu-name">${gpu.id}</div>
-    <div class="big">${fmt(pct, 1)}<small>% avail</small></div>
+    <div class="big">${fmt(pct, 1)}<small>% avail</small>${availChip}</div>
     <div class="gauge"><i style="width:${isFinite(pct) ? Math.min(100, Math.max(0, pct)) : 0}%"></i></div>
     <dl>
       <dt>30-day avg</dt><dd>${fmt(avg30, 1, "%")}</dd>
-      <dt>GPUs on Vast</dt><dd>${gpus != null ? fmt(gpus, 0) : "—"}</dd>
+      <dt>GPUs on Vast</dt><dd>${gpus != null ? fmt(gpus, 0) : "—"}${supChip}</dd>
       <dt>&hellip;under cap</dt><dd>${under != null ? fmt(under, 0) : "—"}</dd>
-      <dt>Median $/hr</dt><dd>${med != null ? fmt(med, 2) : "—"}</dd>
+      <dt>Median $/hr</dt><dd>${med != null ? fmt(med, 2) : "—"}${priceChip}</dd>
     </dl>`;
   return { card, date: idx.timestamp_utc || null };
 }
@@ -398,23 +505,28 @@ async function init() {
     latestDate ? latestDate.slice(0, 10) : "no data yet";
 
   // Token market summary cards
-  const [ti, pi] = await Promise.all([
-    fetchLast("data/tokens_index.csv"),
-    fetchLast("data/pricing_index.csv"),
+  const [tiRows, piRows] = await Promise.all([
+    fetchRows("data/tokens_index.csv"),
+    fetchRows("data/pricing_index.csv"),
   ]);
+  const ti = tiRows ? tiRows[tiRows.length - 1] : null;
+  const pi = piRows ? piRows[piRows.length - 1] : null;
+  const tiPrev = rowDaysBack(tiRows, "date", 7);
+  const piPrev = rowDaysBack(piRows, "date", 7);
   const tb = document.getElementById("token-board");
-  const mk = (color, name, big, small, rows) => {
+  const mk = (color, name, big, small, rows, chip) => {
     const c = document.createElement("div");
     c.className = "card";
     c.style.setProperty("--gpu", color);
     c.innerHTML = `<div class="gpu-name">${name}</div>
-      <div class="big">${big}<small>${small}</small></div>
+      <div class="big">${big}<small>${small}</small>${chip || ""}</div>
       <dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`;
     tb.appendChild(c);
   };
   if (ti) {
     mk("#C9962E", "token volume", fmt(ti.tokens_T_7d, 2), "T/day",
-       [["daily raw", fmt(ti.tokens_T, 2, "T")]]);
+       [["daily raw", fmt(ti.tokens_T, 2, "T")]],
+       pctChip(ti.tokens_T_7d, tiPrev && tiPrev.tokens_T_7d, { goodUp: true }));
     const g = parseFloat(ti.growth_30d_pct);
     mk("#1C2B29", "token growth",
        isFinite(g) ? (g >= 0 ? "+" : "") + g.toFixed(1) : "—", "% /30d",
@@ -422,10 +534,14 @@ async function init() {
   }
   if (pi) {
     mk("#C75D9C", "weighted price", fmt(pi.avg_completion_usd_per_m, 2), " $/M out",
-       [["input $/M", fmt(pi.avg_prompt_usd_per_m, 2)]]);
+       [["input $/M", fmt(pi.avg_prompt_usd_per_m, 2)]],
+       deltaChip(pi.avg_completion_usd_per_m,
+                 piPrev && piPrev.avg_completion_usd_per_m,
+                 { digits: 2, neutral: true }));
   }
 }
 init();
+freshness();
 
 let chartStyle = "lines";
 let chartScale = "linear";
@@ -468,6 +584,8 @@ function setScale(scale) {
   ["img-econ-margin", "data/econ_margin_chart.png"],
   ["img-econ-eff", "data/econ_efficiency_chart.png"],
   ["img-econ-growth", "data/econ_growth_chart.png"],
+  ["img-pflop", "data/pflop_price_chart.png"],
+  ["img-depr", "data/depreciation_chart.png"],
 ]) {
   const el = document.getElementById(id);
   if (el) {

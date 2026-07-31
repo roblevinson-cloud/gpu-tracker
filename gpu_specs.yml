@@ -1,0 +1,33 @@
+# ============================================================
+# HARDWARE SPECS DRIVING THE HARDWARE-VALUE CHARTS
+# ($/PFLOP-hour + depreciation vs age). Edit and rebuild.
+#
+# fp8_dense_tflops: dense (no sparsity) FP8 Tensor Core TFLOPS
+#   per Nvidia datasheets. Dense FP8 is the cleanest common
+#   denominator across Hopper and Blackwell for inference.
+#   Note B300: its FP8 is ~unchanged vs B200 - Blackwell Ultra's
+#   gains are FP4 (15 PF dense) and 288GB memory, which this
+#   metric does NOT credit. B300 will look expensive per FP8
+#   FLOP; that is real signal, but read it with this caveat.
+#
+# launch: approximate volume-availability date (not paper launch).
+#   Used as age zero for the depreciation curve.
+#   H100 Oct 2022 (shipments started), H200 Apr 2024,
+#   B200 Feb 2025 (HGX systems), B300 Oct 2025 (2H'25 ramp).
+# ============================================================
+
+h100:
+  fp8_dense_tflops: 1979
+  launch: 2022-10-01
+
+h200:
+  fp8_dense_tflops: 1979   # same Hopper compute die as H100
+  launch: 2024-04-01
+
+b200:
+  fp8_dense_tflops: 4500
+  launch: 2025-02-01
+
+b300:
+  fp8_dense_tflops: 4500   # FP8 ~= B200; Ultra's gain is FP4 + memory
+  launch: 2025-10-01

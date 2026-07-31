@@ -1,0 +1,19 @@
+# ============================================================
+# CHART ANNOTATIONS
+# Each entry draws a dashed vertical marker + label on charts.
+# Edit, commit, then run Build Index Chart to redraw.
+#
+#   date:    YYYY-MM-DD
+#   label:   short text shown on the chart (keep it brief)
+#   show_on: which chart families get the marker. Any of:
+#            gpu (all GPU charts), h100, h200, b200, b300,
+#            tokens, prices, all
+# ============================================================
+
+- date: 2026-07-17
+  label: "B200 cap $8 -> $5.75"
+  show_on: [b200]
+
+- date: 2026-07-27
+  label: "Kimi K3 open weights"
+  show_on: [tokens, prices]
