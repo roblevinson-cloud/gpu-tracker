@@ -21,6 +21,8 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: python check_tokens.py
+      - name: Collect cloud list prices
+        run: python fetch_cloud_prices.py || echo "cloud price fetch failed, continuing"
       - run: python build_index.py
 
       - run: python build_economics.py

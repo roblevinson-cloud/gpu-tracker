@@ -1,0 +1,29 @@
+# ============================================================
+# CLOUD SKU MAP for fetch_cloud_prices.py
+# Maps hyperscaler VM SKUs -> GPU vintage + GPUs per instance,
+# so prices can be normalized to $/GPU-hour.
+#
+# azure: queried from the public Retail Prices API (no key).
+#   regions: US regions considered; the collector records the
+#   CHEAPEST list price across them per SKU/term (mirrors the
+#   tracker's lowest-offer convention).
+#   gpus: GPUs per VM. ND96isr = 8x SXM. ND128isr GB200 v6 =
+#   4x B200 (2 Grace + 4 Blackwell per VM, NVL72 rack slice).
+#
+# Note: Azure H200 spot often lists AT the on-demand price
+# (no discount = capacity tight). That is real signal, not a bug.
+# ============================================================
+
+azure:
+  regions: [eastus, eastus2, centralus, southcentralus,
+            northcentralus, westus, westus2, westus3]
+  skus:
+    Standard_ND96isr_H100_v5:
+      gpu: h100
+      gpus: 8
+    Standard_ND96isr_H200_v5:
+      gpu: h200
+      gpus: 8
+    Standard_ND128isr_NDR_GB200_v6:
+      gpu: b200
+      gpus: 4

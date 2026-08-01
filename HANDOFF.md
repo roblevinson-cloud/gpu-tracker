@@ -49,6 +49,14 @@ race on pushes.
 - **check_tokens.py** — daily. OpenRouter rankings-daily dataset
   (backfilled to 2025-01-01) -> tokens_by_model.csv, tokens_daily.csv.
   Also snapshots all model list prices daily -> model_prices.csv.
+- **fetch_cloud_prices.py** — daily (in Build Index workflow, added
+  2026-08-01). Azure Retail Prices API (public, keyless): ND H100/
+  H200 v5 + ND GB200 v6 list prices across US regions -> cheapest
+  region per term (spot/ondemand/1yr/3yr/5yr; reservation lump sums
+  converted to effective hourly). SKU->GPU map in cloud_skus.yml.
+  Appends data/cloud_prices.csv (idempotent per day). 429-aware
+  (15s+ backoff, 2s between pages). Extend later: AWS price list,
+  GCP catalog, AWS Capacity Blocks forward curve, neocloud scrapes.
 - **fetch_token_prices.py / build_token_index.py** — watchlist system
   (built in a separate chat): per-host prices for models in
   token_watchlist.yml, regions via provider_regions.yml. Outputs
@@ -85,6 +93,10 @@ race on pushes.
   Flattest lens = what the market prices (HBM, at first fit: 1.25x
   vs compute 3.62x). Needs fp4_dense_tflops/hbm_gb/bandwidth_tbps
   in gpu_specs.yml; lines skip silently if fields absent.
+- **Cloud term module** (build_cloud_term in build_index.py, added
+  2026-08-01) — cloud_term_chart.png: latest-day Azure $/GPU-hr from
+  spot to 5yr commitments per vintage, dotted Vast medians as the
+  merchant reference. Dashboard section "Hyperscaler pricing".
 - **Bugfix 2026-07-31**: per-GPU availability charts' right-axis
   price lines were invisible since launch (ax2.set_ylim called
   before plotting froze autoscale at 0-1). Now set after plotting.

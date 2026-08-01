@@ -1045,6 +1045,86 @@ def build_hardware_value(avail_results):
     print(msg)
 
 
+# ------------------------ cloud term structure ------------------------
+
+TERM_ORDER = ["spot", "ondemand", "1yr", "3yr", "5yr"]
+TERM_LABELS = ["spot", "on-demand", "1 yr", "3 yr", "5 yr"]
+
+
+def build_cloud_term(avail_results):
+    """Hyperscaler term structure: list $/GPU-hr from spot to 5-year
+    commitments (data/cloud_prices.csv, latest day), with the Vast.ai
+    median as a dotted merchant-market reference per vintage."""
+    path = "data/cloud_prices.csv"
+    if not os.path.exists(path):
+        return
+    try:
+        df = pd.read_csv(path, parse_dates=["date"])
+    except Exception as e:
+        print(f"[cloud-term] could not read {path}: {e}")
+        return
+    df["usd_per_gpu_hr"] = pd.to_numeric(df["usd_per_gpu_hr"], errors="coerce")
+    df = df.dropna(subset=["date", "usd_per_gpu_hr"])
+    if df.empty:
+        return
+    latest = df[df["date"] == df["date"].max()]
+
+    # latest Vast median per vintage, for the merchant reference lines
+    vast = {}
+    for gpu, daily in avail_results or []:
+        if "median_price" in daily.columns and daily["median_price"].notna().any():
+            vast[gpu] = float(daily["median_price"].dropna().iloc[-1])
+
+    fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+    xs = range(len(TERM_ORDER))
+    drew = False
+    ends = []
+    for gpu in ["h100", "h200", "b200", "b300"]:
+        sub = latest[latest["gpu"] == gpu]
+        if sub.empty:
+            continue
+        pts = [(i, float(sub[sub["term"] == t]["usd_per_gpu_hr"].min()))
+               for i, t in enumerate(TERM_ORDER)
+               if not sub[sub["term"] == t].empty]
+        if not pts:
+            continue
+        c = GPU_COLORS.get(gpu, INK)
+        ax.plot([p[0] for p in pts], [p[1] for p in pts], color=c, lw=3,
+                marker="o", ms=7, solid_capstyle="round", zorder=3)
+        last_x, last_y = pts[-1]
+        ax.annotate(f"  {gpu.upper()} ${last_y:.2f}", xy=(last_x, last_y),
+                    fontsize=13, fontweight=600, color=c, va="center")
+        drew = True
+    if not drew:
+        plt.close(fig)
+        print("[cloud-term] no chartable rows")
+        return
+
+    # merchant reference: dotted line at the Vast median
+    for gpu, med in vast.items():
+        c = GPU_COLORS.get(gpu, INK)
+        ax.axhline(med, color=c, lw=1.6, linestyle=(0, (1, 3)), alpha=0.75,
+                   zorder=1)
+        ax.annotate(f"Vast {gpu.upper()} ${med:.2f}", xy=(0.02, med),
+                    xycoords=("axes fraction", "data"),
+                    xytext=(0, 5), textcoords="offset points",
+                    fontsize=10, color=c, alpha=0.95, va="bottom")
+
+    ax.set_xlim(-0.35, len(TERM_ORDER) - 1 + 1.15)
+    ax.set_ylim(bottom=0)
+    ax.set_xticks(list(xs))
+    ax.set_xticklabels(TERM_LABELS, fontsize=12)
+    ax.tick_params(axis="x", pad=10)
+    style_axis_numeric(ax, "$ per GPU-hour (list)", yfmt=USD_FMT)
+    title_block(ax, "Azure GPU term structure",
+                "Cheapest US region, list prices · spot at list price = no discount (tight capacity) · dotted = Vast.ai median")
+    source_note(fig, "data: Azure Retail Prices API · Vast.ai order book · SKUs: cloud_skus.yml")
+    fig.savefig("data/cloud_term_chart.png", dpi=150)
+    plt.close(fig)
+    print(f"[cloud-term] OK — {latest['gpu'].nunique()} vintages, "
+          f"{len(latest)} price points")
+
+
 if __name__ == "__main__":
     os.makedirs("data", exist_ok=True)
 
@@ -1062,6 +1142,7 @@ if __name__ == "__main__":
     combined_price(avail_results)
     combined_supply(supply_results)
     build_hardware_value(avail_results)
+    build_cloud_term(avail_results)
     build_tokens()
     build_providers()
     build_pricing()

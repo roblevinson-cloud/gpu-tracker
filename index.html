@@ -158,6 +158,7 @@
     <a href="#gpu-b200">B200</a>
     <a href="#gpu-b300">B300</a>
     <a href="#hardware">Hardware</a>
+    <a href="#clouds">Clouds</a>
     <a href="#tokens">Tokens</a>
     <a href="#token-prices">Token Prices</a>
     <a href="#perf">Performance</a>
@@ -196,6 +197,17 @@
       <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/gpu_specs.yml" style="color:inherit">gpu_specs.yml</a>
       &middot; B300 caveat: FP8 metric doesn't credit its FP4/memory gains &middot;
       value lenses: same rentals per best-precision FLOP / per GB HBM / per TB/s &mdash; the flattest lens is what the market prices
+    </p>
+  </section>
+
+  <section id="clouds">
+    <h2>Hyperscaler pricing &mdash; term structure</h2>
+    <figure class="chart"><img id="img-cloudterm" alt="Azure GPU list price term structure from spot to 5-year commitments vs Vast.ai median"></figure>
+    <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
+      Azure Retail Prices API (keyless, list prices, cheapest US region) &middot; polled daily &middot;
+      SKUs mapped to $/GPU-hr in
+      <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/cloud_skus.yml" style="color:inherit">cloud_skus.yml</a>
+      &middot; reservations converted to effective hourly &middot; list &ne; negotiated street price
     </p>
   </section>
 
@@ -589,6 +601,7 @@ function setScale(scale) {
   ["img-pflop", "data/pflop_price_chart.png"],
   ["img-depr", "data/depreciation_chart.png"],
   ["img-lenses", "data/value_lenses_chart.png"],
+  ["img-cloudterm", "data/cloud_term_chart.png"],
 ]) {
   const el = document.getElementById(id);
   if (el) {
