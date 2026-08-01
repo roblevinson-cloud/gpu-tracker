@@ -26,6 +26,7 @@ still runs, and neither failure is fatal to the build.
 """
 
 import csv
+import gzip
 import json
 import os
 import re
@@ -58,18 +59,26 @@ SF_FIELDS = ["date", "gpu", "avg_usd_gpu_hr", "top_usd_gpu_hr",
 
 
 def fetch(url, timeout=60, tries=4):
-    """GET with retries — 500.farm sits behind a cache that
-    intermittently serves an empty/partial body on revalidation."""
+    """GET with retries and transparent gunzip.
+
+    500.farm's cache serves a gzipped variant even when the request
+    doesn't ask for one (and does so only from some edges — which is
+    why this looked intermittent), so decompression is decided by the
+    body's magic bytes rather than by the response header."""
+    headers = {"User-Agent": UA, "Accept-Encoding": "gzip"}
     last = None
     for attempt in range(tries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            req = urllib.request.Request(url, headers=headers)
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                body = r.read().decode("utf-8", "replace")
+                raw = r.read()
+            if raw[:2] == b"\x1f\x8b":
+                raw = gzip.decompress(raw)
+            body = raw.decode("utf-8", "replace")
             if body.strip():
                 return body
             last = ValueError("empty response body")
-        except (urllib.error.URLError, OSError) as e:
+        except (urllib.error.URLError, OSError, EOFError, gzip.BadGzipFile) as e:
             last = e
         if attempt < tries - 1:
             time.sleep(5 * (attempt + 1))
