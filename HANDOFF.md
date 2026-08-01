@@ -57,6 +57,23 @@ race on pushes.
   Appends data/cloud_prices.csv (idempotent per day). 429-aware
   (15s+ backoff, 2s between pages). Extend later: AWS price list,
   GCP catalog, AWS Capacity Blocks forward curve, neocloud scrapes.
+- **fetch_market_stats.py** — daily (Build Index workflow, added
+  2026-08-01). Two free/no-auth sources, each isolated so one failing
+  never blocks the other or the build:
+  * **500.farm** (community Vast exporter) -> data/vast_utilization.csv:
+    rented/available/total per vintage + utilization % + implied
+    revenue run-rate (sum of per-board count x median price). Vast's
+    own API can't give global rented state; 500.farm reconstructs it
+    by diffing snapshots — good estimate, no SLA. Its CDN
+    intermittently serves an empty body, hence fetch() retries.
+    Board-name -> vintage map is VAST_MODELS at the top of the file.
+  * **sfcompute.com/prices** -> data/sfcompute_prices.csv: daily
+    avg/top/bottom $/GPU-hr. No public unauth API; the series is
+    embedded in the Next.js flight payload (self.__next_f pushes ->
+    "pricesByHardwareType"), so the parser is structure-dependent and
+    will need a look if SF Compute redesigns. Ships ~31 days of
+    history, so day one backfills. Only H100 has liquidity; H200/B200
+    return all-zero rows and are filtered out.
 - **fetch_token_prices.py / build_token_index.py** — watchlist system
   (built in a separate chat): per-host prices for models in
   token_watchlist.yml, regions via provider_regions.yml. Outputs
@@ -96,7 +113,24 @@ race on pushes.
 - **Cloud term module** (build_cloud_term in build_index.py, added
   2026-08-01) — cloud_term_chart.png: latest-day Azure $/GPU-hr from
   spot to 5yr commitments per vintage, dotted Vast medians as the
-  merchant reference. Dashboard section "Hyperscaler pricing".
+  merchant reference. Dashboard section "Market prices".
+- **Market-structure charts** (added 2026-08-01, all in build_index.py)
+  * build_utilization() -> utilization_chart.png. Two panels:
+    rented share by vintage, and implied revenue run-rate (price x
+    quantity). This is the price-vs-quantity read: price up WITH
+    revenue up = demand growth; price up with flat revenue and high
+    utilization = scarcity. Pins a +/-1 day x-window while history is
+    under 3 days, else the date locator sprawls over years.
+  * build_venue_prices() -> venue_price_chart.png. One H100-hour
+    across SF Compute (order book, with daily high/low band), Vast
+    median, and Azure spot/on-demand. H100 only — the sole vintage
+    liquid on all three.
+  * lens spread history -> lens_spread_chart.png + lens_spread.csv
+    (inside build_hardware_value): the per-lens max/min ratio
+    recomputed daily. Only days where every vintage priced are used.
+- **Cards**: each GPU card now shows a "Rented" row (utilization %
+  with a 7d delta in percentage points), read from the single shared
+  vast_utilization.csv fetch in init().
 - **Bugfix 2026-07-31**: per-GPU availability charts' right-axis
   price lines were invisible since launch (ax2.set_ylim called
   before plotting froze autoscale at 0-1). Now set after plotting.

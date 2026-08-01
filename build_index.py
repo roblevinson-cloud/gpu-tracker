@@ -1037,12 +1037,225 @@ def build_hardware_value(avail_results):
     fig.savefig("data/value_lenses_chart.png", dpi=150)
     plt.close(fig)
 
+    # --- Chart 4: lens spread over time ---
+    # Same max/min ratio as above, recomputed for every day. A lens
+    # trending toward 1.0x is becoming the market's pricing basis.
+    spread_hist = {}
+    for name, unit, denom_fn, _ in lenses:
+        frame = {}
+        for gpu, d in series.items():
+            try:
+                denom = denom_fn(d["sp"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if denom:
+                frame[gpu] = d["price"] / denom
+        if len(frame) < 2:
+            continue
+        wide_l = pd.DataFrame(frame).dropna(how="all")
+        # only days where every vintage priced, so the ratio is comparable
+        wide_l = wide_l.dropna()
+        if wide_l.empty:
+            continue
+        spread_hist[name.replace("PER ", "").lower()] = (
+            wide_l.max(axis=1) / wide_l.min(axis=1))
+
+    if spread_hist:
+        sh = pd.DataFrame(spread_hist).sort_index()
+        sh.to_csv("data/lens_spread.csv")
+        fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+        ax.axhline(1.0, color=FAINT, lw=1.2, linestyle=(0, (3, 3)))
+        ax.annotate("1.00× — vintages priced identically on this basis",
+                    xy=(0.01, 1.0), xycoords=("axes fraction", "data"),
+                    xytext=(0, 6), textcoords="offset points",
+                    fontsize=10.5, color=MUTED, va="bottom")
+        ends = multiline(ax, sh, colors=[PALETTE[2], PALETTE[0], PALETTE[3]],
+                         lw=2.8)
+        ax.set_ylim(bottom=0.9)
+        style_axis(ax, "Spread across vintages (max ÷ min)",
+                   yfmt=FuncFormatter(lambda v, _: f"{v:.2f}×"))
+        direct_labels(ax, ends, room=0.26)
+        draw_events(ax, "gpu")
+        title_block(ax, "Which lens is converging?",
+                    "Cross-vintage price spread per normalization · the lens nearest 1.00× is what the market prices")
+        source_note(fig, "specs: gpu_specs.yml · data: Vast.ai order book")
+        fig.savefig("data/lens_spread_chart.png", dpi=150)
+        plt.close(fig)
+
     msg = f"[hardware] OK — {len(series)} vintages"
     if fitted:
         msg += f" · {fitted}"
     if spreads:
         msg += " · lens spreads: " + ", ".join(spreads)
     print(msg)
+
+
+# --------------------- utilization & market size ----------------------
+
+def build_utilization():
+    """Two panels answering 'tight, or growing?':
+      top    — share of Vast's visible fleet actually rented
+      bottom — implied revenue run-rate (rented x price) = price x quantity
+    A price rise with rising revenue is demand; with flat/falling
+    revenue and high utilization it's scarcity."""
+    path = "data/vast_utilization.csv"
+    if not os.path.exists(path):
+        return
+    try:
+        df = pd.read_csv(path, parse_dates=["timestamp_utc"])
+    except Exception as e:
+        print(f"[util] could not read {path}: {e}")
+        return
+    for c in ["utilization_pct", "revenue_usd_hr", "rented", "total"]:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+    df = df.dropna(subset=["timestamp_utc", "gpu", "utilization_pct"])
+    if df.empty:
+        return
+
+    span_days = (df["timestamp_utc"].max() - df["timestamp_utc"].min()).days
+    freq = "h" if span_days < 3 else "D"
+
+    fig, (ax1, ax2) = plt.subplots(
+        2, 1, figsize=(10.5, 9), sharex=True, constrained_layout=True,
+        gridspec_kw={"height_ratios": [1.35, 1]})
+    ends1, ends2 = [], []
+    for gpu in ["h100", "h200", "b200", "b300"]:
+        sub = df[df["gpu"] == gpu].set_index("timestamp_utc").sort_index()
+        if sub.empty:
+            continue
+        c = GPU_COLORS.get(gpu, INK)
+        u = sub["utilization_pct"].resample(freq).mean().dropna()
+        if len(u):
+            ax1.plot(u.index, u, color=c, lw=3, marker="o", ms=5,
+                     solid_capstyle="round")
+            ends1.append((f"{gpu.upper()} {u.iloc[-1]:.0f}%", u.index[-1],
+                          float(u.iloc[-1]), c))
+        if "revenue_usd_hr" in sub.columns:
+            rv = sub["revenue_usd_hr"].resample(freq).mean().dropna()
+            if len(rv):
+                ax2.plot(rv.index, rv, color=c, lw=3, marker="o", ms=5,
+                         solid_capstyle="round")
+                ends2.append((f"{gpu.upper()} ${rv.iloc[-1]:,.0f}",
+                              rv.index[-1], float(rv.iloc[-1]), c))
+    if not ends1:
+        plt.close(fig)
+        return
+
+    # With only a day or two logged, the date locator sprawls over
+    # years — pin a readable window until real history accumulates.
+    if span_days < 3:
+        lo = df["timestamp_utc"].min() - pd.Timedelta(days=1)
+        hi = df["timestamp_utc"].max() + pd.Timedelta(days=1)
+        ax1.set_xlim(lo, hi)
+        ax2.set_xlim(lo, hi)
+
+    ax1.set_ylim(0, 105)
+    style_axis(ax1, "Share of listed GPUs rented", pct=True)
+    direct_labels(ax1, ends1, room=0.20)
+    draw_events(ax1, "gpu")
+    title_block(ax1, "Vast.ai fleet utilization",
+                "Rented ÷ listed · high and rising = the market is tight")
+
+    ax2.set_ylim(bottom=0)
+    style_axis(ax2, "Implied revenue ($/hour)", yfmt=USD_FMT)
+    direct_labels(ax2, ends2, room=0.20)
+    title_block(ax2, "Implied revenue run-rate — price × quantity",
+                "Rented GPUs × their price · separates scarcity from a growing market")
+    source_note(fig, "utilization estimated by 500.farm from Vast.ai order-book snapshots")
+    fig.savefig("data/utilization_chart.png", dpi=150)
+    plt.close(fig)
+
+    latest = df[df["timestamp_utc"] == df["timestamp_utc"].max()]
+    print("[util] OK — " + ", ".join(
+        f"{r.gpu} {r.utilization_pct:.0f}%" for r in latest.itertuples()))
+
+
+def build_venue_prices():
+    """One GPU-hour, three venues: SF Compute (order-book wholesale),
+    Vast.ai (merchant spot), Azure (hyperscaler list). H100 only —
+    it's the sole vintage with liquidity across all three."""
+    sf_path = "data/sfcompute_prices.csv"
+    if not os.path.exists(sf_path):
+        return
+    try:
+        sf = pd.read_csv(sf_path, parse_dates=["date"])
+    except Exception as e:
+        print(f"[venues] could not read {sf_path}: {e}")
+        return
+    for c in ["avg_usd_gpu_hr", "top_usd_gpu_hr", "bottom_usd_gpu_hr"]:
+        sf[c] = pd.to_numeric(sf[c], errors="coerce")
+    sf = sf[sf["gpu"] == "h100"].dropna(subset=["date", "avg_usd_gpu_hr"])
+    sf = sf.set_index("date").sort_index()
+    if sf.empty:
+        print("[venues] no SF Compute H100 rows")
+        return
+
+    fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+    ends = []
+
+    # SF Compute: average with a high/low band
+    band = sf[(sf["top_usd_gpu_hr"] > 0) & (sf["bottom_usd_gpu_hr"] > 0)]
+    if not band.empty:
+        ax.fill_between(band.index, band["bottom_usd_gpu_hr"],
+                        band["top_usd_gpu_hr"], color=PALETTE[3],
+                        alpha=0.13, linewidth=0)
+    ax.plot(sf.index, sf["avg_usd_gpu_hr"], color=PALETTE[3], lw=3,
+            solid_capstyle="round")
+    ends.append((f"SF Compute ${sf['avg_usd_gpu_hr'].iloc[-1]:.2f}",
+                 sf.index[-1], float(sf["avg_usd_gpu_hr"].iloc[-1]), PALETTE[3]))
+
+    # Vast.ai merchant median
+    if os.path.exists("data/daily_index_h100.csv"):
+        try:
+            v = pd.read_csv("data/daily_index_h100.csv",
+                            parse_dates=["timestamp_utc"])
+            v["median_price"] = pd.to_numeric(v.get("median_price"),
+                                              errors="coerce")
+            v = v.dropna(subset=["median_price"]).set_index("timestamp_utc")
+            if not v.empty:
+                s = v["median_price"]
+                ax.plot(s.index, s, color=GPU_COLORS["h100"], lw=3,
+                        solid_capstyle="round")
+                ends.append((f"Vast median ${s.iloc[-1]:.2f}", s.index[-1],
+                             float(s.iloc[-1]), GPU_COLORS["h100"]))
+        except Exception as e:
+            print(f"[venues] Vast series unavailable: {e}")
+
+    # Azure spot + on-demand list
+    if os.path.exists("data/cloud_prices.csv"):
+        try:
+            cp = pd.read_csv("data/cloud_prices.csv", parse_dates=["date"])
+            cp["usd_per_gpu_hr"] = pd.to_numeric(cp["usd_per_gpu_hr"],
+                                                 errors="coerce")
+            cp = cp[(cp["gpu"] == "h100") & (cp["cloud"] == "azure")]
+            for term, color, label in [("spot", PALETTE[6], "Azure spot"),
+                                       ("ondemand", MUTED, "Azure on-demand")]:
+                t = (cp[cp["term"] == term].dropna(subset=["usd_per_gpu_hr"])
+                     .groupby("date")["usd_per_gpu_hr"].min().sort_index())
+                if t.empty:
+                    continue
+                style = dict(color=color, lw=2.2, linestyle=(0, (4, 3)))
+                if len(t) == 1:
+                    ax.plot(t.index, t, marker="o", ms=7, **style)
+                else:
+                    ax.plot(t.index, t, **style)
+                ends.append((f"{label} ${t.iloc[-1]:.2f}", t.index[-1],
+                             float(t.iloc[-1]), color))
+        except Exception as e:
+            print(f"[venues] Azure series unavailable: {e}")
+
+    ax.set_ylim(bottom=0)
+    style_axis(ax, "$ per GPU-hour", yfmt=USD_FMT)
+    direct_labels(ax, ends, room=0.34)
+    draw_events(ax, "gpu", "h100")
+    title_block(ax, "One H100-hour, three markets",
+                "Order-book wholesale vs merchant spot vs hyperscaler list · shaded = SF Compute daily high/low")
+    source_note(fig, "data: sfcompute.com/prices · Vast.ai · Azure Retail Prices API")
+    fig.savefig("data/venue_price_chart.png", dpi=150)
+    plt.close(fig)
+    print(f"[venues] OK — SF Compute {len(sf)} days, "
+          f"latest ${sf['avg_usd_gpu_hr'].iloc[-1]:.2f}/GPU-hr")
 
 
 # ------------------------ cloud term structure ------------------------
@@ -1143,6 +1356,8 @@ if __name__ == "__main__":
     combined_supply(supply_results)
     build_hardware_value(avail_results)
     build_cloud_term(avail_results)
+    build_utilization()
+    build_venue_prices()
     build_tokens()
     build_providers()
     build_pricing()

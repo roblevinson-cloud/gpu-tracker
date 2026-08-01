@@ -157,6 +157,7 @@
     <a href="#gpu-h200">H200</a>
     <a href="#gpu-b200">B200</a>
     <a href="#gpu-b300">B300</a>
+    <a href="#utilization">Utilization</a>
     <a href="#hardware">Hardware</a>
     <a href="#clouds">Clouds</a>
     <a href="#tokens">Tokens</a>
@@ -185,6 +186,17 @@
     <!-- per-GPU chart pairs injected by script -->
   </section>
 
+  <section id="utilization">
+    <h2>Utilization &amp; market size</h2>
+    <figure class="chart"><img id="img-util" alt="Vast.ai fleet utilization and implied revenue run-rate by vintage"></figure>
+    <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
+      Rented share of listed GPUs &middot; utilization reconstructed by
+      <a href="https://500.farm/vastai" style="color:inherit">500.farm</a> from Vast.ai order-book snapshots (estimate, no SLA)
+      &middot; revenue run-rate = rented GPUs &times; their price: rising price <em>with</em> rising revenue is demand growth;
+      rising price with flat revenue and high utilization is scarcity
+    </p>
+  </section>
+
   <section id="hardware">
     <h2>Hardware value</h2>
     <div class="grid2">
@@ -192,6 +204,7 @@
       <figure class="chart"><img id="img-depr" alt="Rental value vs hardware age with fitted depreciation curve"></figure>
     </div>
     <figure class="chart"><img id="img-lenses" alt="Value lenses: rental price per unit of compute, per GB of HBM, and per TB/s of bandwidth"></figure>
+    <figure class="chart"><img id="img-lensspread" alt="Cross-vintage price spread per normalization over time"></figure>
     <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
       Median Vast.ai $/GPU-hr normalized by dense-FP8 compute &middot; specs &amp; launch dates editable in
       <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/gpu_specs.yml" style="color:inherit">gpu_specs.yml</a>
@@ -201,7 +214,8 @@
   </section>
 
   <section id="clouds">
-    <h2>Hyperscaler pricing &mdash; term structure</h2>
+    <h2>Market prices &mdash; venues &amp; terms</h2>
+    <figure class="chart"><img id="img-venues" alt="H100 price across SF Compute, Vast.ai and Azure"></figure>
     <figure class="chart"><img id="img-cloudterm" alt="Azure GPU list price term structure from spot to 5-year commitments vs Vast.ai median"></figure>
     <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
       Azure Retail Prices API (keyless, list prices, cheapest US region) &middot; polled daily &middot;
@@ -379,7 +393,7 @@ async function freshness() {
   } catch (e) { /* badge is optional */ }
 }
 
-async function buildCard(gpu) {
+async function buildCard(gpu, util) {
   const [idxRows, supRows] = await Promise.all([
     fetchRows(`data/daily_index_${gpu.id}.csv`),
     fetchRows(`data/daily_supply_${gpu.id}.csv`),
@@ -413,12 +427,18 @@ async function buildCard(gpu) {
   const priceChip = deltaChip(med, supPrev && supPrev.vast_median_price,
     { digits: 2, neutral: true, suffix: "" });
 
+  // utilization = share of listed GPUs actually rented (500.farm)
+  const u = (util && util.latest) ? util.latest.utilization_pct : null;
+  const utilChip = deltaChip(u, util && util.prev && util.prev.utilization_pct,
+    { digits: 0, suffix: "pt", goodUp: true });
+
   card.innerHTML = `
     <div class="gpu-name">${gpu.id}</div>
     <div class="big">${fmt(pct, 1)}<small>% avail</small>${availChip}</div>
     <div class="gauge"><i style="width:${isFinite(pct) ? Math.min(100, Math.max(0, pct)) : 0}%"></i></div>
     <dl>
       <dt>30-day avg</dt><dd>${fmt(avg30, 1, "%")}</dd>
+      <dt>Rented</dt><dd>${u != null ? fmt(u, 0, "%") : "—"}${utilChip}</dd>
       <dt>GPUs on Vast</dt><dd>${gpus != null ? fmt(gpus, 0) : "—"}${supChip}</dd>
       <dt>&hellip;under cap</dt><dd>${under != null ? fmt(under, 0) : "—"}</dd>
       <dt>Median $/hr</dt><dd>${med != null ? fmt(med, 2) : "—"}${priceChip}</dd>
@@ -496,8 +516,17 @@ async function init() {
   const perGpu = document.getElementById("per-gpu");
   let latestDate = null;
 
+  // one shared fetch: utilization is a single file covering all vintages
+  const utilRows = await fetchRows("data/vast_utilization.csv");
+  const utilFor = (id) => {
+    const rows = (utilRows || []).filter(r => r.gpu === id);
+    return rows.length
+      ? { latest: rows[rows.length - 1], prev: rowDaysBack(rows, "timestamp_utc", 7) }
+      : null;
+  };
+
   for (const gpu of GPUS) {
-    const { card, date } = await buildCard(gpu);
+    const { card, date } = await buildCard(gpu, utilFor(gpu.id));
     board.appendChild(card);
     if (date && (!latestDate || date > latestDate)) latestDate = date;
 
@@ -602,6 +631,9 @@ function setScale(scale) {
   ["img-depr", "data/depreciation_chart.png"],
   ["img-lenses", "data/value_lenses_chart.png"],
   ["img-cloudterm", "data/cloud_term_chart.png"],
+  ["img-util", "data/utilization_chart.png"],
+  ["img-venues", "data/venue_price_chart.png"],
+  ["img-lensspread", "data/lens_spread_chart.png"],
 ]) {
   const el = document.getElementById(id);
   if (el) {
