@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-01 15:43 UTC · latest snapshot: 2026-08-01 15:43:52 · 35 snapshots since 2026-07-21_
+_Last updated: 2026-08-01 21:17 UTC · latest snapshot: 2026-08-01 21:17:10 · 36 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -9,7 +9,7 @@ _Last updated: 2026-08-01 15:43 UTC · latest snapshot: 2026-08-01 15:43:52 · 3
 | anthropic/claude-opus-4.8 | closed | $10.00 | Amazon Bedrock ($10.00) | 7 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Anthropic ($6.00) | 8 |
 | deepseek/deepseek-v4-flash | open | $0.11 | Baidu ($0.11) | 22 |
-| deepseek/deepseek-v4-pro | open | $0.72 | DeepSeek ($0.54) | 18 |
+| deepseek/deepseek-v4-pro | open | $0.71 | DeepSeek ($0.54) | 18 |
 | minimax/minimax-m3 | open | $0.49 | GMICloud ($0.42) | 9 |
 | moonshotai/kimi-k2.5 | open | $0.86 | DigitalOcean ($0.79) | 10 |
 | moonshotai/kimi-k2.6 | open | $1.23 | Baidu ($1.06) | 21 |
@@ -27,7 +27,7 @@ _Last updated: 2026-08-01 15:43 UTC · latest snapshot: 2026-08-01 15:43:52 · 3
 | ASIA | 4 | 0.74 | $0.63 |
 | DECENTRALIZED | 2 | 0.98 | $1.65 |
 | CN | 21 | 1.00 | $1.43 |
-| UNKNOWN | 64 | 1.00 | $1.36 |
+| UNKNOWN | 64 | 1.00 | $1.34 |
 | US | 29 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
