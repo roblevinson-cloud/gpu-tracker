@@ -1120,24 +1120,43 @@ def build_utilization():
         2, 1, figsize=(10.5, 9), sharex=True, constrained_layout=True,
         gridspec_kw={"height_ratios": [1.35, 1]})
     ends1, ends2 = [], []
+    daily_rows = []
     for gpu in ["h100", "h200", "b200", "b300"]:
         sub = df[df["gpu"] == gpu].set_index("timestamp_utc").sort_index()
         if sub.empty:
             continue
         c = GPU_COLORS.get(gpu, INK)
         u = sub["utilization_pct"].resample(freq).mean().dropna()
+        # markers read well while points are sparse, but turn to mush
+        # once the 10-minute log has real history behind it
+        mk = dict(marker="o", ms=5) if len(u) <= 40 else {}
         if len(u):
-            ax1.plot(u.index, u, color=c, lw=3, marker="o", ms=5,
-                     solid_capstyle="round")
+            ax1.plot(u.index, u, color=c, lw=3, solid_capstyle="round", **mk)
             ends1.append((f"{gpu.upper()} {u.iloc[-1]:.0f}%", u.index[-1],
                           float(u.iloc[-1]), c))
         if "revenue_usd_hr" in sub.columns:
             rv = sub["revenue_usd_hr"].resample(freq).mean().dropna()
             if len(rv):
-                ax2.plot(rv.index, rv, color=c, lw=3, marker="o", ms=5,
-                         solid_capstyle="round")
+                ax2.plot(rv.index, rv, color=c, lw=3,
+                         solid_capstyle="round", **mk)
                 ends2.append((f"{gpu.upper()} ${rv.iloc[-1]:,.0f}",
                               rv.index[-1], float(rv.iloc[-1]), c))
+
+        # Daily means for the dashboard cards. The page reads this small
+        # file, never the raw 10-minute log, which grows all year.
+        d = (sub.resample("D").mean(numeric_only=True)
+             .dropna(subset=["utilization_pct"]))
+        for ts, row in d.iterrows():
+            rec = {"date": ts.strftime("%Y-%m-%d"), "gpu": gpu,
+                   "utilization_pct": round(float(row["utilization_pct"]), 2)}
+            for col, nd in (("revenue_usd_hr", 2), ("rented", 1), ("total", 1)):
+                v = row.get(col)
+                rec[col] = round(float(v), nd) if pd.notna(v) else ""
+            daily_rows.append(rec)
+
+    if daily_rows:
+        (pd.DataFrame(daily_rows).sort_values(["date", "gpu"])
+           .to_csv("data/daily_utilization.csv", index=False))
     if not ends1:
         plt.close(fig)
         return

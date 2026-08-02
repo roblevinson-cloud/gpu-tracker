@@ -516,12 +516,14 @@ async function init() {
   const perGpu = document.getElementById("per-gpu");
   let latestDate = null;
 
-  // one shared fetch: utilization is a single file covering all vintages
-  const utilRows = await fetchRows("data/vast_utilization.csv");
+  // One shared fetch covering all vintages. This is the daily summary
+  // written by build_index.py — the raw 10-minute log is far too large
+  // for the page to download.
+  const utilRows = await fetchRows("data/daily_utilization.csv");
   const utilFor = (id) => {
     const rows = (utilRows || []).filter(r => r.gpu === id);
     return rows.length
-      ? { latest: rows[rows.length - 1], prev: rowDaysBack(rows, "timestamp_utc", 7) }
+      ? { latest: rows[rows.length - 1], prev: rowDaysBack(rows, "date", 7) }
       : null;
   };
 

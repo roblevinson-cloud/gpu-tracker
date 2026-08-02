@@ -23,8 +23,8 @@ jobs:
         run: python check_tokens.py
       - name: Collect cloud list prices
         run: python fetch_cloud_prices.py || echo "cloud price fetch failed, continuing"
-      - name: Collect utilization and lease rates
-        run: python fetch_market_stats.py || echo "market stats fetch failed, continuing"
+      - name: Collect cluster lease rates
+        run: python fetch_market_stats.py sfcompute || echo "lease rate fetch failed, continuing"
       - run: python build_index.py
 
       - run: python build_economics.py

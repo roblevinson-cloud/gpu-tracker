@@ -21,8 +21,18 @@ Sources (both free, no auth):
               in the streamed flight payload (no public unauth API).
               Ships ~31 days of history, so the first run backfills.
 
-Both writers are idempotent per day. If one source fails the other
-still runs, and neither failure is fatal to the build.
+Run one collector or both:
+    python fetch_market_stats.py utilization   # every 10 min (poll.yml)
+    python fetch_market_stats.py sfcompute     # daily (build-index.yml)
+    python fetch_market_stats.py               # both
+
+They run at different cadences on purpose. Utilization has a strong
+intraday cycle, so a once-a-day sample would peg every reading to the
+same hour and bias the series; SF Compute publishes one value per day,
+so polling it more often would just re-download the same numbers.
+
+If one source fails the other still runs, and neither failure is fatal
+to the workflow that calls it.
 """
 
 import csv
@@ -30,6 +40,7 @@ import gzip
 import json
 import os
 import re
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -98,8 +109,36 @@ def fetch_json(url, **kw):
             time.sleep(5)
 
 
+def append_rows(path, fields, rows):
+    """Append-only writer for the 10-minute log — rewriting a file that
+    grows all year on every poll would be pointless work."""
+    new_file = not os.path.exists(path)
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        if new_file:
+            w.writeheader()
+        for r in rows:
+            w.writerow(r)
+
+
+def last_logged_timestamp(path):
+    """Timestamp of the final row, read from the file's tail so this
+    stays cheap as the log grows. Assumes timestamp is column 0."""
+    if not os.path.exists(path):
+        return None
+    with open(path, "rb") as f:
+        f.seek(0, os.SEEK_END)
+        f.seek(max(0, f.tell() - 4096))
+        tail = f.read().decode("utf-8", "replace")
+    lines = [ln for ln in tail.splitlines() if ln.strip()]
+    if not lines or lines[-1].startswith("timestamp_utc"):
+        return None
+    return lines[-1].split(",")[0]
+
+
 def merge_write(path, fields, fresh, key_fn):
-    """Rewrite `path` keeping old rows whose key isn't in `fresh`."""
+    """Rewrite `path` keeping old rows whose key isn't in `fresh`.
+    For low-cadence sources that revise past values (SF Compute)."""
     existing = []
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
@@ -233,21 +272,29 @@ def collect_sfcompute():
     return rows
 
 
-def main():
-    os.makedirs("data", exist_ok=True)
-
+def run_utilization():
+    """High cadence: appended by the 10-minute poll. Sampling once a
+    day would peg every reading to the same hour, and utilization has
+    a strong intraday cycle — so the daily figure would be biased,
+    not merely coarse."""
     try:
+        prev = last_logged_timestamp(UTIL_OUT)
         rows = collect_vast_utilization()
-        if rows:
-            today = rows[0]["timestamp_utc"][:10]
-            kept = merge_write(
-                UTIL_OUT, UTIL_FIELDS, rows,
-                lambda r: (str(r.get("timestamp_utc", ""))[:10], r.get("gpu")))
-            print(f"[util] wrote {len(rows)} rows for {today} "
-                  f"({kept} kept) -> {UTIL_OUT}")
+        if not rows:
+            return
+        if rows[0]["timestamp_utc"] == prev:
+            print("[util] exporter hasn't refreshed since last poll — "
+                  "skipping duplicate snapshot")
+            return
+        append_rows(UTIL_OUT, UTIL_FIELDS, rows)
+        print(f"[util] appended {len(rows)} rows -> {UTIL_OUT}")
     except Exception as e:
         print(f"[util] FAILED ({type(e).__name__}: {e}) — leaving CSV as-is")
 
+
+def run_sfcompute():
+    """Low cadence: the page publishes one value per day and revises
+    recent days, so a daily merge-rewrite is the right shape."""
     try:
         rows = collect_sfcompute()
         if rows:
@@ -256,6 +303,17 @@ def main():
             print(f"[sfc] wrote {len(rows)} rows ({kept} kept) -> {SF_OUT}")
     except Exception as e:
         print(f"[sfc] FAILED ({type(e).__name__}: {e}) — leaving CSV as-is")
+
+
+def main():
+    os.makedirs("data", exist_ok=True)
+    which = sys.argv[1].lower() if len(sys.argv) > 1 else "all"
+    if which not in ("all", "utilization", "sfcompute"):
+        raise SystemExit(f"usage: {sys.argv[0]} [utilization|sfcompute]")
+    if which in ("all", "utilization"):
+        run_utilization()
+    if which in ("all", "sfcompute"):
+        run_sfcompute()
 
 
 if __name__ == "__main__":

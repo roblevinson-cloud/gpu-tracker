@@ -18,8 +18,8 @@ Runs entirely on GitHub Actions (free). No servers.
 ## Workflows (Actions tab)
 | Workflow | Schedule | What it does |
 |---|---|---|
-| GPU Availability Poll | every 10 min (triggered externally, see below) | check_availability.py + check_perf.py, commits data/ |
-| Build Index Chart | daily 06:00 UTC + manual | check_tokens.py -> build_index.py -> build_economics.py (+ build_growth_table.py only if that file exists) |
+| GPU Availability Poll | every 10 min (triggered externally, see below) | check_availability.py + check_perf.py + fetch_market_stats.py utilization, commits data/ |
+| Build Index Chart | daily 06:00 UTC + manual | check_tokens.py -> fetch_cloud_prices.py -> fetch_market_stats.py sfcompute -> build_index.py -> build_economics.py (+ build_growth_table.py only if that file exists) |
 | Track token prices | every 6 h | fetch_token_prices.py -> build_token_index.py (watchlist system) |
 | Backfill Price History | manual only | backfill_prices.py (Wayback archive of OpenRouter prices) — if present |
 
@@ -57,9 +57,19 @@ race on pushes.
   Appends data/cloud_prices.csv (idempotent per day). 429-aware
   (15s+ backoff, 2s between pages). Extend later: AWS price list,
   GCP catalog, AWS Capacity Blocks forward curve, neocloud scrapes.
-- **fetch_market_stats.py** — daily (Build Index workflow, added
-  2026-08-01). Two free/no-auth sources, each isolated so one failing
-  never blocks the other or the build:
+- **fetch_market_stats.py** — two free/no-auth sources on DIFFERENT
+  cadences; pass `utilization` or `sfcompute` to pick one (no arg =
+  both). Each is isolated so one failing never blocks the other:
+  * utilization runs in the **10-minute poll**. It was daily until
+    2026-08-02, but the daily build fires at 06:00 UTC (~11pm Pacific),
+    so every reading was pegged to one quiet hour — biased, not just
+    coarse. Observed intraday swings are real (B200 64% -> 55% inside
+    a day), so cadence matters. Appends rather than rewriting, and
+    skips the write if 500.farm's exporter hasn't refreshed since the
+    last poll (its timestamp is the dedupe key, read from the file's
+    tail so it stays cheap as the log grows).
+  * sfcompute stays **daily** — the page publishes one value per day
+    and revises recent ones, so it needs the merge-rewrite path.
   * **500.farm** (community Vast exporter) -> data/vast_utilization.csv:
     rented/available/total per vintage + utilization % + implied
     revenue run-rate (sum of per-board count x median price). Vast's
@@ -120,7 +130,10 @@ race on pushes.
     quantity). This is the price-vs-quantity read: price up WITH
     revenue up = demand growth; price up with flat revenue and high
     utilization = scarcity. Pins a +/-1 day x-window while history is
-    under 3 days, else the date locator sprawls over years.
+    under 3 days, else the date locator sprawls over years. Also
+    writes data/daily_utilization.csv (daily means, one row per
+    vintage per day) — the dashboard cards read THAT, never the raw
+    10-minute log, which grows ~17MB/yr.
   * build_venue_prices() -> venue_price_chart.png. One H100-hour
     across SF Compute (order book, with daily high/low band), Vast
     median, and Azure spot/on-demand. H100 only — the sole vintage
