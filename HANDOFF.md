@@ -19,7 +19,7 @@ Runs entirely on GitHub Actions (free). No servers.
 | Workflow | Schedule | What it does |
 |---|---|---|
 | GPU Availability Poll | every 10 min (triggered externally, see below) | check_availability.py + check_perf.py + fetch_market_stats.py utilization, commits data/ |
-| Build Index Chart | daily 06:00 UTC + manual | check_tokens.py -> fetch_cloud_prices.py -> fetch_market_stats.py sfcompute -> build_index.py -> build_economics.py (+ build_growth_table.py only if that file exists) |
+| Build Index Chart | every 6h + manual | check_tokens.py -> fetch_cloud_prices.py -> fetch_market_stats.py sfcompute -> build_index.py -> build_economics.py (+ build_growth_table.py only if that file exists) |
 | Track token prices | every 6 h | fetch_token_prices.py -> build_token_index.py (watchlist system) |
 | Backfill Price History | manual only | backfill_prices.py (Wayback archive of OpenRouter prices) — if present |
 
@@ -67,7 +67,11 @@ race on pushes.
     a day), so cadence matters. Appends rather than rewriting, and
     skips the write if 500.farm's exporter hasn't refreshed since the
     last poll (its timestamp is the dedupe key, read from the file's
-    tail so it stays cheap as the log grows).
+    tail so it stays cheap as the log grows). ALSO rewrites
+    data/utilization_latest.csv (newest snapshot, 4 rows) on every
+    poll — that is what the dashboard cards read, so they stay live
+    between chart builds. Written even when the duplicate guard skips
+    the append, so the cards never look staler than they are.
   * sfcompute stays **daily** — the page publishes one value per day
     and revises recent ones, so it needs the merge-rewrite path.
   * **500.farm** (community Vast exporter) -> data/vast_utilization.csv:
@@ -132,8 +136,18 @@ race on pushes.
     utilization = scarcity. Pins a +/-1 day x-window while history is
     under 3 days, else the date locator sprawls over years. Also
     writes data/daily_utilization.csv (daily means, one row per
-    vintage per day) — the dashboard cards read THAT, never the raw
-    10-minute log, which grows ~17MB/yr.
+    vintage per day) — used for the cards' 7-day delta, never the raw
+    10-minute log, which grows ~17MB/yr. Current card values come from
+    utilization_latest.csv instead, because this file is only rewritten
+    when the chart build runs.
+
+**Staleness note (fixed 2026-08-04):** GitHub's scheduled runs for this
+repo drift 5-10h, so a once-daily chart build left charts and card
+values up to a day behind data that was arriving every 10 minutes.
+Two mitigations: cards now read the poll-written snapshot, and the
+chart build moved to every 6h. If charts ever look stale again, check
+Actions for whether the *schedule* event actually fired — the poll
+(cron-job.org) and the build (GitHub cron) fail independently.
   * build_venue_prices() -> venue_price_chart.png. One H100-hour
     across SF Compute (order book, with daily high/low band), Vast
     median, and Azure spot/on-demand. H100 only — the sole vintage

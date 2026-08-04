@@ -61,6 +61,11 @@ VAST_MODELS = {
 }
 
 UTIL_OUT = "data/vast_utilization.csv"
+# Newest snapshot only, rewritten every poll. The dashboard cards read
+# this so they show live numbers: the full log is too big for the page
+# to download, and the daily summary is only rebuilt by build_index.py,
+# which would leave the cards a day behind what we actually collect.
+UTIL_LATEST_OUT = "data/utilization_latest.csv"
 UTIL_FIELDS = ["timestamp_utc", "gpu", "rented", "available", "total",
                "utilization_pct", "avg_price_rented", "revenue_usd_hr"]
 
@@ -282,6 +287,13 @@ def run_utilization():
         rows = collect_vast_utilization()
         if not rows:
             return
+        # Always refresh the snapshot the dashboard reads, even when the
+        # exporter hasn't moved — it must never look staler than it is.
+        with open(UTIL_LATEST_OUT, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=UTIL_FIELDS)
+            w.writeheader()
+            for r in rows:
+                w.writerow(r)
         if rows[0]["timestamp_utc"] == prev:
             print("[util] exporter hasn't refreshed since last poll — "
                   "skipping duplicate snapshot")

@@ -3,7 +3,11 @@ name: Build Index Chart
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"
+    # Every 6h, not daily. GitHub queues scheduled runs on a best-effort
+    # basis and this repo has seen 5-10h of drift, which left the charts
+    # nearly a day stale. Four attempts a day bounds that; each run is
+    # idempotent, so extra runs just refresh the same day's rows.
+    - cron: "0 */6 * * *"
 
 permissions:
   contents: write

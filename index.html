@@ -516,15 +516,20 @@ async function init() {
   const perGpu = document.getElementById("per-gpu");
   let latestDate = null;
 
-  // One shared fetch covering all vintages. This is the daily summary
-  // written by build_index.py — the raw 10-minute log is far too large
-  // for the page to download.
-  const utilRows = await fetchRows("data/daily_utilization.csv");
+  // Current value comes from the snapshot the 10-minute poll rewrites;
+  // the 7-day comparison comes from the daily summary that the chart
+  // build writes. Reading the raw log here would mean downloading every
+  // poll of the year.
+  const [latestRows, dailyRows] = await Promise.all([
+    fetchRows("data/utilization_latest.csv"),
+    fetchRows("data/daily_utilization.csv"),
+  ]);
   const utilFor = (id) => {
-    const rows = (utilRows || []).filter(r => r.gpu === id);
-    return rows.length
-      ? { latest: rows[rows.length - 1], prev: rowDaysBack(rows, "date", 7) }
-      : null;
+    const daily = (dailyRows || []).filter(r => r.gpu === id);
+    const live = (latestRows || []).filter(r => r.gpu === id).pop();
+    const latest = live || (daily.length ? daily[daily.length - 1] : null);
+    if (!latest) return null;
+    return { latest, prev: daily.length ? rowDaysBack(daily, "date", 7) : null };
   };
 
   for (const gpu of GPUS) {
