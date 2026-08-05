@@ -17,12 +17,25 @@
 #
 # fp4_dense_tflops: dense NVFP4 TFLOPS. Blackwell only - Hopper has
 #   no FP4 tensor hardware, so omit it there (the "best precision"
-#   lens falls back to FP8). B200 HGX ~9 PF dense; B300 ~15 PF dense.
+#   lens falls back to FP8).
+#   B300 CORRECTED 2026-08-05: was 15000, which is the GB300 NVL72
+#   binned part. Air-cooled HGX B300 - what merchant hosts actually
+#   run - is 13500 dense FP4. Note B300 got NO FP8/BF16 uplift over
+#   B200 (both 4500 dense FP8); the entire Ultra gain is FP4 + memory.
 #
 # hbm_gb / bandwidth_tbps: memory capacity and bandwidth per Nvidia
 #   datasheets (SXM/HGX configs, which is what Vast hosts run).
 #   Used by the value-lenses chart: whichever lens shows the FLATTEST
 #   prices across vintages is the resource the market is pricing.
+#   CAVEAT: these are NAMEPLATE. Usable memory is lower - NVIDIA's own
+#   DGX pages imply ~180 GB/GPU on B200 (1.4TB/8) and ~262.5 on B300
+#   (2.1TB/8). Switching to usable moves the per-GB numbers ~5-9% and
+#   makes B200 look worse, not better. Kept as nameplate because that
+#   is what is verifiable from spec sheets; if you ever read actual
+#   free VRAM off rented machines, revisit this.
+#
+# Both B200 and B300 are 8.0 TB/s. B300's 288GB comes from 12-Hi
+#   stack HEIGHT, not more stacks - claims of 12 TB/s are wrong.
 # ============================================================
 
 h100:
@@ -45,8 +58,8 @@ b200:
   bandwidth_tbps: 8.0
 
 b300:
-  fp8_dense_tflops: 4500   # FP8 ~= B200; Ultra's gain is FP4 + memory
-  fp4_dense_tflops: 15000
+  fp8_dense_tflops: 4500   # FP8 == B200 exactly; no Ultra uplift here
+  fp4_dense_tflops: 13500  # HGX B300 (GB300 NVL72 is 15000 - not this)
   launch: 2025-10-01
   hbm_gb: 288
   bandwidth_tbps: 8.0
