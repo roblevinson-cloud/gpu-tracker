@@ -114,8 +114,16 @@ race on pushes.
 - **Hardware value module** (in build_index.py, added 2026-07-31) —
   driven by gpu_specs.yml (dense-FP8 TFLOPS + volume-launch dates):
   pflop_price_chart.png ($/PFLOP-hr by vintage) and
-  depreciation_chart.png ($/PFLOP-hr vs hardware age with cross-
-  vintage exponential fit -> %/yr + half-life). Uses median Vast
+  depreciation_chart.png ($/PFLOP-hr vs hardware age). The fit is
+  GATED (added 2026-08-04): it only prints the confident
+  "-X%/yr, half-life" headline when R2 >= 0.70 AND no single vintage
+  carries the slope (leave-one-vintage-out keeps b < 0). Otherwise it
+  draws the line faint and states what R2 actually is. As of Aug 2026
+  R2 = 0.35 and dropping H100 INVERTS the slope to +12%/yr, so the
+  earlier "-11%/yr, half-life 72 months" headline was not supportable
+  — vintage height is set by scarcity, not age. Expect the headline to
+  appear on its own once each vintage has traced months of its own
+  curve. Uses median Vast
   price, falls back to lowest offer. hardware_value.csv exported.
   Caveat printed on chart: FP8 metric doesn't credit B300's FP4/mem.
   Also value_lenses_chart.png (added later 2026-07-31): same rentals

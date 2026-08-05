@@ -931,7 +931,7 @@ def build_hardware_value(avail_results):
 
     # --- Chart 2: depreciation — $/PFLOP-hr vs hardware age ---
     fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
-    xs_all, ys_all = [], []
+    xs_all, ys_all, vint_all = [], [], []
     x_max = 0.0
     for gpu, d in series.items():
         s = d["usd_per_pflop"]
@@ -943,25 +943,57 @@ def build_hardware_value(avail_results):
                     fontsize=13, fontweight=600, color=c, va="center")
         xs_all.extend(age.tolist())
         ys_all.extend(s.values.tolist())
+        vint_all.extend([gpu] * len(age))
         x_max = max(x_max, float(age.max()))
 
     xs = np.array(xs_all)
     ys = np.array(ys_all)
+    vints = np.array(vint_all)
     mask = np.isfinite(xs) & np.isfinite(ys) & (ys > 0)
     fitted = ""
     if mask.sum() >= 10 and len(series) >= 2:
-        b, a = np.polyfit(xs[mask], np.log(ys[mask]), 1)
-        if b < 0:
-            xf = np.linspace(0, xs[mask].max() * 1.02, 120)
-            ax.plot(xf, np.exp(a + b * xf), color=INK, lw=1.6,
-                    linestyle=(0, (5, 4)), zorder=2)
+        logy = np.log(ys[mask])
+        b, a = np.polyfit(xs[mask], logy, 1)
+
+        # How much of the spread is actually AGE? Each vintage currently
+        # spans only days of age, so this is a cross-section through a
+        # handful of clusters whose height is set mostly by scarcity.
+        # Report that honestly instead of implying a measured decay.
+        ss_res = ((logy - (a + b * xs[mask])) ** 2).sum()
+        ss_tot = ((logy - logy.mean()) ** 2).sum()
+        r2 = 1 - ss_res / ss_tot if ss_tot > 0 else 0.0
+
+        # Does the decay survive dropping any single vintage? If one
+        # vintage carries the whole slope, the number is an artifact.
+        carriers = []
+        for v in sorted(set(vints[mask])):
+            m2 = mask & (vints != v)
+            if m2.sum() >= 4 and len(set(vints[m2])) >= 2:
+                b2, _ = np.polyfit(xs[m2], np.log(ys[m2]), 1)
+                if b2 >= 0:
+                    carriers.append(v.upper())
+
+        xf = np.linspace(0, xs[mask].max() * 1.02, 120)
+        trustworthy = b < 0 and r2 >= 0.70 and not carriers
+        ax.plot(xf, np.exp(a + b * xf), color=INK if trustworthy else FAINT,
+                lw=1.6, linestyle=(0, (5, 4)), zorder=2)
+
+        if trustworthy:
             annual_pct = (1 - np.exp(b)) * 100
             half_life_mo = np.log(0.5) / b * 12
             fitted = (f"fit: −{annual_pct:.0f}%/yr · "
-                      f"half-life ≈ {half_life_mo:.0f} months")
-            ax.annotate(fitted, xy=(0.97, 0.08), xycoords="axes fraction",
-                        ha="right", va="bottom", fontsize=13, fontweight=600,
-                        color=INK)
+                      f"half-life ≈ {half_life_mo:.0f} months · R²={r2:.2f}")
+            note, color = fitted, INK
+        else:
+            fitted = f"weak age signal (R²={r2:.2f})"
+            note = f"age explains only {r2 * 100:.0f}% of the spread"
+            if carriers:
+                note += f" · slope depends entirely on {', '.join(carriers)}"
+            note += "\nvintages are priced by scarcity, not age — see utilization"
+            color = MUTED
+        ax.annotate(note, xy=(0.97, 0.08), xycoords="axes fraction",
+                    ha="right", va="bottom", fontsize=12,
+                    fontweight=600 if trustworthy else 400, color=color)
 
     ax.set_xlim(0, x_max * 1.14)
     ax.set_ylim(bottom=0)
@@ -971,7 +1003,7 @@ def build_hardware_value(avail_results):
                 xycoords="axes fraction", ha="center", va="top",
                 fontsize=11, color=MUTED, annotation_clip=False)
     title_block(ax, "Rental value vs hardware age",
-                "Each vintage plotted against years since launch · dashed = cross-vintage exponential fit")
+                "Cross-section, not a measured decay: each vintage spans only weeks of age so far")
     source_note(fig, "specs & launch dates: gpu_specs.yml · data: Vast.ai order book")
     fig.savefig("data/depreciation_chart.png", dpi=150)
     plt.close(fig)
