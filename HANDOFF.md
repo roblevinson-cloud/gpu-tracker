@@ -143,6 +143,23 @@ race on pushes.
   2026-08-01) — cloud_term_chart.png: latest-day Azure $/GPU-hr from
   spot to 5yr commitments per vintage, dotted Vast medians as the
   merchant reference. Dashboard section "Market prices".
+- **build_within_vintage()** (added 2026-08-06) -> within_vintage_chart.png
+  + within_vintage.csv. 2x2 small multiples: each vintage's own median
+  $/GPU-hr over calendar time with an OLS log-trend. This is the
+  IDENTIFIED depreciation estimate — across vintages, age and
+  architecture are perfectly collinear (every H100 is both oldest and
+  Hopper), so no cross-section can separate ageing from generational
+  deflation at any precision. Tracking one vintage holds generation
+  constant.
+  Gate is PRECISION, not significance (RATE_CI_TARGET = 0.15 log
+  units ~ +/-15pp on the annual rate). This matters: a 21-day drift is
+  often significant vs zero yet annualises to garbage — the first
+  version printed "h100 -1142%/yr". Panels that don't qualify show a
+  countdown of days still needed, derived from SE(slope) ~ n^-1.5.
+  As of 2026-08-06 none qualify; H200 is nearest (~28 more days), then
+  B200 ~60, H100 ~81, B300 ~99. Slope is invariant to any per-vintage
+  constant, so $/hr and $/PFLOP-hr give the SAME rate — the FP8-vs-FP4
+  question does not arise here, which is the point.
 - **Market-structure charts** (added 2026-08-01, all in build_index.py)
   * build_utilization() -> utilization_chart.png. Two panels:
     rented share by vintage, and implied revenue run-rate (price x

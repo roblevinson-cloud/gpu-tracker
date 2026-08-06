@@ -204,6 +204,7 @@
       <figure class="chart"><img id="img-depr" alt="Rental value vs hardware age with fitted depreciation curve"></figure>
     </div>
     <figure class="chart"><img id="img-lenses" alt="Value lenses: rental price per unit of compute, per GB of HBM, and per TB/s of bandwidth"></figure>
+    <figure class="chart"><img id="img-within" alt="Within-vintage price trend per GPU with significance gating"></figure>
     <figure class="chart"><img id="img-lensspread" alt="Cross-vintage price spread per normalization over time"></figure>
     <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
       Median Vast.ai $/GPU-hr normalized by hardware specs &middot; editable in
@@ -218,7 +219,16 @@
       Vertical position is driven by scarcity (see utilization), not age. B300's fleet is only ~48 GPUs &mdash;
       roughly 39% volatility over three weeks &mdash; so treat its line as indicative at best.<br>
       Note the memory lens is the only one that doesn't move with the precision choice, and it is also the
-      tightest (~1.2&times; versus 1.7&ndash;3.1&times; for compute). That is the most robust finding here.
+      tightest (~1.2&times; versus 1.7&ndash;3.1&times; for compute). That is the most robust finding here.<br>
+      <b>The within-vintage chart is the one that can actually answer the depreciation question.</b>
+      Age and architecture are perfectly collinear across vintages &mdash; every H100 is both the oldest
+      <em>and</em> Hopper &mdash; so no cross-section can separate ageing from newer silicon at any precision.
+      Tracking each vintage against itself holds generation constant. A rate appears only when its 2&sigma;
+      interval fits inside &plusmn;15pp; until then the panel counts down, because annualising a three-week
+      drift multiplies noise by ~17&times; and produces figures like &minus;1142%/yr. H200 qualifies first.<br>
+      Early hint from the one controlled pair available today: H100 and H200 are the same silicon with
+      identical FP8 FLOPs, 18 months apart, and they price within 2% of each other <em>per GB</em>
+      (2.77&cent; vs 2.72&cent;) &mdash; leaving almost nothing for age. Suggestive, not settled: two points, three weeks.
     </p>
   </section>
 
@@ -650,6 +660,7 @@ function setScale(scale) {
   ["img-util", "data/utilization_chart.png"],
   ["img-venues", "data/venue_price_chart.png"],
   ["img-lensspread", "data/lens_spread_chart.png"],
+  ["img-within", "data/within_vintage_chart.png"],
 ]) {
   const el = document.getElementById(id);
   if (el) {

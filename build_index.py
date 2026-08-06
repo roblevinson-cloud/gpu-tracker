@@ -1145,6 +1145,138 @@ def build_hardware_value(avail_results):
     print(msg)
 
 
+# --------------------- within-vintage depreciation ---------------------
+
+# A slope can be statistically distinguishable from zero over three
+# weeks and still be a useless annual number: annualising a 21-day
+# drift multiplies signal and noise alike by ~17x, which is how you get
+# "-1142%/yr". So the gate is PRECISION, not significance — publish the
+# rate only once its 2-sigma interval is narrower than this many log
+# units per year (0.15 ~= +/-15 percentage points on the annual rate).
+RATE_CI_TARGET = 0.15
+
+
+def _trend_stats(dates, prices):
+    """OLS of log(price) on years, with the precision of the ANNUAL rate.
+    The slope is unchanged by any per-vintage constant, so $/hr and
+    $/PFLOP-hr give identical rates — the FP8-vs-FP4 argument does not
+    apply within a single vintage."""
+    t = np.asarray((dates - dates[0]).days, dtype=float) / 365.25
+    y = np.log(np.asarray(prices, dtype=float))
+    n = len(t)
+    if n < 5 or t.max() <= 0:
+        return None
+    b, a = np.polyfit(t, y, 1)
+    resid = y - (a + b * t)
+    sxx = ((t - t.mean()) ** 2).sum()
+    if n - 2 <= 0 or sxx <= 0:
+        return None
+    sigma = np.sqrt((resid ** 2).sum() / (n - 2))
+    se_b = sigma / np.sqrt(sxx)
+    # SE(slope) shrinks as n^-1.5 with daily spacing; invert for the n
+    # that would bring the 2-sigma interval inside RATE_CI_TARGET
+    need = (2 * sigma * np.sqrt(12) * 365.25 / RATE_CI_TARGET) ** (2 / 3)
+    return {"a": a, "b": b, "se": se_b, "sigma": sigma, "n": n,
+            "usable": 2 * se_b <= RATE_CI_TARGET, "need_days": need}
+
+
+def build_within_vintage():
+    """Each vintage against ITSELF over calendar time. The cross-vintage
+    chart cannot separate ageing from generational deflation — age and
+    architecture are perfectly collinear there. Tracking one vintage
+    holds generation constant, so this is the identified estimate. The
+    rate prints only once it clears 2 sigma; until then the panel says
+    how much longer it needs."""
+    rows = []
+    fig, axes = plt.subplots(2, 2, figsize=(10.5, 7.8))
+    fig.subplots_adjust(top=0.79, bottom=0.09, left=0.09, right=0.98,
+                        hspace=0.45, wspace=0.26)
+    drew = False
+    for ax, gpu in zip(axes.ravel(), ["h100", "h200", "b200", "b300"]):
+        path = f"data/daily_index_{gpu}.csv"
+        c = GPU_COLORS.get(gpu, INK)
+        s = None
+        if os.path.exists(path):
+            try:
+                d = pd.read_csv(path, parse_dates=["timestamp_utc"])
+                mp = pd.to_numeric(d.get("median_price"), errors="coerce")
+                d = d.assign(mp=mp).dropna(subset=["mp"])
+                s = d.set_index("timestamp_utc")["mp"]
+            except Exception as e:
+                print(f"[within] {gpu}: {e}")
+        if s is None or s.empty:
+            ax.set_axis_off()
+            continue
+        drew = True
+        ax.plot(s.index, s.values, color=c, lw=2.4, solid_capstyle="round")
+
+        st = _trend_stats(s.index, s.values)
+        if st:
+            rate = (1 - np.exp(st["b"])) * 100      # positive = losing value
+            years = np.asarray((s.index - s.index[0]).days, dtype=float) / 365.25
+            ax.plot(s.index, np.exp(st["a"] + st["b"] * years),
+                    color=INK if st["usable"] else FAINT,
+                    lw=1.8 if st["usable"] else 1.4,
+                    linestyle="-" if st["usable"] else (0, (5, 4)),
+                    zorder=3)
+            if st["usable"]:
+                half = 2 * st["se"] * 100      # ~percentage points
+                note = (f"{'losing' if rate > 0 else 'gaining'} "
+                        f"{abs(rate):.0f}%/yr ± {half:.0f}")
+                ncolor, nweight = INK, 600
+            else:
+                more = max(0.0, st["need_days"] - st["n"])
+                note = ("rate not yet measurable · "
+                        + (f"~{more:.0f} more days" if np.isfinite(more)
+                           and more < 2000 else "needs months"))
+                ncolor, nweight = MUTED, 400
+            # reserve a clear band under the data for the caption
+            lo, hi = ax.get_ylim()
+            ax.set_ylim(lo - (hi - lo) * 0.22, hi)
+            ax.annotate(note, xy=(0.03, 0.04), xycoords="axes fraction",
+                        ha="left", va="bottom", fontsize=10.5,
+                        color=ncolor, fontweight=nweight)
+            rows.append({"gpu": gpu, "annual_pct": round(rate, 2),
+                         "ci_halfwidth_pp": round(2 * st["se"] * 100, 1),
+                         "usable": bool(st["usable"]),
+                         "obs_days": st["n"],
+                         "days_needed": (round(st["need_days"])
+                                         if np.isfinite(st["need_days"]) else "")})
+        ax.set_title(gpu.upper(), loc="left", fontsize=12, fontweight=600,
+                     color=c, pad=6)
+        style_axis(ax, yfmt=USD_FMT)
+        ax.tick_params(labelsize=10)
+
+    if not drew:
+        plt.close(fig)
+        return
+    fig.text(0.007, 0.977, "Within-vintage price trend — the identified estimate",
+             fontsize=19, fontweight="bold", color=INK, va="top", ha="left")
+    fig.text(0.007, 0.900,
+             "Each vintage tracked against itself, so generation is held constant"
+             " · median $/GPU-hour\nRate appears once its 2σ interval fits inside "
+             "±15pp — a 3-week drift annualises to noise, not depreciation",
+             fontsize=11.5, color=MUTED, va="top", ha="left")
+    # escape $ so matplotlib doesn't read it as mathtext
+    source_note(fig, r"data: Vast.ai order book · slope is identical in \$/hr or \$/PFLOP-hr")
+    fig.savefig("data/within_vintage_chart.png", dpi=150)
+    plt.close(fig)
+
+    if rows:
+        pd.DataFrame(rows).to_csv("data/within_vintage.csv", index=False)
+        done = [r for r in rows if r["usable"]]
+        soon = min((r for r in rows if not r["usable"]),
+                   key=lambda r: r["days_needed"] or 1e9, default=None)
+        msg = f"[within] OK — {len(rows)} vintages, {len(done)} measurable"
+        if done:
+            msg += ": " + ", ".join(f"{r['gpu']} {r['annual_pct']:+.0f}%/yr"
+                                    for r in done)
+        elif soon:
+            msg += (f" · earliest is {soon['gpu']} in ~"
+                    f"{max(0, soon['days_needed'] - soon['obs_days'])} days")
+        print(msg)
+
+
 # --------------------- utilization & market size ----------------------
 
 def build_utilization():
@@ -1429,6 +1561,7 @@ if __name__ == "__main__":
     combined_price(avail_results)
     combined_supply(supply_results)
     build_hardware_value(avail_results)
+    build_within_vintage()
     build_cloud_term(avail_results)
     build_utilization()
     build_venue_prices()
