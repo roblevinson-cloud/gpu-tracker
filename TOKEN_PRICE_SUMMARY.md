@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-05 22:20 UTC · latest snapshot: 2026-08-05 22:19:57 · 47 snapshots since 2026-07-21_
+_Last updated: 2026-08-06 10:16 UTC · latest snapshot: 2026-08-06 10:16:47 · 48 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,7 +8,7 @@ _Last updated: 2026-08-05 22:20 UTC · latest snapshot: 2026-08-05 22:19:57 · 4
 | anthropic/claude-fable-5 | closed | $20.00 | Amazon Bedrock ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Amazon Bedrock ($10.00) | 8 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Anthropic ($6.00) | 7 |
-| deepseek/deepseek-v4-flash | open | $0.11 | Morph ($0.10) | 21 |
+| deepseek/deepseek-v4-flash | open | $0.11 | DigitalOcean ($0.10) | 21 |
 | deepseek/deepseek-v4-pro | open | $0.73 | DeepSeek ($0.54) | 18 |
 | minimax/minimax-m3 | open | $0.49 | GMICloud ($0.42) | 9 |
 | moonshotai/kimi-k2.5 | open | $0.86 | DigitalOcean ($0.79) | 10 |
@@ -16,7 +16,7 @@ _Last updated: 2026-08-05 22:20 UTC · latest snapshot: 2026-08-05 22:19:57 · 4
 | moonshotai/kimi-k3 | open | $5.89 | Morph ($5.67) | 12 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 6 |
 | openai/gpt-5.6-sol | closed | $9.38 | OpenAI ($5.62) | 6 |
-| z-ai/glm-5.2 | open | $0.78 | StreamLake ($0.43) | 32 |
+| z-ai/glm-5.2 | open | $0.99 | Decart ($0.82) | 32 |
 
 **Closed/open price multiple right now: 7.8x** (closed median $11.00 vs open $1.42)
 
