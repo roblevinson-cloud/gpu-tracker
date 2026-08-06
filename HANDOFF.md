@@ -113,7 +113,14 @@ race on pushes.
   tokens/prices/all). $ in labels auto-escaped for mathtext.
 - **Hardware value module** (in build_index.py, added 2026-07-31) —
   driven by gpu_specs.yml (dense-FP8 TFLOPS + volume-launch dates):
-  pflop_price_chart.png ($/PFLOP-hr by vintage) and
+  pflop_price_chart.png ($/PFLOP-hr by vintage — draws BOTH dense FP8
+  (solid, all four) and dense FP4 (dashed, Blackwell only; Hopper has
+  no FP4 units). Added 2026-08-05 because the ranking INVERTS between
+  them: FP8 makes H100 cheapest at $1.10 and B300 near-dearest at
+  $1.85, FP4 makes B300 cheapest at $0.62. The depreciation slope
+  flips sign on the same choice, -11%/yr vs +29%/yr, R2 ~0.35 either
+  way — which is the real argument for keeping that headline gated)
+  and
   depreciation_chart.png ($/PFLOP-hr vs hardware age). The fit is
   GATED (added 2026-08-04): it only prints the confident
   "-X%/yr, half-life" headline when R2 >= 0.70 AND no single vintage

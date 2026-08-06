@@ -901,7 +901,12 @@ def build_hardware_value(avail_results):
         s = price.dropna()
         if s.empty:
             continue
+        # Blackwell can serve FP4; Hopper has no FP4 units at all, so
+        # for those two the "best precision" series IS the FP8 series.
+        fp4 = sp.get("fp4_dense_tflops")
         series[gpu] = {"price": s, "usd_per_pflop": s / pflops,
+                       "usd_per_pflop_fp4":
+                           (s / (float(fp4) / 1000.0)) if fp4 else None,
                        "launch": launch, "sp": sp}
     if not series:
         print("[hardware] no priced vintages — skipping")
@@ -910,22 +915,40 @@ def build_hardware_value(avail_results):
     wide = pd.DataFrame({g: d["usd_per_pflop"] for g, d in series.items()})
     wide.to_csv("data/hardware_value.csv")
 
-    # --- Chart 1: price of compute over time ---
-    fig, ax = plt.subplots(figsize=(10.5, 6), constrained_layout=True)
+    # --- Chart 1: price of compute, both normalizations ---
+    # The precision you can actually serve at decides who looks cheap:
+    # on FP8 the oldest part wins, on FP4 the newest does. Drawing both
+    # keeps that fork visible instead of buried in a caption.
+    fig, ax = plt.subplots(figsize=(10.5, 6.4), constrained_layout=True)
     ends = []
+    has_fp4 = False
     for gpu, d in series.items():
         s = d["usd_per_pflop"]
         c = GPU_COLORS.get(gpu, INK)
         ax.plot(s.index, s, color=c, lw=3, solid_capstyle="round")
         ends.append((f"{gpu.upper()} ${s.iloc[-1]:.2f}", s.index[-1],
                      float(s.iloc[-1]), c))
+        b = d.get("usd_per_pflop_fp4")
+        if b is not None and not b.dropna().empty:
+            has_fp4 = True
+            b = b.dropna()
+            ax.plot(b.index, b, color=c, lw=2.2, linestyle=(0, (4, 3)),
+                    solid_capstyle="round")
+            ends.append((f"{gpu.upper()} at FP4 ${b.iloc[-1]:.2f}",
+                         b.index[-1], float(b.iloc[-1]), c))
     ax.set_ylim(bottom=0)
-    style_axis(ax, "$ per dense-FP8 PFLOP-hour", yfmt=USD_FMT)
-    direct_labels(ax, ends, room=0.16)
+    style_axis(ax, "$ per PFLOP-hour", yfmt=USD_FMT)
+    direct_labels(ax, ends, room=0.30)
     draw_events(ax, "gpu")
-    title_block(ax, "Price of compute — $/PFLOP-hour",
-                "Median Vast.ai $/GPU-hr ÷ dense FP8 PFLOPS · same y-axis = comparable compute")
-    source_note(fig, "specs: gpu_specs.yml (dense FP8) · data: Vast.ai order book")
+    sub = ("Solid = dense FP8, the only axis Hopper and Blackwell share"
+           " · dashed = dense FP4, where the silicon has it")
+    if has_fp4:
+        ax.annotate("Hopper has no FP4 units, so H100/H200 have no dashed line —\n"
+                    "which is why a single \"price of compute\" ranking doesn't exist",
+                    xy=(0.015, 0.06), xycoords="axes fraction",
+                    ha="left", va="bottom", fontsize=11, color=MUTED)
+    title_block(ax, "Price of compute — $/PFLOP-hour", sub)
+    source_note(fig, "specs: gpu_specs.yml · data: Vast.ai order book")
     fig.savefig("data/pflop_price_chart.png", dpi=150)
     plt.close(fig)
 

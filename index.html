@@ -206,14 +206,19 @@
     <figure class="chart"><img id="img-lenses" alt="Value lenses: rental price per unit of compute, per GB of HBM, and per TB/s of bandwidth"></figure>
     <figure class="chart"><img id="img-lensspread" alt="Cross-vintage price spread per normalization over time"></figure>
     <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
-      Median Vast.ai $/GPU-hr normalized by dense-FP8 compute &middot; specs &amp; launch dates editable in
-      <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/gpu_specs.yml" style="color:inherit">gpu_specs.yml</a>
-      &middot; B300 caveat: FP8 metric doesn't credit its FP4/memory gains &middot;
-      value lenses: same rentals per best-precision FLOP / per GB HBM / per TB/s &mdash; the flattest lens is what the market prices.<br>
+      Median Vast.ai $/GPU-hr normalized by hardware specs &middot; editable in
+      <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/gpu_specs.yml" style="color:inherit">gpu_specs.yml</a>.<br>
+      <b>There is no single "price of compute."</b> On dense FP8 &mdash; the only axis Hopper and Blackwell share &mdash;
+      the oldest part is cheapest (H100). On dense FP4, which only Blackwell can serve, the newest is cheapest
+      (B300), and the whole ranking inverts. The age chart's slope flips sign with that same choice:
+      &minus;11%/yr on FP8 versus +29%/yr on FP4, from identical prices. Both fits have R&sup2;&nbsp;&asymp;&nbsp;0.35,
+      which is why the headline stays suppressed &mdash; it would be reporting a denominator, not a measurement.<br>
       <b>Read the age chart as a cross-section, not a depreciation curve.</b> Every vintage has only weeks of
       price history, so it compares four generations at one moment rather than tracking any of them as it ages.
-      Vertical position is currently driven by scarcity (see utilization), not age &mdash; the fit is drawn faint
-      and its R&sup2; shown until a real age signal emerges. B300's fleet is only ~48 GPUs, so its line is noisy.
+      Vertical position is driven by scarcity (see utilization), not age. B300's fleet is only ~48 GPUs &mdash;
+      roughly 39% volatility over three weeks &mdash; so treat its line as indicative at best.<br>
+      Note the memory lens is the only one that doesn't move with the precision choice, and it is also the
+      tightest (~1.2&times; versus 1.7&ndash;3.1&times; for compute). That is the most robust finding here.
     </p>
   </section>
 
