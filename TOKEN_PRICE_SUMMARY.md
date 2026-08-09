@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-09 14:19 UTC · latest snapshot: 2026-08-09 14:19:17 · 59 snapshots since 2026-07-21_
+_Last updated: 2026-08-09 19:52 UTC · latest snapshot: 2026-08-09 19:52:14 · 60 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
