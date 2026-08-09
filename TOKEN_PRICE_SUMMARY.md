@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-09 04:48 UTC · latest snapshot: 2026-08-09 04:48:46 · 57 snapshots since 2026-07-21_
+_Last updated: 2026-08-09 08:24 UTC · latest snapshot: 2026-08-09 08:24:16 · 58 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -16,7 +16,7 @@ _Last updated: 2026-08-09 04:48 UTC · latest snapshot: 2026-08-09 04:48:46 · 5
 | moonshotai/kimi-k3 | open | $5.67 | Morph ($5.60) | 12 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 6 |
 | openai/gpt-5.6-sol | closed | $9.38 | OpenAI ($5.62) | 6 |
-| z-ai/glm-5.2 | open | $0.22 | StreamLake ($0.15) | 32 |
+| z-ai/glm-5.2 | open | $0.13 | StreamLake ($0.11) | 32 |
 
 **Closed/open price multiple right now: 7.8x** (closed median $11.00 vs open $1.41)
 
