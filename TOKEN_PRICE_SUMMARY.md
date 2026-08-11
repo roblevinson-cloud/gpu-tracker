@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-11 04:52 UTC · latest snapshot: 2026-08-11 04:52:10 · 65 snapshots since 2026-07-21_
+_Last updated: 2026-08-11 09:43 UTC · latest snapshot: 2026-08-11 09:43:42 · 66 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,8 +8,8 @@ _Last updated: 2026-08-11 04:52 UTC · latest snapshot: 2026-08-11 04:52:10 · 6
 | anthropic/claude-fable-5 | closed | $20.00 | Amazon Bedrock ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Amazon Bedrock ($10.00) | 8 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Anthropic ($6.00) | 7 |
-| deepseek/deepseek-v4-flash | open | $0.10 | DigitalOcean ($0.09) | 21 |
-| deepseek/deepseek-v4-pro | open | $0.74 | DeepSeek ($0.54) | 18 |
+| deepseek/deepseek-v4-flash | open | $0.11 | DigitalOcean ($0.09) | 20 |
+| deepseek/deepseek-v4-pro | open | $0.70 | DeepSeek ($0.54) | 18 |
 | minimax/minimax-m3 | open | $0.48 | GMICloud ($0.42) | 9 |
 | moonshotai/kimi-k2.5 | open | $0.86 | DigitalOcean ($0.79) | 10 |
 | moonshotai/kimi-k2.6 | open | $1.22 | StreamLake ($1.08) | 21 |
@@ -24,10 +24,10 @@ _Last updated: 2026-08-11 04:52 UTC · latest snapshot: 2026-08-11 04:52:10 · 6
 
 | Region | Offers | Rel. price (1.0=parity) | Median $/M |
 |---|---|---|---|
-| ASIA | 4 | 0.72 | $0.62 |
+| ASIA | 4 | 0.71 | $0.62 |
 | DECENTRALIZED | 2 | 0.95 | $3.64 |
-| CN | 21 | 1.00 | $1.43 |
-| UNKNOWN | 62 | 1.00 | $1.32 |
+| CN | 21 | 1.00 | $1.20 |
+| UNKNOWN | 61 | 1.00 | $1.30 |
 | US | 30 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
