@@ -54,6 +54,7 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 # question is "is this generation busy", not "is this SKU busy".
 # Update if Vast renames a board (check /vastai-exporter/gpu-stats).
 VAST_MODELS = {
+    "a100": ["A100 SXM4"],      # PCIE tracked separately, different bandwidth
     "h100": ["H100 SXM", "H100 PCIE", "H100 NVL"],
     "h200": ["H200", "H200 NVL"],
     "b200": ["B200"],

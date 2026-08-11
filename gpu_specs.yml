@@ -38,14 +38,30 @@
 #   stack HEIGHT, not more stacks - claims of 12 TB/s are wrong.
 # ============================================================
 
+# fp16_dense_tflops: dense FP16/BF16 Tensor Core TFLOPS. This is the
+#   ONLY compute axis all five vintages share — Ampere has no FP8 and
+#   no FP4, so any FP8-based chart silently excludes A100. Added
+#   2026-08-06 alongside A100.
+
+a100:
+  # Ampere: no FP8 and no FP4 units, so it appears only on FP16-based
+  # compute charts. Tracking SXM4 80GB (Nov 2020 volume); the original
+  # 40GB part is a different product and is not tracked.
+  fp16_dense_tflops: 312
+  launch: 2020-11-01
+  hbm_gb: 80
+  bandwidth_tbps: 2.039
+
 h100:
   fp8_dense_tflops: 1979
+  fp16_dense_tflops: 989
   launch: 2022-10-01
   hbm_gb: 80
   bandwidth_tbps: 3.35
 
 h200:
   fp8_dense_tflops: 1979   # same Hopper compute die as H100
+  fp16_dense_tflops: 989
   launch: 2024-04-01
   hbm_gb: 141
   bandwidth_tbps: 4.8
@@ -53,6 +69,7 @@ h200:
 b200:
   fp8_dense_tflops: 4500
   fp4_dense_tflops: 9000
+  fp16_dense_tflops: 2250
   launch: 2025-02-01
   hbm_gb: 192
   bandwidth_tbps: 8.0
@@ -60,6 +77,7 @@ b200:
 b300:
   fp8_dense_tflops: 4500   # FP8 == B200 exactly; no Ultra uplift here
   fp4_dense_tflops: 13500  # HGX B300 (GB300 NVL72 is 15000 - not this)
+  fp16_dense_tflops: 2250  # also identical to B200
   launch: 2025-10-01
   hbm_gb: 288
   bandwidth_tbps: 8.0

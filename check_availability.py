@@ -26,6 +26,11 @@ import requests
 # ----------------------------- SETTINGS -----------------------------
 
 GPU_CONFIGS = [
+    # A100 SXM4 80GB only — Vast also lists "A100 PCIE" as a separate
+    # gpu_name, and mixing the two would blend different bandwidth
+    # (2.0 vs 1.9 TB/s) into one median. Largest fleet on the platform.
+    {"name": "a100", "min_vram_gb": 80,  "price_cap": 2.00,
+     "name_variants": ["A100 SXM4", "A100 SXM"]},
     {"name": "h100", "min_vram_gb": 80,  "price_cap": 4.00,
      "name_variants": ["H100 SXM", "H100 NVL", "H100 PCIE", "H100"]},
     {"name": "h200", "min_vram_gb": 141, "price_cap": 5.50,

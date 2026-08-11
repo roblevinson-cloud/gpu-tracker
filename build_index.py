@@ -190,6 +190,7 @@ def multiline(ax, frame_or_series, colors=None, lw=2.8):
 
 
 GPU_COLORS = {
+    "a100": "#3f9e6e",
     "h100": "#2ab5ac",
     "h200": "#7f77dd",
     "b200": "#d85a30",
@@ -885,6 +886,13 @@ def build_hardware_value(avail_results):
         sp = specs.get(gpu)
         if not sp:
             continue
+        if "fp8_dense_tflops" not in sp:
+            # Ampere has no FP8 units, so it cannot appear on an
+            # FP8-normalised axis at all. Not an error — see the FP16
+            # fields in gpu_specs.yml for the axis that spans everything.
+            print(f"[hardware] {gpu}: no FP8 spec — excluded from "
+                  f"FP8-normalised charts")
+            continue
         try:
             pflops = float(sp["fp8_dense_tflops"]) / 1000.0
             launch = pd.to_datetime(str(sp["launch"]))
@@ -1188,11 +1196,18 @@ def build_within_vintage():
     rate prints only once it clears 2 sigma; until then the panel says
     how much longer it needs."""
     rows = []
-    fig, axes = plt.subplots(2, 2, figsize=(10.5, 7.8))
-    fig.subplots_adjust(top=0.79, bottom=0.09, left=0.09, right=0.98,
-                        hspace=0.45, wspace=0.26)
+    vintages = ["a100", "h100", "h200", "b200", "b300"]
+    ncol = 3 if len(vintages) > 4 else 2
+    nrow = int(np.ceil(len(vintages) / ncol))
+    height = 3.5 * nrow + 1.7
+    fig, axes = plt.subplots(nrow, ncol, figsize=(10.5, height))
+    fig.subplots_adjust(top=1 - 1.5 / height, bottom=0.085, left=0.075,
+                        right=0.985, hspace=0.52, wspace=0.30)
+    flat = np.atleast_1d(axes).ravel()
+    for spare in flat[len(vintages):]:      # unused cells in the grid
+        spare.set_axis_off()
     drew = False
-    for ax, gpu in zip(axes.ravel(), ["h100", "h200", "b200", "b300"]):
+    for ax, gpu in zip(flat, vintages):
         path = f"data/daily_index_{gpu}.csv"
         c = GPU_COLORS.get(gpu, INK)
         s = None
@@ -1208,7 +1223,24 @@ def build_within_vintage():
             ax.set_axis_off()
             continue
         drew = True
-        ax.plot(s.index, s.values, color=c, lw=2.4, solid_capstyle="round")
+        ax.plot(s.index, s.values, color=c, lw=2.4, marker="o" if len(s) < 4
+                else None, ms=5, solid_capstyle="round")
+
+        if len(s) < 3:
+            # A vintage added mid-flight: pin a readable window or the
+            # date locator spans years around a single point.
+            ax.set_xlim(s.index.min() - pd.Timedelta(days=3),
+                        s.index.max() + pd.Timedelta(days=3))
+            lo, hi = ax.get_ylim()
+            ax.set_ylim(lo - (hi - lo) * 0.22, hi)
+            ax.annotate("just started collecting", xy=(0.03, 0.04),
+                        xycoords="axes fraction", ha="left", va="bottom",
+                        fontsize=10.5, color=MUTED)
+            ax.set_title(gpu.upper(), loc="left", fontsize=12,
+                         fontweight=600, color=c, pad=6)
+            style_axis(ax, yfmt=USD_FMT)
+            ax.tick_params(labelsize=10)
+            continue
 
         st = _trend_stats(s.index, s.values)
         if st:
@@ -1226,9 +1258,9 @@ def build_within_vintage():
                 ncolor, nweight = INK, 600
             else:
                 more = max(0.0, st["need_days"] - st["n"])
-                note = ("rate not yet measurable · "
-                        + (f"~{more:.0f} more days" if np.isfinite(more)
-                           and more < 2000 else "needs months"))
+                note = ("not measurable yet · "
+                        + (f"~{more:.0f}d more" if np.isfinite(more)
+                           and more < 2000 else "months more"))
                 ncolor, nweight = MUTED, 400
             # reserve a clear band under the data for the caption
             lo, hi = ax.get_ylim()
@@ -1308,7 +1340,7 @@ def build_utilization():
         gridspec_kw={"height_ratios": [1.35, 1]})
     ends1, ends2 = [], []
     daily_rows = []
-    for gpu in ["h100", "h200", "b200", "b300"]:
+    for gpu in ["a100", "h100", "h200", "b200", "b300"]:
         sub = df[df["gpu"] == gpu].set_index("timestamp_utc").sort_index()
         if sub.empty:
             continue
@@ -1498,7 +1530,7 @@ def build_cloud_term(avail_results):
     xs = range(len(TERM_ORDER))
     drew = False
     ends = []
-    for gpu in ["h100", "h200", "b200", "b300"]:
+    for gpu in ["a100", "h100", "h200", "b200", "b300"]:
         sub = latest[latest["gpu"] == gpu]
         if sub.empty:
             continue
