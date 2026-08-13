@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-13 05:52 UTC · latest snapshot: 2026-08-13 05:52:25 · 73 snapshots since 2026-07-21_
+_Last updated: 2026-08-13 09:50 UTC · latest snapshot: 2026-08-13 09:50:01 · 74 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -28,7 +28,7 @@ _Last updated: 2026-08-13 05:52 UTC · latest snapshot: 2026-08-13 05:52:25 · 7
 | DECENTRALIZED | 2 | 0.95 | $3.64 |
 | CN | 21 | 1.00 | $1.43 |
 | UNKNOWN | 59 | 1.00 | $1.29 |
-| US | 29 | 1.00 | $2.15 |
+| US | 28 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
 
