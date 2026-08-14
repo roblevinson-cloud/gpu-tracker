@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-14 09:44 UTC · latest snapshot: 2026-08-14 09:44:32 · 78 snapshots since 2026-07-21_
+_Last updated: 2026-08-14 15:10 UTC · latest snapshot: 2026-08-14 15:10:40 · 79 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -9,25 +9,25 @@ _Last updated: 2026-08-14 09:44 UTC · latest snapshot: 2026-08-14 09:44:32 · 7
 | anthropic/claude-opus-4.8 | closed | $10.00 | Amazon Bedrock ($10.00) | 9 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Anthropic ($6.00) | 9 |
 | deepseek/deepseek-v4-flash | open | $0.10 | DigitalOcean ($0.09) | 19 |
-| deepseek/deepseek-v4-pro | open | $0.62 | DeepSeek ($0.54) | 18 |
+| deepseek/deepseek-v4-pro | open | $0.53 | StreamLake ($0.52) | 17 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 12 |
 | moonshotai/kimi-k2.5 | open | $0.86 | DigitalOcean ($0.79) | 10 |
-| moonshotai/kimi-k2.6 | open | $1.14 | Decart ($1.06) | 21 |
+| moonshotai/kimi-k2.6 | open | $1.05 | Decart ($1.02) | 21 |
 | moonshotai/kimi-k3 | open | $5.67 | Morph ($5.60) | 15 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 6 |
 | openai/gpt-5.6-sol | closed | $9.38 | OpenAI ($5.62) | 6 |
-| z-ai/glm-5.2 | open | $1.08 | DigitalOcean ($0.97) | 32 |
+| z-ai/glm-5.2 | open | $0.95 | Baidu ($0.75) | 32 |
 
-**Closed/open price multiple right now: 7.7x** (closed median $11.00 vs open $1.43)
+**Closed/open price multiple right now: 8.1x** (closed median $11.00 vs open $1.35)
 
 ## Regional comparison (open models, same model+quant only)
 
 | Region | Offers | Rel. price (1.0=parity) | Median $/M |
 |---|---|---|---|
-| ASIA | 4 | 0.62 | $0.54 |
+| ASIA | 4 | 0.64 | $0.54 |
 | DECENTRALIZED | 2 | 0.95 | $3.64 |
 | CN | 21 | 1.00 | $1.43 |
-| UNKNOWN | 62 | 1.00 | $1.32 |
+| UNKNOWN | 61 | 1.00 | $1.22 |
 | US | 29 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
