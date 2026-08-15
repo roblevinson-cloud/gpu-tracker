@@ -122,6 +122,15 @@ race on pushes.
   re-add them.
 - **Memory axis = hbm_gb_usable**, not nameplate (NVIDIA's DGX B200
   page: 1,440 GB / 8 = 180, matching Vast's reported 180).
+- **VALUE_CHART_EXCLUDE = {"a100"}** (build_index.py, 2026-08-15).
+  A100 is collected and charted everywhere EXCEPT the four
+  cross-vintage value charts. It is a trailing-edge part with no
+  FP8/FP4 priced off bandwidth, so it widened every lens spread
+  (bandwidth 1.41x -> 1.60x, memory 1.16x -> 2.53x) and dropped the
+  age fit to R2 0.18 while changing no conclusion. Delete the entry to
+  put it back. Note the FP16 axis was kept: for the four remaining
+  vintages FP8 is EXACTLY 2x FP16, so the choice only rescales the
+  y-axis — rankings, spreads and the age slope are identical.
 - **Hardware value module** (in build_index.py, added 2026-07-31) —
   driven by gpu_specs.yml (dense-FP8 TFLOPS + volume-launch dates):
   pflop_price_chart.png ($/PFLOP-hr by vintage — draws BOTH dense FP8

@@ -870,6 +870,17 @@ def style_axis_numeric(ax, ylabel="", xlabel="", yfmt=None):
         ax.yaxis.set_major_formatter(yfmt)
 
 
+# Vintages held out of the CROSS-VINTAGE value charts (price of compute,
+# rental value vs age, value lenses, lens spread). A100 was added
+# 2026-08-11 and pulled from these on 2026-08-15: it trades as a
+# different market — trailing edge, no FP8/FP4, priced off bandwidth
+# rather than compute — so it widened every spread (bandwidth 1.41x ->
+# 1.60x, memory 1.16x -> 2.53x) and cut the age fit from R2 0.29 to 0.18
+# without changing any conclusion. It stays fully tracked everywhere
+# else: cards, per-GPU charts, utilisation, revenue, within-vintage.
+VALUE_CHART_EXCLUDE = {"a100"}
+
+
 def build_hardware_value(avail_results):
     """Two charts driven by gpu_specs.yml:
       data/pflop_price_chart.png    $/dense-FP8-PFLOP-hour over time
@@ -885,6 +896,10 @@ def build_hardware_value(avail_results):
     for gpu, daily in avail_results:
         sp = specs.get(gpu)
         if not sp:
+            continue
+        if gpu in VALUE_CHART_EXCLUDE:
+            print(f"[hardware] {gpu}: held out of cross-vintage value "
+                  f"charts (see VALUE_CHART_EXCLUDE)")
             continue
         if "fp16_dense_tflops" not in sp:
             print(f"[hardware] {gpu}: no FP16 spec — skipped")
