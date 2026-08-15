@@ -111,6 +111,17 @@ race on pushes.
 - **Chart annotations** — events.yml (repo root): dated markers drawn
   as dashed vlines on chart families via show_on tags (gpu/h100/…/
   tokens/prices/all). $ in labels auto-escaped for mathtext.
+- **Compute axis = dense FP16/BF16** (switched from FP8 on 2026-08-11
+  when A100 was added). Only tensor format present AND full-rate on all
+  five vintages, and monotonic: 312/989/989/2250/2250. Charts also draw
+  a "best deployable" dashed line (FP4 Blackwell, FP8 Hopper, FP16
+  Ampere). INT8/INT4 were checked and REJECTED — see the long comment
+  block at the top of gpu_specs.yml; short version, INT4 is A100-only
+  and INT8 is non-monotonic because NVIDIA gutted B300's INT8 (3 POPS
+  vs B200's 72), putting a 2025 flagship below a 2020 A100. Do not
+  re-add them.
+- **Memory axis = hbm_gb_usable**, not nameplate (NVIDIA's DGX B200
+  page: 1,440 GB / 8 = 180, matching Vast's reported 180).
 - **Hardware value module** (in build_index.py, added 2026-07-31) —
   driven by gpu_specs.yml (dense-FP8 TFLOPS + volume-launch dates):
   pflop_price_chart.png ($/PFLOP-hr by vintage — draws BOTH dense FP8

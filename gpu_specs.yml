@@ -38,33 +38,77 @@
 #   stack HEIGHT, not more stacks - claims of 12 TB/s are wrong.
 # ============================================================
 
-# fp16_dense_tflops: dense FP16/BF16 Tensor Core TFLOPS. This is the
-#   ONLY compute axis all five vintages share — Ampere has no FP8 and
-#   no FP4, so any FP8-based chart silently excludes A100. Added
-#   2026-08-06 alongside A100.
+# fp16_dense_tflops: dense FP16/BF16 Tensor Core TFLOPS. THE PRIMARY
+#   CROSS-VINTAGE AXIS. It is the only tensor format that is both
+#   present on all five parts AND full-rate on all five, and it is
+#   monotonic with vintage: 312 -> 989 -> 989 -> 2250 -> 2250.
+#   FP8 silently drops A100; FP4 drops A100/H100/H200.
+#
+# WHY NOT INT8 OR INT4 (checked against NVIDIA primary sources
+# 2026-08-11, because it looks like the obvious common axis):
+#   INT4 — A100 is the ONLY part here that has it. Hopper dropped INT4
+#     tensor cores and Blackwell never restored them; Blackwell's 4-bit
+#     formats are NVFP4/MXFP4, which are floating point (PTX tcgen05
+#     exposes .kind::i8 but no i4). An INT4 axis has one data point.
+#     Note GPTQ/AWQ "INT4" is W4A16 — a STORAGE format that dequantises
+#     to FP16/FP8 and runs on float tensor cores. It belongs on the
+#     memory axis, never a compute axis.
+#   INT8 — nominally spans all five but is NON-MONOTONIC, so it is
+#     unusable. NVIDIA's HGX table lists INT8 at 72 POPS for HGX B200
+#     against 3 POPS for HGX B300 (~24x cut; corroborated independently
+#     by GB200 NVL72 720 POPS vs GB300 NVL72 24 POPS). Per GPU that is
+#     ~4500 TOPS dense on B200 versus ~190-375 on B300 — i.e. a 2025
+#     B300 ranks BELOW a 2020 A100's 624 TOPS. Blackwell Ultra
+#     deliberately deprecated the INT8 datapath (FP64 was cut the same
+#     way, 37 -> 1.25 TFLOPS). Normalising by INT8 would rank the newest
+#     silicon worst, which is an artifact, not a market signal.
+#   Deliberately NOT stored as fields, so nobody wires them up later.
+#
+# hbm_gb_usable: what the GPU actually exposes, which is below the
+#   nameplate stack capacity after ECC/row-repair carveout. NVIDIA's own
+#   DGX B200 page says 1,440 GB across 8 GPUs = 180 GB/GPU against a
+#   192 nameplate, and Vast reports exactly 180. Charts use USABLE
+#   because that is what decides whether a model fits.
+#
+# tdp_watts: board power. Not a capability axis — used for the energy
+#   floor (TDP x PUE x $/kWh), which flags listings renting near or
+#   below cash cost.
+#
+# nvlink_gbps: per-GPU NVLink bandwidth. Recorded but NOT charted:
+#   marketplace listings don't reliably expose topology, so a
+#   $/NVLink-GB/s series across mixed listings would be false precision.
 
 a100:
-  # Ampere: no FP8 and no FP4 units, so it appears only on FP16-based
-  # compute charts. Tracking SXM4 80GB (Nov 2020 volume); the original
-  # 40GB part is a different product and is not tracked.
+  # Ampere: no FP8, no FP4. FP16 is its best deployable precision, so
+  # it is the one part where the two compute lines coincide. Tracking
+  # SXM4 80GB (Nov 2020); the 40GB part is a different product.
   fp16_dense_tflops: 312
   launch: 2020-11-01
   hbm_gb: 80
+  hbm_gb_usable: 80
   bandwidth_tbps: 2.039
+  tdp_watts: 400
+  nvlink_gbps: 600
 
 h100:
   fp8_dense_tflops: 1979
   fp16_dense_tflops: 989
   launch: 2022-10-01
   hbm_gb: 80
+  hbm_gb_usable: 80
   bandwidth_tbps: 3.35
+  tdp_watts: 700
+  nvlink_gbps: 900
 
 h200:
   fp8_dense_tflops: 1979   # same Hopper compute die as H100
   fp16_dense_tflops: 989
   launch: 2024-04-01
   hbm_gb: 141
+  hbm_gb_usable: 141
   bandwidth_tbps: 4.8
+  tdp_watts: 700
+  nvlink_gbps: 900
 
 b200:
   fp8_dense_tflops: 4500
@@ -72,7 +116,10 @@ b200:
   fp16_dense_tflops: 2250
   launch: 2025-02-01
   hbm_gb: 192
+  hbm_gb_usable: 180      # DGX B200: 1,440 GB / 8. Vast reports 180.
   bandwidth_tbps: 8.0
+  tdp_watts: 1000
+  nvlink_gbps: 1800
 
 b300:
   fp8_dense_tflops: 4500   # FP8 == B200 exactly; no Ultra uplift here
@@ -80,4 +127,10 @@ b300:
   fp16_dense_tflops: 2250  # also identical to B200
   launch: 2025-10-01
   hbm_gb: 288
+  # Sources disagree: NVIDIA's "2.1 TB" implies 262.5, a reseller sheet
+  # says 270, Vast reports 269. Using Vast's figure — it is what renters
+  # on the tracked platform actually get.
+  hbm_gb_usable: 269
   bandwidth_tbps: 8.0
+  tdp_watts: 1400
+  nvlink_gbps: 1800

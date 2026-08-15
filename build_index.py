@@ -886,15 +886,13 @@ def build_hardware_value(avail_results):
         sp = specs.get(gpu)
         if not sp:
             continue
-        if "fp8_dense_tflops" not in sp:
-            # Ampere has no FP8 units, so it cannot appear on an
-            # FP8-normalised axis at all. Not an error — see the FP16
-            # fields in gpu_specs.yml for the axis that spans everything.
-            print(f"[hardware] {gpu}: no FP8 spec — excluded from "
-                  f"FP8-normalised charts")
+        if "fp16_dense_tflops" not in sp:
+            print(f"[hardware] {gpu}: no FP16 spec — skipped")
             continue
         try:
-            pflops = float(sp["fp8_dense_tflops"]) / 1000.0
+            # FP16/BF16 dense is the cross-vintage backbone: the only
+            # tensor format present AND full-rate on every part here.
+            pflops = float(sp["fp16_dense_tflops"]) / 1000.0
             launch = pd.to_datetime(str(sp["launch"]))
         except Exception as e:
             print(f"[hardware] bad spec for {gpu}: {e}")
@@ -909,12 +907,13 @@ def build_hardware_value(avail_results):
         s = price.dropna()
         if s.empty:
             continue
-        # Blackwell can serve FP4; Hopper has no FP4 units at all, so
-        # for those two the "best precision" series IS the FP8 series.
-        fp4 = sp.get("fp4_dense_tflops")
+        # "Best deployable" = what a stack would actually serve at:
+        # NVFP4 on Blackwell, FP8 on Hopper, FP16 on Ampere. Where that
+        # equals the FP16 backbone (A100), there is no second line.
+        best = sp.get("fp4_dense_tflops") or sp.get("fp8_dense_tflops")
         series[gpu] = {"price": s, "usd_per_pflop": s / pflops,
                        "usd_per_pflop_fp4":
-                           (s / (float(fp4) / 1000.0)) if fp4 else None,
+                           (s / (float(best) / 1000.0)) if best else None,
                        "launch": launch, "sp": sp}
     if not series:
         print("[hardware] no priced vintages — skipping")
@@ -948,15 +947,15 @@ def build_hardware_value(avail_results):
     style_axis(ax, "$ per PFLOP-hour", yfmt=USD_FMT)
     direct_labels(ax, ends, room=0.30)
     draw_events(ax, "gpu")
-    sub = ("Solid = dense FP8, the only axis Hopper and Blackwell share"
-           " · dashed = dense FP4, where the silicon has it")
+    sub = ("Solid = dense FP16/BF16, the one format all five run at full rate"
+           " · dashed = best deployable precision (FP4 / FP8)")
     if has_fp4:
-        ax.annotate("Hopper has no FP4 units, so H100/H200 have no dashed line —\n"
-                    "which is why a single \"price of compute\" ranking doesn't exist",
+        ax.annotate("A100 has no dashed line: FP16 IS its best precision.\n"
+                    "The gap between the two lines is the quantisation dividend.",
                     xy=(0.015, 0.06), xycoords="axes fraction",
                     ha="left", va="bottom", fontsize=11, color=MUTED)
     title_block(ax, "Price of compute — $/PFLOP-hour", sub)
-    source_note(fig, "specs: gpu_specs.yml · data: Vast.ai order book")
+    source_note(fig, "specs: gpu_specs.yml (dense, no sparsity) · data: Vast.ai order book")
     fig.savefig("data/pflop_price_chart.png", dpi=150)
     plt.close(fig)
 
@@ -1028,7 +1027,7 @@ def build_hardware_value(avail_results):
 
     ax.set_xlim(0, x_max * 1.14)
     ax.set_ylim(bottom=0)
-    style_axis_numeric(ax, "$ per dense-FP8 PFLOP-hour", yfmt=USD_FMT)
+    style_axis_numeric(ax, "$ per dense-FP16 PFLOP-hour", yfmt=USD_FMT)
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}y"))
     ax.annotate("hardware age since volume launch", xy=(0.5, -0.09),
                 xycoords="axes fraction", ha="center", va="top",
@@ -1044,14 +1043,14 @@ def build_hardware_value(avail_results):
     # flattest lines (smallest spread) is what buyers actually pay for.
     lenses = [
         ("PER UNIT OF COMPUTE",
-         "$ / PFLOP-hr, best precision",
-         lambda sp: (float(sp["fp4_dense_tflops"]) / 1000.0
-                     if sp.get("fp4_dense_tflops")
-                     else float(sp["fp8_dense_tflops"]) / 1000.0),
+         "$ / PFLOP-hr, best deployable",
+         lambda sp: float(sp.get("fp4_dense_tflops")
+                          or sp.get("fp8_dense_tflops")
+                          or sp["fp16_dense_tflops"]) / 1000.0,
          FuncFormatter(lambda v, _: f"${v:.2f}")),
         ("PER GB OF HBM",
-         "cents / GB-hr",
-         lambda sp: float(sp["hbm_gb"]),
+         "cents / GB-hr, usable",
+         lambda sp: float(sp.get("hbm_gb_usable") or sp["hbm_gb"]),
          FuncFormatter(lambda v, _: f"{v * 100:.1f}¢")),
         ("PER TB/S BANDWIDTH",
          "$ / (TB/s)-hr",
