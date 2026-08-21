@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-21 01:56 UTC · latest snapshot: 2026-08-21 01:56:34 · 105 snapshots since 2026-07-21_
+_Last updated: 2026-08-21 07:06 UTC · latest snapshot: 2026-08-21 07:06:41 · 106 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -11,14 +11,14 @@ _Last updated: 2026-08-21 01:56 UTC · latest snapshot: 2026-08-21 01:56:34 · 1
 | deepseek/deepseek-v4-flash | open | $0.10 | DigitalOcean ($0.09) | 18 |
 | deepseek/deepseek-v4-pro | open | $1.09 | StreamLake ($0.99) | 18 |
 | minimax/minimax-m3 | open | $0.43 | CoreWeave ($0.41) | 13 |
-| moonshotai/kimi-k2.5 | open | $0.86 | DigitalOcean ($0.79) | 10 |
+| moonshotai/kimi-k2.5 | open | $0.93 | DeepInfra ($0.90) | 10 |
 | moonshotai/kimi-k2.6 | open | $1.14 | Decart ($1.06) | 19 |
 | moonshotai/kimi-k3 | open | $5.50 | Sail Research ($5.20) | 14 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.56 | OpenAI ($2.81) | 7 |
-| z-ai/glm-5.2 | open | $0.78 | StreamLake ($0.32) | 31 |
+| z-ai/glm-5.2 | open | $1.04 | Ambient ($0.95) | 31 |
 
-**Closed/open price multiple right now: 7.8x** (closed median $11.00 vs open $1.41)
+**Closed/open price multiple right now: 7.7x** (closed median $11.00 vs open $1.43)
 
 ## Regional comparison (open models, same model+quant only)
 
