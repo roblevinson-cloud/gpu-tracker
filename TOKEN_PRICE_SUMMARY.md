@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-22 06:58 UTC · latest snapshot: 2026-08-22 06:58:30 · 110 snapshots since 2026-07-21_
+_Last updated: 2026-08-22 12:59 UTC · latest snapshot: 2026-08-22 12:59:31 · 111 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,8 +8,8 @@ _Last updated: 2026-08-22 06:58 UTC · latest snapshot: 2026-08-22 06:58:30 · 1
 | anthropic/claude-fable-5 | closed | $20.00 | Amazon Bedrock ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Google ($10.00) | 10 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.09 | Baidu ($0.09) | 17 |
-| deepseek/deepseek-v4-pro | open | $0.75 | Baidu ($0.57) | 17 |
+| deepseek/deepseek-v4-flash | open | $0.08 | StreamLake ($0.08) | 17 |
+| deepseek/deepseek-v4-pro | open | $0.71 | StreamLake ($0.52) | 17 |
 | minimax/minimax-m3 | open | $0.43 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $0.93 | DeepInfra ($0.90) | 10 |
 | moonshotai/kimi-k2.6 | open | $1.02 | Baidu ($0.98) | 19 |
