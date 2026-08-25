@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-08-25 01:51 UTC · latest snapshot: 2026-08-25 01:51:15 · 121 snapshots since 2026-07-21_
+_Last updated: 2026-08-25 07:07 UTC · latest snapshot: 2026-08-25 07:07:09 · 122 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -13,12 +13,12 @@ _Last updated: 2026-08-25 01:51 UTC · latest snapshot: 2026-08-25 01:51:15 · 1
 | minimax/minimax-m3 | open | $0.45 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $0.93 | DeepInfra ($0.90) | 10 |
 | moonshotai/kimi-k2.6 | open | $1.14 | Decart ($1.06) | 20 |
-| moonshotai/kimi-k3 | open | $5.50 | Sail Research ($5.20) | 15 |
+| moonshotai/kimi-k3 | open | $5.67 | Morph ($5.60) | 14 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
 | z-ai/glm-5.2 | open | $1.03 | Ambient ($0.95) | 36 |
 
-**Closed/open price multiple right now: 7.6x** (closed median $11.00 vs open $1.44)
+**Closed/open price multiple right now: 7.7x** (closed median $11.00 vs open $1.44)
 
 ## Regional comparison (open models, same model+quant only)
 
