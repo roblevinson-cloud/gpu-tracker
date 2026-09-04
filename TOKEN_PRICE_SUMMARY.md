@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-09-04 04:30 UTC · latest snapshot: 2026-09-04 04:30:42 · 155 snapshots since 2026-07-21_
+_Last updated: 2026-09-04 11:16 UTC · latest snapshot: 2026-09-04 11:16:08 · 156 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -12,7 +12,7 @@ _Last updated: 2026-09-04 04:30 UTC · latest snapshot: 2026-09-04 04:30:42 · 1
 | deepseek/deepseek-v4-pro | open | $1.20 | DigitalOcean ($1.09) | 18 |
 | minimax/minimax-m3 | open | $0.47 | CoreWeave ($0.41) | 11 |
 | moonshotai/kimi-k2.5 | open | $0.93 | SiliconFlow ($0.90) | 8 |
-| moonshotai/kimi-k2.6 | open | $1.03 | Decart ($1.00) | 21 |
+| moonshotai/kimi-k2.6 | open | $1.19 | StreamLake ($1.08) | 21 |
 | moonshotai/kimi-k3 | open | $5.23 | Makora ($5.10) | 18 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
