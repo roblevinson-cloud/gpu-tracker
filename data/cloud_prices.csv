@@ -467,3 +467,16 @@ date,cloud,gpu,sku,term,region,instance_usd_hr,usd_per_gpu_hr,gpus
 2026-09-05,azure,b200,Standard_ND128isr_NDR_GB200_v6,spot,eastus,108.16,27.04,4
 2026-09-05,azure,b200,Standard_ND128isr_NDR_GB200_v6,1yr,westus3,69.2224,17.3056,4
 2026-09-05,azure,b200,Standard_ND128isr_NDR_GB200_v6,3yr,westus3,47.5904,11.8976,4
+2026-09-06,azure,h100,Standard_ND96isr_H100_v5,ondemand,westus3,98.32,12.29,8
+2026-09-06,azure,h100,Standard_ND96isr_H100_v5,spot,westus2,18.1695,2.2712,8
+2026-09-06,azure,h100,Standard_ND96isr_H100_v5,1yr,westus3,62.9248,7.8656,8
+2026-09-06,azure,h100,Standard_ND96isr_H100_v5,3yr,westus3,43.1625,5.3953,8
+2026-09-06,azure,h100,Standard_ND96isr_H100_v5,5yr,westus3,39.328,4.916,8
+2026-09-06,azure,h200,Standard_ND96isr_H200_v5,ondemand,westus2,84.8,10.6,8
+2026-09-06,azure,h200,Standard_ND96isr_H200_v5,spot,westus3,84.8,10.6,8
+2026-09-06,azure,h200,Standard_ND96isr_H200_v5,1yr,westus2,46.5212,5.8152,8
+2026-09-06,azure,h200,Standard_ND96isr_H200_v5,3yr,westus2,42.2219,5.2777,8
+2026-09-06,azure,b200,Standard_ND128isr_NDR_GB200_v6,ondemand,westus3,108.16,27.04,4
+2026-09-06,azure,b200,Standard_ND128isr_NDR_GB200_v6,spot,eastus,108.16,27.04,4
+2026-09-06,azure,b200,Standard_ND128isr_NDR_GB200_v6,1yr,westus3,69.2224,17.3056,4
+2026-09-06,azure,b200,Standard_ND128isr_NDR_GB200_v6,3yr,westus3,47.5904,11.8976,4
