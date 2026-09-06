@@ -29,6 +29,10 @@ jobs:
         run: python fetch_cloud_prices.py || echo "cloud price fetch failed, continuing"
       - name: Collect cluster lease rates
         run: python fetch_market_stats.py sfcompute || echo "lease rate fetch failed, continuing"
+      - name: Collect Artificial Analysis benchmarks
+        env:
+          AA_API_KEY: ${{ secrets.AA_API_KEY }}
+        run: python fetch_aa.py || echo "AA fetch failed, continuing"
       - run: python build_index.py
 
       - run: python build_economics.py

@@ -1,0 +1,56 @@
+# ============================================================
+# ARTIFICIAL ANALYSIS MAP for fetch_aa.py
+#
+# models: OpenRouter model slug -> Artificial Analysis model slug.
+#   Keyed by the OpenRouter slug (the one in perf_log.csv and
+#   tokens_by_model.csv), never by brand name. AA lists each
+#   reasoning-effort setting as its own model; use the DEFAULT/
+#   max-effort slug (the bare one) because OpenRouter's endpoint
+#   stats don't split by effort either. Dated OpenRouter slugs map
+#   to AA's dated variants where AA keeps them (DeepSeek V4 Flash
+#   0731 vs 0420). Find slugs at artificialanalysis.ai/models/<slug>
+#   or in the API listing (fetch_aa.py prints unmapped hints).
+#
+# hosts: AA host name -> OpenRouter provider name, for the join
+#   against perf_log.csv. Only needed where the two differ; a host
+#   absent here keeps its AA name (Fireworks, Novita, DeepInfra,
+#   CoreWeave, Parasail, SiliconFlow, Crusoe, DigitalOcean, Nebius,
+#   OpenAI, Anthropic already match). Quantisation / tier tags AA
+#   appends in parentheses -- "(FP8)", "(NVFP4)", "(FAST)" -- and
+#   the " BF16" suffix are stripped into a separate `variant`
+#   column BEFORE this lookup, so key on the bare name.
+#
+# Coverage note: AA benchmarks the underlying host directly with a
+# fixed probe (1 parallel query, 1000-token prompt, P50 over 72h);
+# OpenRouter's numbers are passive telemetry from whatever traffic
+# it routes. Disagreement between them is the point of collecting
+# both -- see HANDOFF.md "Artificial Analysis".
+# ============================================================
+
+models:
+  deepseek/deepseek-v4-flash-20260731: deepseek-v4-flash
+  deepseek/deepseek-v4-flash-20260423: deepseek-v4-flash-0420
+  deepseek/deepseek-v4-pro-20260423: deepseek-v4-pro-0424
+  tencent/hy3-20260706: hy3
+  openai/gpt-5.6-luna-20260709: gpt-5-6-luna
+  openai/gpt-5.6-terra-20260709: gpt-5-6-terra
+  openai/gpt-5.6-sol-20260709: gpt-5-6-sol
+  z-ai/glm-5.2-20260616: glm-5-2
+  xiaomi/mimo-v2.5-20260422: mimo-v2-5-0424
+  nvidia/nemotron-3-ultra-550b-a55b-20260604:free: nvidia-nemotron-3-ultra-550b-a55b
+  google/gemini-3.6-flash-20260721: gemini-3-6-flash
+  anthropic/claude-opus-5-20260723: claude-opus-5
+  anthropic/claude-sonnet-5-20260630: claude-sonnet-5
+  moonshotai/kimi-k3-20260715: kimi-k3
+  minimax/minimax-m3-20260531: minimax-m3
+  stepfun/step-3.7-flash-20260528: step-3-7-flash
+
+hosts:
+  Together AI: Together
+  Google Vertex: Google
+  Microsoft Azure: Azure
+  GMI: GMICloud
+  Baseten: BaseTen
+  Zai: Z.AI
+  MiniMax: Minimax
+  Kimi: Moonshot AI

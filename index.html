@@ -165,6 +165,7 @@
     <a href="#tokens">Tokens</a>
     <a href="#token-prices">Token Prices</a>
     <a href="#perf">Performance</a>
+    <a href="#aa">Benchmarks</a>
     <a href="apld-valuation.html">APLD &#8599;</a>
   </nav>
 
@@ -316,6 +317,20 @@
   <section id="perf">
     <h2>Inference performance &mdash; OpenRouter</h2>
     <div class="grid2" id="perf-charts"></div>
+  </section>
+
+  <section id="aa">
+    <h2>Inference benchmarks &mdash; Artificial Analysis</h2>
+    <div class="grid2">
+      <figure class="chart"><img id="img-aa-crosscheck" alt="Artificial Analysis probe vs OpenRouter telemetry: output speed and time-to-first-token ratio per host"></figure>
+      <figure class="chart"><img id="img-aa-hedonic" alt="Blended token price vs intelligence index with the cost-of-intelligence frontier, and the frontier per intelligence band over time"></figure>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:4px">
+      Benchmark data by <a href="https://artificialanalysis.ai/" style="color:inherit">Artificial Analysis</a>
+      (active probe: 1 query, 1,000-token prompt, P50 over 72h) &middot; joined to OpenRouter endpoint stats on the same host
+      &middot; models mapped in <a href="https://github.com/roblevinson-cloud/gpu-tracker/blob/main/aa_models.yml" style="color:inherit">aa_models.yml</a>
+      &middot; collected daily
+    </p>
   </section>
 
   <footer>
@@ -679,6 +694,8 @@ function setScale(scale) {
   ["img-venues", "data/venue_price_chart.png"],
   ["img-lensspread", "data/lens_spread_chart.png"],
   ["img-within", "data/within_vintage_chart.png"],
+  ["img-aa-crosscheck", "data/aa_crosscheck_chart.png"],
+  ["img-aa-hedonic", "data/aa_hedonic_chart.png"],
 ]) {
   const el = document.getElementById(id);
   if (el) {

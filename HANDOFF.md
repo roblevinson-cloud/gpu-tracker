@@ -1,7 +1,7 @@
 # GPU Tracker — System Handoff
 
 One-page state of the system. Update when architecture changes.
-Last updated: 2026-07-31.
+Last updated: 2026-09-06.
 
 ## What this is
 Self-updating compute-market monitor. Tracks GPU rental availability/
@@ -19,7 +19,7 @@ Runs entirely on GitHub Actions (free). No servers.
 | Workflow | Schedule | What it does |
 |---|---|---|
 | GPU Availability Poll | every 10 min (triggered externally, see below) | check_availability.py + check_perf.py + fetch_market_stats.py utilization, commits data/ |
-| Build Index Chart | every 6h + manual | check_tokens.py -> fetch_cloud_prices.py -> fetch_market_stats.py sfcompute -> build_index.py -> build_economics.py (+ build_growth_table.py only if that file exists) |
+| Build Index Chart | every 6h + manual | check_tokens.py -> fetch_cloud_prices.py -> fetch_market_stats.py sfcompute -> fetch_aa.py -> build_index.py -> build_economics.py (+ build_growth_table.py only if that file exists) |
 | Track token prices | every 6 h | fetch_token_prices.py -> build_token_index.py (watchlist system) |
 | Backfill Price History | manual only | backfill_prices.py (Wayback archive of OpenRouter prices) — if present |
 
@@ -93,6 +93,33 @@ race on pushes.
   token_watchlist.yml, regions via provider_regions.yml. Outputs
   data/token_prices.csv, charts/, TOKEN_PRICE_SUMMARY.md.
   K3 pre-listed; capturing since Jul 21.
+- **fetch_aa.py** — daily (Build Index workflow, added 2026-09-06).
+  Artificial Analysis: the only ACTIVE-probe instrument in the tracker
+  (everything else on the token side is OpenRouter's passive
+  telemetry). AA fires a fixed request (1 parallel query, 1,000-token
+  prompt) at each host directly and publishes P50 over 72h. Two
+  collectors, isolated, `models` / `providers` / no arg = both:
+  * models -> data/aa_models.csv from the free API
+    (api/v2/data/llms/models, x-api-key = AA_API_KEY secret, 1,000
+    req/day, we use 1). One row per scored+priced model per day
+    (~400): intelligence/coding index, list price, median tps/TTFT.
+    AA returns 0 for "not yet measured" -> stored blank. Per-model
+    ONLY -- there is no host breakdown in the API (checked 2026-09-06;
+    query params are ignored).
+  * providers -> data/aa_providers.csv, scraped from each mapped
+    model's /models/<slug>/providers page: the `hostModels` array in
+    the Next.js flight payload (same trick as sfcompute). Per host:
+    price in/out, cache-hit price + observed cache-hit RATE, tps and
+    TTFT median/p05/p95, e2e time. ~110 rows/day. Structure-dependent;
+    if it prints "no hostModels found" AA redesigned the page.
+  * aa_models.yml maps OpenRouter slug -> AA slug (keyed by slug,
+    never brand; AA lists each reasoning-effort level as its own
+    model, use the bare/max slug) and AA host name -> OpenRouter
+    provider name for the join. AA appends quantisation/tier tags to
+    host names -- "(FP4)", "(NVFP4)", "(FAST)", " BF16" -- which the
+    collector strips into a `variant` column BEFORE aliasing.
+  * ATTRIBUTION REQUIRED (free-API terms): link is on the charts'
+    source note and the dashboard section. Keep it.
 
 ## Builders
 - **build_index.py** — all core charts (house style: direct line
@@ -180,6 +207,34 @@ race on pushes.
   B200 ~60, H100 ~81, B300 ~99. Slope is invariant to any per-vintage
   constant, so $/hr and $/PFLOP-hr give the SAME rate — the FP8-vs-FP4
   question does not arise here, which is the point.
+- **build_aa()** (build_index.py, added 2026-09-06) -> two charts,
+  skips quietly if fetch_aa.py hasn't run.
+  * aa_crosscheck_chart.png + data/aa_crosscheck.csv: same (model,
+    host) pair measured by AA's probe and by OpenRouter's telemetry,
+    ratio per host (dots = models, diamond = host median), output
+    speed and TTFT panels. The TTFT panel DROPS pairs where AA's TTFT
+    > AA_TTFT_MAX_S (10 s): on reasoning-mode models AA waits through
+    hidden reasoning (60-150 s on Opus 5 / Luna max; its inputTime/
+    reasoningTime split does not separate it) while OpenRouter's
+    latency is first-chunk, so the ratio there is not a measurement.
+    Joins on (or_model, provider) against the
+    perf_log daily median for the latest OpenRouter day <= the AA
+    day, and says so in the subtitle when they differ by >1 day. First
+    reading 2026-09-06 (vs 08-15 OpenRouter data): AA reads ~1.8x
+    FASTER than OpenRouter at the median, 3x+ on Fireworks/Together/
+    Crusoe/SiliconFlow, and the sign is consistent across nearly every
+    host -- so it is structural (single-query probe vs real concurrent
+    traffic with longer prompts), not noise. Hosts that break from the
+    pack (Parasail, DeepInfra on MiMo: probe SLOWER than live) are the
+    ones worth a look. Needs >= 5 joinable pairs.
+  * aa_hedonic_chart.png + data/aa_frontier.csv: price of a unit of
+    intelligence. Top panel = today's cross-section (blended $/M vs
+    AA intelligence index, models released in the last 12 months) with
+    the frontier = cheapest model at least this smart. Bottom = that
+    frontier's cheapest price per intelligence band (AA_BANDS: 50+,
+    45-50, 40-45, 35-40) over time -- the hedonic deflator, the
+    token-side analogue of $/PFLOP-hr. History starts 2026-09-06; AA
+    has no backfill, so this panel is a dot until it isn't.
 - **Market-structure charts** (added 2026-08-01, all in build_index.py)
   * build_utilization() -> utilization_chart.png. Two panels:
     rented share by vintage, and implied revenue run-rate (price x
@@ -218,7 +273,8 @@ Actions for whether the *schedule* event actually fired — the poll
 Single page, self-contained. Cards (GPU + token summary), jump nav,
 sections: All vintages -> per-GPU -> Hardware value -> Token demand
 (Lines/Stacked + Linear/Log toggles; log forces lines) -> Token
-prices watchlist -> Provider economics -> Inference performance.
+prices watchlist -> Provider economics -> Inference performance ->
+Inference benchmarks (Artificial Analysis, with required attribution).
 Charts are pre-rendered PNGs with cache-busting; missing images
 auto-hide. APLD link in header + nav.
 Added 2026-07-31: 7-day delta chips on GPU + token cards (▲/▼ vs the
@@ -227,8 +283,9 @@ and a data-freshness badge in the header (latest data/ commit time
 via the public GitHub API; green ≤45m, amber ≤3h, red beyond).
 
 ## Secrets (repo Settings -> Actions)
-LAMBDA_API_KEY, RUNPOD_API_KEY (read-only), OPENROUTER_API_KEY.
-Plus the PAT living only in cron-job.org.
+LAMBDA_API_KEY, RUNPOD_API_KEY (read-only), OPENROUTER_API_KEY,
+AA_API_KEY (Artificial Analysis free tier). Plus the PAT living only
+in cron-job.org.
 
 ## Known caveats
 - Coverage = observable merchant/spot market only (~2-5% of capacity,

@@ -1590,6 +1590,296 @@ def build_cloud_term(avail_results):
           f"{len(latest)} price points")
 
 
+
+
+# ------------------------- Artificial Analysis -------------------------
+# Two charts from fetch_aa.py's CSVs. Both exist because everything else
+# in the token module comes from ONE instrument (OpenRouter's passive
+# telemetry). AA is an active probe -- a fixed request fired at each
+# host directly -- so it can (1) cross-check the same host measured two
+# ways and (2) supply a QUALITY axis (intelligence index) that lets
+# $/token be normalised by capability, the token-side analogue of the
+# GPU value lenses. Attribution to artificialanalysis.ai is a condition
+# of the free API; it is on the chart and on the dashboard section.
+
+AA_SOURCE = ("Source: Artificial Analysis (artificialanalysis.ai) "
+             "· OpenRouter endpoint stats")
+# Intelligence-index bands for the frontier time series: cheapest
+# blended price per day among models scoring at least the lower bound
+# and below the upper. Adjust as the index scale drifts.
+AA_BANDS = [(50, None), (45, 50), (40, 45), (35, 40)]
+# AA's time to first token waits through hidden reasoning on reasoning-
+# mode models (60-150s on Opus 5 / GPT-5.6 Luna max; its inputTime /
+# reasoningTime split does NOT separate it -- checked 2026-09-06), while
+# OpenRouter's latency is a first-chunk figure. Above this many seconds
+# the two are not the same quantity, so the pair leaves the latency
+# panel instead of plotting a 100x that means nothing.
+AA_TTFT_MAX_S = 10.0
+
+
+def _write_daily(path, day, frame):
+    """Merge-rewrite: replace rows for `day`, keep the rest."""
+    day_s = pd.Timestamp(day).strftime("%Y-%m-%d")
+    frame = frame.copy()
+    frame.insert(0, "date", day_s)
+    cols = list(frame.columns)
+    if os.path.exists(path):
+        old = pd.read_csv(path, dtype=str)
+        old = old[old["date"] != day_s]
+        frame = pd.concat([old, frame.astype(str)], ignore_index=True)
+    frame.reindex(columns=cols).to_csv(path, index=False)
+
+
+def _or_daily_medians(on_or_before):
+    """OpenRouter perf_log medians per (model, provider) for the latest
+    logged day on or before `on_or_before`. Returns (day, frame)."""
+    path = "data/perf_log.csv"
+    if not os.path.exists(path):
+        return None, None
+    df = pd.read_csv(path, usecols=["timestamp_utc", "model", "provider",
+                                    "throughput_tps", "latency_s"])
+    df["day"] = pd.to_datetime(df["timestamp_utc"], errors="coerce").dt.normalize()
+    df = df.dropna(subset=["day"])
+    df = df[df["day"] <= pd.Timestamp(on_or_before)]
+    if df.empty:
+        return None, None
+    day = df["day"].max()
+    sub = df[df["day"] == day].copy()
+    for c in ("throughput_tps", "latency_s"):
+        sub[c] = pd.to_numeric(sub[c], errors="coerce")
+    med = (sub.groupby(["model", "provider"])[["throughput_tps", "latency_s"]]
+              .median().reset_index())
+    return day, med
+
+
+def _ratio_panel(ax, d, col, color, xlabel):
+    """One row per host: grey dots = models, diamond = host median of
+    the AA ÷ OpenRouter ratio, log x. Returns the row order."""
+    from matplotlib.ticker import NullFormatter
+    order = d.groupby("provider")[col].median().sort_values()
+    rowmax = d.groupby("provider")[col].max()
+    ypos = {p: i for i, p in enumerate(order.index)}
+    ax.set_xscale("log")
+    ax.set_xlim(min(0.5, d[col].min()) * 0.8, d[col].max() * 3.2)
+    ax.axvline(1.0, color=FAINT, lw=1.2, linestyle=(0, (3, 3)))
+    ax.plot(d[col], [ypos[p] for p in d["provider"]], "o", ms=6,
+            color=PALETTE[8], alpha=0.5, zorder=3, linestyle="none")
+    for p, m in order.items():
+        ax.plot(m, ypos[p], "D", ms=8.5, color=color, zorder=5)
+        ax.annotate(f"{m:.2f}×", xy=(rowmax[p], ypos[p]), xytext=(8, 0),
+                    textcoords="offset points", fontsize=11.5, fontweight=600,
+                    color=color, va="center", ha="left")
+    ax.set_yticks(range(len(order)))
+    ax.set_yticklabels(list(order.index))
+    ax.set_ylim(-0.7, len(order) - 0.3)
+    style_axis_numeric(ax, xlabel=xlabel)
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}×"))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.grid(axis="x", color=GRID, lw=1)
+    ax.grid(axis="y", visible=False)
+    return order
+
+
+def _aa_crosscheck(day, latest):
+    """Same (model, host) pair measured by AA's probe and by OpenRouter's
+    telemetry. Ratio per host: a consistent sign across hosts is
+    structural (single-query probe vs real concurrent traffic); a host
+    that stands apart from the pack is the interesting one."""
+    or_day, med = _or_daily_medians(day)
+    if med is None:
+        print("[aa] no OpenRouter perf data to cross-check against")
+        return
+    j = latest.merge(med, left_on=["or_model", "provider"],
+                     right_on=["model", "provider"], how="inner")
+    j = j[(j["tps_median"] > 0) & (j["throughput_tps"] > 0)].copy()
+    if len(j) < 5:
+        print(f"[aa] only {len(j)} joinable pairs — skipping cross-check")
+        return
+    j["tps_ratio"] = j["tps_median"] / j["throughput_tps"]
+    aa_lat = j["ttft_median"]
+    j["aa_latency_s"] = aa_lat
+    lat_ok = (aa_lat > 0) & (aa_lat <= AA_TTFT_MAX_S) & (j["latency_s"] > 0)
+    j["lat_ratio"] = np.where(lat_ok, aa_lat / j["latency_s"], np.nan)
+    j["or_date"] = or_day.strftime("%Y-%m-%d")
+    _write_daily("data/aa_crosscheck.csv", day,
+                 j[["or_model", "aa_slug", "provider", "variant", "or_date",
+                    "tps_median", "throughput_tps", "tps_ratio",
+                    "aa_latency_s", "latency_s", "lat_ratio"]].round(3))
+
+    gap = (pd.Timestamp(day) - or_day).days
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10.5, 12))
+    fig.subplots_adjust(left=0.19, right=0.96, top=0.91, bottom=0.075, hspace=0.55)
+
+    d1 = j[j["tps_ratio"] > 0]
+    order = _ratio_panel(ax1, d1, "tps_ratio", PALETTE[0],
+                         f"Output speed: AA ÷ OpenRouter (log) · {len(d1)} model×host "
+                         f"pairs · {d1['or_model'].nunique()} models")
+    ax1.annotate("1.00× — both instruments agree", xy=(1.0, len(order) - 0.3),
+                 xytext=(5, -2), textcoords="offset points", fontsize=10.5,
+                 color=MUTED, va="top", ha="left")
+    title_block(ax1, "Same host, two instruments",
+                "AA single-query probe ÷ OpenRouter live-traffic median · "
+                "dots = models · diamond = host median")
+
+    d2 = j.dropna(subset=["lat_ratio"])
+    d2 = d2[d2["lat_ratio"] > 0]
+    if d2.empty:
+        ax2.set_visible(False)
+    else:
+        dropped = int((j["ttft_median"] > AA_TTFT_MAX_S).sum())
+        _ratio_panel(ax2, d2, "lat_ratio", PALETTE[1],
+                     f"Time to first token: AA ÷ OpenRouter (log) · {len(d2)} pairs · "
+                     f"{dropped} reasoning-mode pairs dropped")
+        title_block(ax2, "Time to first token",
+                    f"AA TTFT ÷ OpenRouter latency · reasoning-mode pairs "
+                    f"(AA TTFT > {AA_TTFT_MAX_S:g} s) excluded")
+    note = AA_SOURCE
+    if gap > 1:
+        note += f" · OpenRouter data from {or_day:%d %b %Y} ({gap}d before the AA reading)"
+    source_note(fig, note)
+    fig.savefig("data/aa_crosscheck_chart.png", dpi=150)
+    plt.close(fig)
+    print(f"[aa] cross-check: {len(j)} pairs, median AA/OR speed ratio "
+          f"{j['tps_ratio'].median():.2f}x (OpenRouter day {or_day:%Y-%m-%d})")
+
+
+def _short_name(name):
+    """'Claude Opus 5 (Adaptive Reasoning, Max Effort)' -> 'Claude Opus 5'."""
+    return str(name).split(" (")[0].strip()
+
+
+def _aa_hedonic(m):
+    """Price of a unit of intelligence. Top: today's cross-section with
+    the frontier (cheapest model at least this smart). Bottom: the
+    frontier's cheapest price per intelligence band over time — the
+    hedonic deflator. History accumulates from the first collection
+    day; AA has no backfill."""
+    price, intel = "price_1m_blended_3_to_1", "intelligence_index"
+    day = m["date"].max()
+    cs = m[m["date"] == day].copy()
+    rel = pd.to_datetime(cs["release_date"], errors="coerce")
+    cs = cs[rel >= day - pd.Timedelta(days=365)]
+    cs = cs.sort_values([intel, price], ascending=[False, True])
+    front, best = [], np.inf
+    for _, r in cs.iterrows():
+        if r[price] < best:
+            front.append(r)
+            best = r[price]
+    front = pd.DataFrame(front).sort_values(intel) if front else pd.DataFrame()
+
+    # frontier per band, every day
+    hist = []
+    for d, g in m.groupby("date"):
+        for lo, hi in AA_BANDS:
+            sel = g[(g[intel] >= lo) & (g[intel] < (hi if hi is not None else np.inf))]
+            if sel.empty:
+                continue
+            r = sel.loc[sel[price].idxmin()]
+            hist.append({"date": d, "band": f"{lo}+" if hi is None else f"{lo}-{hi}",
+                         "min_price": r[price], "model": r["aa_slug"],
+                         "intelligence_index": r[intel]})
+    if not hist:
+        return
+    hist = pd.DataFrame(hist)
+    hist.to_csv("data/aa_frontier.csv", index=False)
+    wide = hist.pivot(index="date", columns="band", values="min_price").sort_index()
+    band_order = [f"{lo}+" if hi is None else f"{lo}-{hi}" for lo, hi in AA_BANDS]
+    wide = wide[[b for b in band_order if b in wide.columns]]
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10.5, 12))
+    fig.subplots_adjust(left=0.11, right=0.97, top=0.91, bottom=0.075, hspace=0.55)
+
+    # --- top: cross-section ---
+    ymin, ymax = cs[price].min() * 0.6, cs[price].max() * 2.5
+    ax1.set_yscale("log")
+    ax1.set_ylim(ymin, ymax)
+    ax1.set_xlim(-1, cs[intel].max() + 16)
+    ax1.plot(cs[intel], cs[price], "o", ms=5.5, color=PALETTE[8], alpha=0.45,
+             linestyle="none", zorder=3)
+    if not front.empty:
+        ax1.step(front[intel], front[price], where="post", color=PALETTE[0],
+                 lw=2.6, zorder=4)
+        ax1.plot(front[intel], front[price], "o", ms=7, color=PALETTE[0], zorder=5)
+        # labels climb the frontier; push apart in log space so none overlap
+        gap = 0.07 * (np.log10(ymax) - np.log10(ymin))
+        placed = []
+        for _, r in front.iterrows():
+            y = np.log10(r[price])
+            if placed and y - placed[-1] < gap:
+                y = placed[-1] + gap
+            placed.append(y)
+            ax1.annotate(_short_name(r["name"]), xy=(r[intel], r[price]),
+                         xytext=(r[intel] + 0.9, 10 ** y), textcoords="data",
+                         fontsize=10, color=PALETTE[0], fontweight=600,
+                         va="center", ha="left", zorder=6,
+                         bbox=dict(boxstyle="round,pad=0.15", fc=PAPER,
+                                   ec="none", alpha=0.85))
+    style_axis_numeric(ax1, "Blended $ per M tokens (3:1 in:out, log)",
+                       "Artificial Analysis Intelligence Index",
+                       yfmt=FuncFormatter(lambda v, _: f"${v:g}"))
+    title_block(ax1, "What a unit of intelligence costs",
+                f"Models released in the last 12 months · frontier = cheapest "
+                f"at least this smart · {day:%d %b %Y}")
+
+    # --- bottom: frontier over time ---
+    colors = [PALETTE[2], PALETTE[0], PALETTE[3], PALETTE[1]]
+    ax2.set_yscale("log")
+    style_axis(ax2, "Cheapest blended $ per M tokens (log)",
+               yfmt=FuncFormatter(lambda v, _: f"${v:g}"))
+    if len(wide) < 3:
+        ax2.set_xlim(wide.index.min() - pd.Timedelta(days=1),
+                     wide.index.max() + pd.Timedelta(days=1))
+        ax2.xaxis.set_major_locator(mdates.DayLocator())
+        ax2.xaxis.set_major_formatter(mdates.DateFormatter("%d %b"))
+    ends = []
+    for i, band in enumerate(wide.columns):
+        s = wide[band].dropna()
+        if s.empty:
+            continue
+        c = colors[i % len(colors)]
+        ax2.plot(s.index, s.values, "-o", lw=2.4, ms=4.5, color=c, solid_capstyle="round")
+        ends.append((f"index {band}", s.index[-1], float(s.iloc[-1]), c))
+    x0, x1 = ax2.get_xlim()
+    ax2.set_xlim(x0, x1 + (x1 - x0) * 0.24)
+    for label, x, y, c in ends:      # no nudging: direct_labels assumes a linear y
+        ax2.annotate("  " + label, xy=(x, y), fontsize=13, fontweight=600,
+                     color=c, va="center")
+    draw_events(ax2, "tokens")
+    title_block(ax2, "Hedonic deflator",
+                f"Cheapest price per intelligence band, daily · history accumulates from "
+                f"{wide.index.min():%d %b %Y}")
+    source_note(fig, AA_SOURCE)
+    fig.savefig("data/aa_hedonic_chart.png", dpi=150)
+    plt.close(fig)
+    print(f"[aa] hedonic: {len(cs)} models in cross-section, "
+          f"{len(front)} on frontier, {len(wide)} days of history")
+
+
+def build_aa():
+    """Artificial Analysis charts; skips quietly if fetch_aa.py has not run."""
+    prov_path, models_path = "data/aa_providers.csv", "data/aa_models.csv"
+    if os.path.exists(prov_path):
+        aa = pd.read_csv(prov_path)
+        aa["date"] = pd.to_datetime(aa["date"], errors="coerce")
+        aa = aa.dropna(subset=["date"])
+        if not aa.empty:
+            day = aa["date"].max()
+            latest = aa[aa["date"] == day].copy()
+            for c in ("tps_median", "ttft_median", "ttfat_input_s"):
+                latest[c] = pd.to_numeric(latest[c], errors="coerce") if c in latest else np.nan
+            latest["variant"] = latest["variant"].fillna("")
+            _aa_crosscheck(day, latest)
+    if os.path.exists(models_path):
+        m = pd.read_csv(models_path)
+        m["date"] = pd.to_datetime(m["date"], errors="coerce")
+        for c in ("intelligence_index", "price_1m_blended_3_to_1"):
+            m[c] = pd.to_numeric(m[c], errors="coerce")
+        m = m.dropna(subset=["date", "intelligence_index", "price_1m_blended_3_to_1"])
+        m = m[m["price_1m_blended_3_to_1"] > 0]
+        if not m.empty:
+            _aa_hedonic(m)
+
+
 if __name__ == "__main__":
     os.makedirs("data", exist_ok=True)
 
@@ -1616,5 +1906,6 @@ if __name__ == "__main__":
     build_pricing()
     build_price_history()
     build_perf()
+    build_aa()
     print(f"\nDone. {len(avail_results)} availability indices, "
           f"{len(supply_results)} supply charts.")
