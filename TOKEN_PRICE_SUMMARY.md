@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-09-07 04:38 UTC · latest snapshot: 2026-09-07 04:38:48 · 167 snapshots since 2026-07-21_
+_Last updated: 2026-09-07 12:29 UTC · latest snapshot: 2026-09-07 12:29:40 · 168 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -9,25 +9,25 @@ _Last updated: 2026-09-07 04:38 UTC · latest snapshot: 2026-09-07 04:38:48 · 1
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
 | deepseek/deepseek-v4-flash | open | $0.11 | DigitalOcean ($0.09) | 15 |
-| deepseek/deepseek-v4-pro | open | $1.20 | DigitalOcean ($1.09) | 17 |
-| minimax/minimax-m3 | open | $0.47 | CoreWeave ($0.41) | 12 |
+| deepseek/deepseek-v4-pro | open | $1.16 | DigitalOcean ($1.09) | 16 |
+| minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 12 |
 | moonshotai/kimi-k2.5 | open | $0.93 | SiliconFlow ($0.90) | 8 |
 | moonshotai/kimi-k2.6 | open | $1.13 | Decart ($1.06) | 21 |
 | moonshotai/kimi-k3 | open | $5.25 | Makora ($5.10) | 18 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.92 | DeepInfra ($0.76) | 33 |
+| z-ai/glm-5.2 | open | $0.91 | DeepInfra ($0.76) | 33 |
 
-**Closed/open price multiple right now: 6.5x** (closed median $10.50 vs open $1.62)
+**Closed/open price multiple right now: 6.2x** (closed median $10.50 vs open $1.70)
 
 ## Regional comparison (open models, same model+quant only)
 
 | Region | Offers | Rel. price (1.0=parity) | Median $/M |
 |---|---|---|---|
-| ASIA | 5 | 0.82 | $1.30 |
+| ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.95 | $3.64 |
 | CN | 19 | 1.00 | $1.48 |
-| UNKNOWN | 55 | 1.00 | $1.44 |
+| UNKNOWN | 54 | 1.00 | $1.56 |
 | US | 34 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
