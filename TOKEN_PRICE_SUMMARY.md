@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-09-13 04:45 UTC · latest snapshot: 2026-09-13 04:45:21 · 190 snapshots since 2026-07-21_
+_Last updated: 2026-09-13 11:49 UTC · latest snapshot: 2026-09-13 11:49:45 · 191 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,12 +8,12 @@ _Last updated: 2026-09-13 04:45 UTC · latest snapshot: 2026-09-13 04:45:21 · 1
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.08 | OpenInference ($0.07) | 17 |
-| deepseek/deepseek-v4-pro | open | $0.90 | StreamLake ($0.80) | 15 |
+| deepseek/deepseek-v4-flash | open | $0.06 | StreamLake ($0.06) | 17 |
+| deepseek/deepseek-v4-pro | open | $0.84 | StreamLake ($0.71) | 15 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 12 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 6 |
 | moonshotai/kimi-k2.6 | open | $1.05 | Baidu ($1.04) | 21 |
-| moonshotai/kimi-k3 | open | $4.74 | InferenceNet ($4.31) | 20 |
+| moonshotai/kimi-k3 | open | $4.67 | InferenceNet ($4.31) | 20 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
 | z-ai/glm-5.2 | open | $0.74 | Baidu ($0.74) | 33 |
