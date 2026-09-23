@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-09-22 21:17 UTC · latest snapshot: 2026-09-22 21:17:12 · 227 snapshots since 2026-07-21_
+_Last updated: 2026-09-23 04:43 UTC · latest snapshot: 2026-09-23 04:43:25 · 228 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,17 +8,17 @@ _Last updated: 2026-09-22 21:17 UTC · latest snapshot: 2026-09-22 21:17:12 · 2
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.07 | Baidu ($0.05) | 15 |
-| deepseek/deepseek-v4-pro | open | $1.13 | StreamLake ($1.10) | 16 |
+| deepseek/deepseek-v4-flash | open | $0.11 | StreamLake ($0.11) | 15 |
+| deepseek/deepseek-v4-pro | open | $1.23 | StreamLake ($1.19) | 16 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
-| moonshotai/kimi-k2.6 | open | $0.91 | Baidu ($0.78) | 22 |
-| moonshotai/kimi-k3 | open | $3.53 | InferenceNet ($3.00) | 20 |
+| moonshotai/kimi-k2.6 | open | $1.05 | DigitalOcean ($1.03) | 22 |
+| moonshotai/kimi-k3 | open | $3.87 | Sail Research ($3.81) | 20 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.91 | Baidu ($0.86) | 29 |
+| z-ai/glm-5.2 | open | $0.95 | DeepInfra ($0.87) | 29 |
 
-**Closed/open price multiple right now: 7.2x** (closed median $11.00 vs open $1.52)
+**Closed/open price multiple right now: 5.9x** (closed median $10.00 vs open $1.70)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,8 +26,8 @@ _Last updated: 2026-09-22 21:17 UTC · latest snapshot: 2026-09-22 21:17:12 · 2
 |---|---|---|---|
 | ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
-| UNKNOWN | 54 | 0.97 | $1.32 |
 | CN | 19 | 1.00 | $1.48 |
+| UNKNOWN | 54 | 1.00 | $1.53 |
 | US | 34 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
