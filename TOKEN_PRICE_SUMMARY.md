@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-09-25 17:09 UTC · latest snapshot: 2026-09-25 17:09:46 · 238 snapshots since 2026-07-21_
+_Last updated: 2026-09-25 21:33 UTC · latest snapshot: 2026-09-25 21:33:43 · 239 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,15 +8,15 @@ _Last updated: 2026-09-25 17:09 UTC · latest snapshot: 2026-09-25 17:09:46 · 2
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.08 | StreamLake ($0.06) | 16 |
-| deepseek/deepseek-v4-pro | open | $0.99 | StreamLake ($0.88) | 16 |
+| deepseek/deepseek-v4-flash | open | $0.08 | Baidu ($0.06) | 16 |
+| deepseek/deepseek-v4-pro | open | $0.86 | StreamLake ($0.69) | 16 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
-| moonshotai/kimi-k2.6 | open | $0.91 | Baidu ($0.79) | 21 |
+| moonshotai/kimi-k2.6 | open | $0.91 | Baidu ($0.78) | 21 |
 | moonshotai/kimi-k3 | open | $3.85 | Sail Research ($3.53) | 19 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.86 | Baidu ($0.85) | 29 |
+| z-ai/glm-5.2 | open | $0.79 | Baidu ($0.75) | 30 |
 
 **Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.45)
 
