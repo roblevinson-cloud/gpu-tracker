@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-09-25 21:33 UTC · latest snapshot: 2026-09-25 21:33:43 · 239 snapshots since 2026-07-21_
+_Last updated: 2026-09-26 04:56 UTC · latest snapshot: 2026-09-26 04:56:29 · 240 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -9,16 +9,16 @@ _Last updated: 2026-09-25 21:33 UTC · latest snapshot: 2026-09-25 21:33:43 · 2
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
 | deepseek/deepseek-v4-flash | open | $0.08 | Baidu ($0.06) | 16 |
-| deepseek/deepseek-v4-pro | open | $0.86 | StreamLake ($0.69) | 16 |
+| deepseek/deepseek-v4-pro | open | $0.75 | StreamLake ($0.52) | 14 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
-| moonshotai/kimi-k2.6 | open | $0.91 | Baidu ($0.78) | 21 |
-| moonshotai/kimi-k3 | open | $3.85 | Sail Research ($3.53) | 19 |
+| moonshotai/kimi-k2.6 | open | $0.91 | Baidu ($0.78) | 19 |
+| moonshotai/kimi-k3 | open | $3.69 | Sail Research ($3.03) | 19 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.79 | Baidu ($0.75) | 30 |
+| z-ai/glm-5.2 | open | $0.79 | Baidu ($0.75) | 32 |
 
-**Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.45)
+**Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.44)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,9 +26,9 @@ _Last updated: 2026-09-25 21:33 UTC · latest snapshot: 2026-09-25 21:33:43 · 2
 |---|---|---|---|
 | ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
-| UNKNOWN | 52 | 0.96 | $1.20 |
+| UNKNOWN | 52 | 0.97 | $1.20 |
 | CN | 19 | 1.00 | $1.48 |
-| US | 34 | 1.02 | $2.15 |
+| US | 31 | 1.00 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
 
