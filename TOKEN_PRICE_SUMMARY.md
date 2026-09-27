@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-09-27 05:16 UTC · latest snapshot: 2026-09-27 05:16:42 · 244 snapshots since 2026-07-21_
+_Last updated: 2026-09-27 12:00 UTC · latest snapshot: 2026-09-27 11:59:58 · 245 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -13,7 +13,7 @@ _Last updated: 2026-09-27 05:16 UTC · latest snapshot: 2026-09-27 05:16:42 · 2
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.89 | Baidu ($0.74) | 19 |
-| moonshotai/kimi-k3 | open | $3.01 | InferenceNet ($3.00) | 19 |
+| moonshotai/kimi-k3 | open | $2.71 | Morph ($2.12) | 19 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
 | z-ai/glm-5.2 | open | $0.78 | Baidu ($0.75) | 32 |
