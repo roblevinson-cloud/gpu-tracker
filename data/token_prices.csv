@@ -39974,3 +39974,160 @@ timestamp_utc,model,model_class,provider,region,quantization,input_usd_per_m,out
 2026-09-29 05:42:09,openai/gpt-5.6-sol,closed,Azure,US,unknown,4.4,22.0,8.8,1050000,100
 2026-09-29 05:42:09,openai/gpt-5.6-sol,closed,Amazon Bedrock,US,unknown,4.4,22.0,8.8,1050000,
 2026-09-29 05:42:09,openai/gpt-5.6-sol,closed,Azure,US,unknown,4.4,22.0,8.8,1050000,
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Relace,UNKNOWN,fp4,0.4,10.0,2.8,1048576,96.14949037372594
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Sail Research,UNKNOWN,fp4,0.6426,12.75,3.6694,1048576,99.9271137026239
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,InferenceNet,UNKNOWN,fp4,1.0,9.0,3.0,1048576,99.97436554729556
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Morph,UNKNOWN,fp8,1.2278,10.696,3.5949,1048576,100
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Wafer,UNKNOWN,unknown,1.4417,9.0,3.3313,1048576,99.83739837398375
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Makora,UNKNOWN,unknown,2.04,12.75,4.7175,1048576,99.79317476732162
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Phala,UNKNOWN,unknown,2.55,12.75,5.1,1048576,99.67948717948718
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,DigitalOcean,UNKNOWN,unknown,2.55,12.95,5.15,1048576,100
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,DeepInfra,US,bf16,2.85,14.25,5.7,1048576,100
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Decart,UNKNOWN,mxfp4,3.0,15.0,6.0,1048576,96.3436928702011
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Chutes,DECENTRALIZED,mxfp4,3.0,15.0,6.0,1048576,
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Parasail,US,fp4,3.0,15.0,6.0,1048576,97.37704918032787
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Modal,UNKNOWN,mxfp4,3.0,15.0,6.0,1048576,99.52049497293117
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Together,US,unknown,3.0,15.0,6.0,1048576,99.66357820427973
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Fireworks,US,unknown,3.0,15.0,6.0,1048576,99.96244836650393
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,BaseTen,US,fp8,3.0,15.0,6.0,1048576,99.15966386554622
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Moonshot AI,CN,mxfp4,3.0,15.0,6.0,1048576,99.96826907821672
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Fireworks,US,unknown,3.3,16.5,6.6,1048576,99.63002114164905
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Alibaba,CN,unknown,3.45,17.25,6.9,1048576,
+2026-09-29 12:50:17,moonshotai/kimi-k3,open,Fireworks,US,unknown,4.5,22.5,9.0,1048576,99.13419913419914
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Inceptron,UNKNOWN,int4,0.465,2.45,0.9613,262144,98.40280483054148
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Chutes,DECENTRALIZED,int4,0.5,2.85,1.0875,262144,99.69530773918342
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,DigitalOcean,UNKNOWN,unknown,0.57,2.4,1.0275,262144,97.94576828266229
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Decart,UNKNOWN,fp4,0.5865,2.4696,1.0573,262144,87.69987699877
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,StreamLake,UNKNOWN,fp8,0.5985,2.52,1.0789,256000,99.05277401894452
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,CoreWeave,UNKNOWN,fp4,0.65,3.41,1.34,262144,95.73991031390135
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Crusoe,US,bf16,0.7,3.5,1.4,262144,
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,DeepInfra,US,fp4,0.75,3.5,1.4375,262144,99.57983193277312
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Venice,UNKNOWN,int4,0.75,3.5,1.4375,256000,68.93491124260355
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Parasail,US,int4,0.75,3.5,1.4375,262144,98.7091222030981
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,SiliconFlow,CN,fp8,0.77,3.4,1.4275,262144,100
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Novita,CN,unknown,0.8,3.4,1.45,262144,100
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,GMICloud,ASIA,fp8,0.855,3.6,1.5413,262144,
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Baidu,UNKNOWN,fp4,0.95,4.0,1.7125,262144,100
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,AtlasCloud,UNKNOWN,int4,0.95,4.0,1.7125,262144,99.09547738693468
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Cloudflare,UNKNOWN,unknown,0.95,4.0,1.7125,262144,100
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Moonshot AI,CN,int4,0.95,4.0,1.7125,262144,99.83974358974359
+2026-09-29 12:50:17,moonshotai/kimi-k2.6,open,Phala,UNKNOWN,unknown,1.09,4.6,1.9675,262144,99.78165938864629
+2026-09-29 12:50:17,moonshotai/kimi-k2.5,open,SiliconFlow,CN,int4,0.45,2.25,0.9,262144,100
+2026-09-29 12:50:17,moonshotai/kimi-k2.5,open,AtlasCloud,UNKNOWN,int4,0.49,2.5,0.9925,262144,98.80174291938998
+2026-09-29 12:50:17,moonshotai/kimi-k2.5,open,Venice,UNKNOWN,unknown,0.532,3.325,1.2303,256000,99.59939909864796
+2026-09-29 12:50:17,moonshotai/kimi-k2.5,open,Novita,CN,unknown,0.57,2.85,1.14,262144,99.296875
+2026-09-29 12:50:17,moonshotai/kimi-k2.5,open,Amazon Bedrock,US,unknown,0.6,3.0,1.2,262144,91.42857142857143
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Relace,UNKNOWN,fp4,0.25,3.5,1.0625,1048576,95.23809523809523
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,StreamLake,UNKNOWN,fp8,0.9532,1.9063,1.1915,1024000,99.42289012056455
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Baidu,UNKNOWN,fp8,0.9549,1.9097,1.1936,1048576,99.8221906116643
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,GMICloud,ASIA,fp8,0.957,1.914,1.1963,1048576,99.71070395371264
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,DigitalOcean,UNKNOWN,unknown,1.044,2.088,1.305,1048576,99.69293756397134
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Cloudflare,UNKNOWN,unknown,1.15,2.55,1.5,1048576,99.9184339314845
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,DeepInfra,US,fp8,1.3,2.6,1.625,1048576,99.66722129783693
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Alibaba,CN,fp8,1.416,2.832,1.77,1000000,97.84537389100126
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,SiliconFlow,CN,fp8,1.5016,3.135,1.91,1048576,99.62825278810409
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Novita,CN,fp8,1.6,3.2,2.0,1048576,100
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Venice,UNKNOWN,unknown,1.65,3.301,2.0627,1000000,73.70184254606366
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,AtlasCloud,UNKNOWN,fp4,1.68,3.38,2.105,1048576,98.49962490622656
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,NextBit,UNKNOWN,fp8,1.74,3.48,2.175,1048576,97.56637168141593
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Parasail,US,fp8,1.74,3.48,2.175,1048576,99.96351696461146
+2026-09-29 12:50:17,deepseek/deepseek-v4-pro,open,Azure,US,unknown,1.91,3.83,2.39,1048576,98.812351543943
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,OpenInference,UNKNOWN,fp8,0.012,1.25,0.3215,1048576,99.99452714535903
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Relace,UNKNOWN,fp4,0.03,1.28,0.3425,1048576,99.98063570223242
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,AtlasCloud,UNKNOWN,fp4,0.0826,0.1652,0.1033,1048576,95.89130837261631
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,StreamLake,UNKNOWN,fp8,0.0871,0.1742,0.1089,1024000,98.2562386396453
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Baidu,UNKNOWN,fp8,0.0885,0.177,0.1106,1048576,99.98912899056637
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,DeepInfra,US,fp8,0.09,0.18,0.1125,1048576,99.87108982319201
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,GMICloud,ASIA,fp8,0.091,0.182,0.1138,1048575,99.99769565785128
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Venice,UNKNOWN,unknown,0.0966,0.1925,0.1206,1000000,99.60603653693407
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,DigitalOcean,UNKNOWN,unknown,0.098,0.196,0.1225,1048576,99.09845610608167
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,SiliconFlow,CN,fp8,0.13,0.28,0.1675,1048576,99.77952200370403
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Alibaba,CN,fp8,0.134,0.268,0.1675,1000000,99.20950533462658
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Novita,CN,fp8,0.14,0.28,0.175,1048576,99.97409122664163
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Parasail,US,fp8,0.14,0.28,0.175,1048576,99.88068160632388
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Mancer 2,UNKNOWN,fp8,0.19,0.5,0.2675,1048576,99.42693409742121
+2026-09-29 12:50:17,deepseek/deepseek-v4-flash,open,Azure,US,unknown,0.21,0.56,0.2975,1048576,97.51799924213718
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Wafer,UNKNOWN,unknown,0.1949,4.4,1.2462,1048576,99.8520958687687
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Relace,UNKNOWN,unknown,0.2,4.0,1.15,1048576,100
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Inceptron,UNKNOWN,fp4,0.3916,2.8673,1.0105,1048576,99.77107974055703
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Decart,UNKNOWN,mxfp4,0.49,1.54,0.7525,131072,99.43943456007798
+2026-09-29 12:50:17,z-ai/glm-5.2,open,DeepInfra,US,fp4,0.5625,1.8,0.8719,1048576,98.97482014388488
+2026-09-29 12:50:17,z-ai/glm-5.2,open,StreamLake,UNKNOWN,fp8,0.6426,2.0196,0.9869,1024000,98.59013931759407
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Novita,CN,fp8,0.6496,2.0416,0.9976,1048576,99.8854961832061
+2026-09-29 12:50:17,z-ai/glm-5.2,open,DigitalOcean,UNKNOWN,unknown,0.7,2.2,1.075,262144,99.85618900873138
+2026-09-29 12:50:17,z-ai/glm-5.2,open,CoreWeave,UNKNOWN,fp4,0.76,2.42,1.175,1048576,99.07407407407408
+2026-09-29 12:50:17,z-ai/glm-5.2,open,AtlasCloud,UNKNOWN,fp8,0.938,2.948,1.4405,1048576,100
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Alibaba,CN,fp8,0.966,3.036,1.4835,1000000,99.72662657189721
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Cloudflare,UNKNOWN,unknown,1.18,4.4,1.985,262144,
+2026-09-29 12:50:17,z-ai/glm-5.2,open,SiliconFlow,CN,fp8,1.19,3.74,1.8275,1048576,98.54014598540147
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Phala,UNKNOWN,fp8,1.26,3.0,1.695,1048576,99.77116704805492
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Mistral,UNKNOWN,nvfp4,1.4,4.4,2.15,1048576,99.99692610352884
+2026-09-29 12:50:17,z-ai/glm-5.2,open,BaseTen,US,fp8,1.4,4.4,2.15,1048576,99.89473684210526
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Together,US,unknown,1.4,4.4,2.15,1048575,99.7262149212868
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Baidu,UNKNOWN,fp8,1.4,4.4,2.15,1048576,99.96628455832771
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Fireworks,US,unknown,1.4,4.4,2.15,1048576,
+2026-09-29 12:50:17,z-ai/glm-5.2,open,BaseTen,US,fp8,1.4,4.4,2.15,1048576,99.88317757009347
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Venice,UNKNOWN,fp8,1.4,4.4,2.15,1000000,98.56
+2026-09-29 12:50:17,z-ai/glm-5.2,open,GMICloud,ASIA,fp8,1.4,4.4,2.15,1048576,
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Parasail,US,fp4,1.4,4.4,2.15,262144,100
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Friendli,US,unknown,1.4,4.4,2.15,1048576,99.35986640690231
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Z.AI,CN,fp8,1.4,4.4,2.15,1048576,98.7993803253292
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Mistral,UNKNOWN,unknown,1.54,4.84,2.365,1048576,
+2026-09-29 12:50:17,z-ai/glm-5.2,open,BaseTen,US,fp8,2.1,6.6,3.225,1048576,100
+2026-09-29 12:50:17,z-ai/glm-5.2,open,BaseTen,US,fp8,2.1,6.6,3.225,1048576,99.91755976916735
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Baidu,UNKNOWN,fp4,2.25,7.88,3.6575,1048576,
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Decart,UNKNOWN,fp4,2.25,8.0,3.6875,1048576,100
+2026-09-29 12:50:17,z-ai/glm-5.2,open,Alibaba,CN,fp8,2.31,7.26,3.5475,1000000,99.51923076923077
+2026-09-29 12:50:17,minimax/minimax-m3,open,CoreWeave,UNKNOWN,fp4,0.23,0.96,0.4125,262144,98.59902356187646
+2026-09-29 12:50:17,minimax/minimax-m3,open,GMICloud,ASIA,fp8,0.24,0.96,0.42,1048576,99.92317541613316
+2026-09-29 12:50:17,minimax/minimax-m3,open,DeepInfra,US,fp8,0.28,1.1,0.485,524288,100
+2026-09-29 12:50:17,minimax/minimax-m3,open,StreamLake,UNKNOWN,fp8,0.3,1.2,0.525,1000000,99.3025283347864
+2026-09-29 12:50:17,minimax/minimax-m3,open,Venice,UNKNOWN,fp8,0.3,1.2,0.525,524288,100
+2026-09-29 12:50:17,minimax/minimax-m3,open,Together,US,unknown,0.3,1.2,0.525,524288,100
+2026-09-29 12:50:17,minimax/minimax-m3,open,Parasail,US,fp8,0.3,1.2,0.525,1048576,99.63459196102315
+2026-09-29 12:50:17,minimax/minimax-m3,open,AtlasCloud,UNKNOWN,fp8,0.3,1.2,0.525,524300,99.68354430379746
+2026-09-29 12:50:17,minimax/minimax-m3,open,Novita,CN,fp8,0.3,1.2,0.525,1000000,99.89212513484358
+2026-09-29 12:50:17,minimax/minimax-m3,open,Minimax,UNKNOWN,fp8,0.3,1.2,0.525,524288,99.96159754224271
+2026-09-29 12:50:17,minimax/minimax-m3,open,Mara,UNKNOWN,unknown,0.6,2.4,1.05,1048576,
+2026-09-29 12:50:17,minimax/minimax-m3,open,SambaNova,US,unknown,0.6,2.4,1.05,1048576,95.48872180451127
+2026-09-29 12:50:17,minimax/minimax-m3,open,ModelRun,UNKNOWN,fp4,0.75,3.0,1.3125,1048576,100
+2026-09-29 12:50:17,anthropic/claude-fable-5,closed,Claude Platform on AWS,UNKNOWN,unknown,10.0,50.0,20.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-fable-5,closed,Azure,US,unknown,10.0,50.0,20.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-fable-5,closed,Amazon Bedrock,US,unknown,10.0,50.0,20.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-fable-5,closed,Google,US,unknown,10.0,50.0,20.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-fable-5,closed,Anthropic,UNKNOWN,unknown,10.0,50.0,20.0,1000000,99.93392798149983
+2026-09-29 12:50:17,anthropic/claude-fable-5,closed,Google,US,unknown,11.0,55.0,22.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Claude Platform on AWS,UNKNOWN,unknown,5.0,25.0,10.0,1000000,99.98068938881916
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Azure,US,unknown,5.0,25.0,10.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Amazon Bedrock,US,unknown,5.0,25.0,10.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Google,US,unknown,5.0,25.0,10.0,1000000,100
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Anthropic,UNKNOWN,unknown,5.0,25.0,10.0,1000000,100
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Azure,US,unknown,5.5,27.5,11.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Amazon Bedrock,US,unknown,5.5,27.5,11.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Google,US,unknown,5.5,27.5,11.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Amazon Bedrock,US,unknown,5.5,27.5,11.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Google,US,unknown,5.5,27.5,11.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-opus-4.8,closed,Anthropic,UNKNOWN,unknown,10.0,50.0,20.0,1000000,100
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Claude Platform on AWS,UNKNOWN,unknown,3.0,15.0,6.0,1000000,99.99269112702821
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Azure,US,unknown,3.0,15.0,6.0,1000000,
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Anthropic,UNKNOWN,unknown,3.0,15.0,6.0,1000000,99.95848038198048
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Amazon Bedrock,US,unknown,3.0,15.0,6.0,1000000,99.93598975836134
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Google,US,unknown,3.0,15.0,6.0,1000000,100
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Amazon Bedrock,US,unknown,3.3,16.5,6.6,1000000,
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Amazon Bedrock,US,unknown,3.3,16.5,6.6,1000000,100
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Google,US,unknown,3.3,16.5,6.6,1000000,
+2026-09-29 12:50:17,anthropic/claude-sonnet-4.6,closed,Google,US,unknown,3.3,16.5,6.6,1000000,
+2026-09-29 12:50:17,openai/gpt-5.5,closed,OpenAI,UNKNOWN,unknown,2.5,15.0,5.625,1050000,
+2026-09-29 12:50:17,openai/gpt-5.5,closed,Azure,US,unknown,5.0,30.0,11.25,1050000,100
+2026-09-29 12:50:17,openai/gpt-5.5,closed,OpenAI,UNKNOWN,unknown,5.0,30.0,11.25,1050000,99.95445574616669
+2026-09-29 12:50:17,openai/gpt-5.5,closed,Azure,US,unknown,5.5,33.0,12.375,1050000,
+2026-09-29 12:50:17,openai/gpt-5.5,closed,Azure,US,unknown,5.5,33.0,12.375,1050000,
+2026-09-29 12:50:17,openai/gpt-5.5,closed,Amazon Bedrock,US,unknown,5.5,33.0,12.375,1050000,
+2026-09-29 12:50:17,openai/gpt-5.5,closed,OpenAI,UNKNOWN,unknown,12.5,75.0,28.125,1050000,
+2026-09-29 12:50:17,openai/gpt-5.6-sol,closed,OpenAI,UNKNOWN,unknown,1.0,5.0,2.0,1050000,99.98704327545997
+2026-09-29 12:50:17,openai/gpt-5.6-sol,closed,OpenAI,UNKNOWN,unknown,2.0,10.0,4.0,1050000,99.97737670303152
+2026-09-29 12:50:17,openai/gpt-5.6-sol,closed,OpenAI,UNKNOWN,unknown,4.0,20.0,8.0,1050000,100
+2026-09-29 12:50:17,openai/gpt-5.6-sol,closed,Azure,US,unknown,4.0,20.0,8.0,1050000,99.99626879594045
+2026-09-29 12:50:17,openai/gpt-5.6-sol,closed,Azure,US,unknown,4.4,22.0,8.8,1050000,
+2026-09-29 12:50:17,openai/gpt-5.6-sol,closed,Amazon Bedrock,US,unknown,4.4,22.0,8.8,1050000,
+2026-09-29 12:50:17,openai/gpt-5.6-sol,closed,Azure,US,unknown,4.4,22.0,8.8,1050000,100
