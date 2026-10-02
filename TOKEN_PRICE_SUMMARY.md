@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-02 12:31 UTC · latest snapshot: 2026-10-02 12:31:52 · 261 snapshots since 2026-07-21_
+_Last updated: 2026-10-02 22:12 UTC · latest snapshot: 2026-10-02 22:12:33 · 262 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,15 +8,15 @@ _Last updated: 2026-10-02 12:31 UTC · latest snapshot: 2026-10-02 12:31:52 · 2
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.07 | Baidu ($0.03) | 15 |
+| deepseek/deepseek-v4-flash | open | $0.06 | Baidu ($0.03) | 16 |
 | deepseek/deepseek-v4-pro | open | $0.56 | Baidu ($0.22) | 15 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.92 | Baidu ($0.78) | 18 |
-| moonshotai/kimi-k3 | open | $4.26 | Relace ($4.15) | 22 |
+| moonshotai/kimi-k3 | open | $4.06 | Morph ($3.59) | 23 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.48 | Baidu ($0.22) | 32 |
+| z-ai/glm-5.2 | open | $0.34 | Baidu ($0.22) | 33 |
 
 **Closed/open price multiple right now: 7.0x** (closed median $10.00 vs open $1.44)
 
@@ -26,9 +26,9 @@ _Last updated: 2026-10-02 12:31 UTC · latest snapshot: 2026-10-02 12:31:52 · 2
 |---|---|---|---|
 | ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
-| UNKNOWN | 56 | 0.95 | $1.30 |
+| UNKNOWN | 59 | 0.88 | $1.30 |
 | CN | 19 | 1.00 | $1.45 |
-| US | 28 | 1.06 | $2.15 |
+| US | 28 | 1.08 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
 
