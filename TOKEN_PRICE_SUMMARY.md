@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-03 16:16 UTC · latest snapshot: 2026-10-03 16:16:10 · 265 snapshots since 2026-07-21_
+_Last updated: 2026-10-03 21:13 UTC · latest snapshot: 2026-10-03 21:12:56 · 266 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,17 +8,17 @@ _Last updated: 2026-10-03 16:16 UTC · latest snapshot: 2026-10-03 16:16:10 · 2
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.09 | StreamLake ($0.04) | 15 |
+| deepseek/deepseek-v4-flash | open | $0.09 | StreamLake ($0.04) | 16 |
 | deepseek/deepseek-v4-pro | open | $0.76 | StreamLake ($0.26) | 16 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
 | moonshotai/kimi-k2.6 | open | $1.02 | Inceptron ($0.96) | 18 |
-| moonshotai/kimi-k3 | open | $3.98 | Morph ($3.96) | 24 |
+| moonshotai/kimi-k3 | open | $3.55 | Morph ($3.07) | 24 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
 | z-ai/glm-5.2 | open | $0.78 | InferenceNet ($0.61) | 33 |
 
-**Closed/open price multiple right now: 6.8x** (closed median $10.00 vs open $1.47)
+**Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.45)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -27,7 +27,7 @@ _Last updated: 2026-10-03 16:16 UTC · latest snapshot: 2026-10-03 16:16:10 · 2
 | ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
 | CN | 19 | 1.00 | $1.45 |
-| UNKNOWN | 58 | 1.00 | $1.53 |
+| UNKNOWN | 59 | 1.00 | $1.50 |
 | US | 29 | 1.03 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
