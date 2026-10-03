@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-03 05:16 UTC · latest snapshot: 2026-10-03 05:16:39 · 263 snapshots since 2026-07-21_
+_Last updated: 2026-10-03 11:38 UTC · latest snapshot: 2026-10-03 11:38:14 · 264 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -13,12 +13,12 @@ _Last updated: 2026-10-03 05:16 UTC · latest snapshot: 2026-10-03 05:16:39 · 2
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
 | moonshotai/kimi-k2.6 | open | $1.02 | Inceptron ($0.96) | 18 |
-| moonshotai/kimi-k3 | open | $3.84 | Relace ($3.77) | 23 |
+| moonshotai/kimi-k3 | open | $3.98 | Morph ($3.96) | 23 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
 | z-ai/glm-5.2 | open | $0.78 | InferenceNet ($0.61) | 33 |
 
-**Closed/open price multiple right now: 6.7x** (closed median $10.00 vs open $1.49)
+**Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.45)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -27,7 +27,7 @@ _Last updated: 2026-10-03 05:16 UTC · latest snapshot: 2026-10-03 05:16:39 · 2
 | ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
 | CN | 19 | 1.00 | $1.45 |
-| UNKNOWN | 57 | 1.00 | $1.70 |
+| UNKNOWN | 57 | 1.00 | $1.50 |
 | US | 28 | 1.03 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
