@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-04 21:22 UTC · latest snapshot: 2026-10-04 21:22:29 · 269 snapshots since 2026-07-21_
+_Last updated: 2026-10-05 05:36 UTC · latest snapshot: 2026-10-05 05:36:46 · 270 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,17 +8,17 @@ _Last updated: 2026-10-04 21:22 UTC · latest snapshot: 2026-10-04 21:22:29 · 2
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.09 | StreamLake ($0.04) | 16 |
-| deepseek/deepseek-v4-pro | open | $0.82 | StreamLake ($0.26) | 16 |
+| deepseek/deepseek-v4-flash | open | $0.09 | StreamLake ($0.05) | 16 |
+| deepseek/deepseek-v4-pro | open | $0.86 | StreamLake ($0.26) | 16 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
 | moonshotai/kimi-k2.6 | open | $1.02 | Inceptron ($0.96) | 18 |
-| moonshotai/kimi-k3 | open | $3.86 | Relace ($3.73) | 24 |
+| moonshotai/kimi-k3 | open | $3.75 | Decart ($3.60) | 24 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.90 | StreamLake ($0.85) | 32 |
+| z-ai/glm-5.2 | open | $0.89 | DeepInfra ($0.87) | 32 |
 
-**Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.45)
+**Closed/open price multiple right now: 6.8x** (closed median $10.00 vs open $1.47)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,7 +26,7 @@ _Last updated: 2026-10-04 21:22 UTC · latest snapshot: 2026-10-04 21:22:29 · 2
 |---|---|---|---|
 | ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
-| UNKNOWN | 59 | 0.98 | $1.50 |
+| UNKNOWN | 59 | 0.97 | $1.65 |
 | CN | 19 | 1.00 | $1.45 |
 | US | 29 | 1.03 | $2.15 |
 
