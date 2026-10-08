@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-07 23:04 UTC · latest snapshot: 2026-10-07 23:04:06 · 277 snapshots since 2026-07-21_
+_Last updated: 2026-10-08 06:01 UTC · latest snapshot: 2026-10-08 06:01:11 · 278 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,17 +8,17 @@ _Last updated: 2026-10-07 23:04 UTC · latest snapshot: 2026-10-07 23:04:06 · 2
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.09 | StreamLake ($0.05) | 17 |
-| deepseek/deepseek-v4-pro | open | $0.89 | StreamLake ($0.26) | 15 |
+| deepseek/deepseek-v4-flash | open | $0.09 | Wafer ($0.07) | 17 |
+| deepseek/deepseek-v4-pro | open | $1.20 | StreamLake ($1.19) | 15 |
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.01 | SiliconFlow ($0.90) | 5 |
 | moonshotai/kimi-k2.6 | open | $1.02 | Inceptron ($0.96) | 17 |
-| moonshotai/kimi-k3 | open | $3.68 | Morph ($3.51) | 24 |
+| moonshotai/kimi-k3 | open | $3.78 | Morph ($3.55) | 24 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.82 | Decart ($0.64) | 34 |
+| z-ai/glm-5.2 | open | $0.83 | Decart ($0.64) | 34 |
 
-**Closed/open price multiple right now: 6.7x** (closed median $10.00 vs open $1.50)
+**Closed/open price multiple right now: 6.7x** (closed median $10.00 vs open $1.48)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,8 +26,8 @@ _Last updated: 2026-10-07 23:04 UTC · latest snapshot: 2026-10-07 23:04:06 · 2
 |---|---|---|---|
 | ASIA | 5 | 0.80 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
-| CN | 19 | 1.00 | $1.45 |
-| UNKNOWN | 59 | 1.00 | $1.71 |
+| UNKNOWN | 59 | 1.00 | $1.50 |
+| CN | 19 | 1.00 | $1.48 |
 | US | 29 | 1.00 | $2.15 |
 | EU | 1 | 1.00 | $2.15 |
 
