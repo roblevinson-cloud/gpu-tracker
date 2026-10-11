@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-11 05:44 UTC · latest snapshot: 2026-10-11 05:44:06 · 287 snapshots since 2026-07-21_
+_Last updated: 2026-10-11 12:47 UTC · latest snapshot: 2026-10-11 12:46:57 · 288 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -13,12 +13,12 @@ _Last updated: 2026-10-11 05:44 UTC · latest snapshot: 2026-10-11 05:44:06 · 2
 | minimax/minimax-m3 | open | $0.44 | CoreWeave ($0.41) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.92 | Baidu ($0.78) | 17 |
-| moonshotai/kimi-k3 | open | $3.72 | InferenceNet ($3.10) | 25 |
+| moonshotai/kimi-k3 | open | $3.80 | InferenceNet ($3.10) | 25 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $4.67 | OpenAI ($2.00) | 7 |
-| z-ai/glm-5.2 | open | $0.62 | InferenceNet ($0.40) | 34 |
+| z-ai/glm-5.2 | open | $0.57 | InferenceNet ($0.26) | 34 |
 
-**Closed/open price multiple right now: 6.3x** (closed median $10.00 vs open $1.58)
+**Closed/open price multiple right now: 6.6x** (closed median $10.00 vs open $1.52)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,10 +26,10 @@ _Last updated: 2026-10-11 05:44 UTC · latest snapshot: 2026-10-11 05:44:06 · 2
 |---|---|---|---|
 | ASIA | 5 | 0.81 | $1.20 |
 | DECENTRALIZED | 2 | 0.88 | $3.54 |
-| UNKNOWN | 58 | 0.93 | $1.60 |
-| CN | 20 | 1.00 | $1.72 |
+| UNKNOWN | 58 | 0.93 | $1.47 |
 | US | 30 | 1.00 | $2.15 |
-| EU | 1 | 1.10 | $2.15 |
+| CN | 20 | 1.00 | $1.72 |
+| EU | 1 | 1.20 | $2.15 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
 
