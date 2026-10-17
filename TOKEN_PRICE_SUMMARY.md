@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-16 21:05 UTC · latest snapshot: 2026-10-16 21:05:38 · 306 snapshots since 2026-07-21_
+_Last updated: 2026-10-17 04:23 UTC · latest snapshot: 2026-10-17 04:23:09 · 307 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,17 +8,17 @@ _Last updated: 2026-10-16 21:05 UTC · latest snapshot: 2026-10-16 21:05:38 · 3
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.07 | StreamLake ($0.05) | 16 |
-| deepseek/deepseek-v4-pro | open | $0.65 | StreamLake ($0.37) | 16 |
+| deepseek/deepseek-v4-flash | open | $0.06 | Baidu ($0.03) | 16 |
+| deepseek/deepseek-v4-pro | open | $0.57 | Baidu ($0.26) | 16 |
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 14 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.88 | Baidu ($0.78) | 17 |
-| moonshotai/kimi-k3 | open | $3.42 | InferenceNet ($3.21) | 25 |
+| moonshotai/kimi-k3 | open | $2.97 | Sail Research ($2.40) | 26 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 7 |
-| z-ai/glm-5.2 | open | $0.81 | DeepInfra ($0.70) | 34 |
+| z-ai/glm-5.2 | open | $0.59 | Baidu ($0.29) | 34 |
 
-**Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.45)
+**Closed/open price multiple right now: 6.8x** (closed median $10.00 vs open $1.47)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,7 +26,7 @@ _Last updated: 2026-10-16 21:05 UTC · latest snapshot: 2026-10-16 21:05:38 · 3
 |---|---|---|---|
 | DECENTRALIZED | 2 | 0.62 | $2.29 |
 | ASIA | 5 | 0.81 | $1.20 |
-| UNKNOWN | 58 | 0.95 | $1.44 |
+| UNKNOWN | 59 | 0.92 | $1.44 |
 | US | 32 | 1.00 | $2.15 |
 | CN | 20 | 1.07 | $1.60 |
 | EU | 1 | 1.10 | $2.15 |
