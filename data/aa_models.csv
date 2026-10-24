@@ -20368,71 +20368,71 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-23,ministral-3-3b,mistral,Ministral 3 3B,2025-12-02,4.8,4.8,0.1,0.1,0.1,227.9,0.491,0.491
 2026-10-23,apertus-8b-instruct,swiss-ai-initiative,Apertus 8B Instruct,2025-09-02,4.8,,0.1,0.2,0.125,137.7,2.747,2.747
 2026-10-23,llama-3-instruct-8b,meta,Llama 3 Instruct 8B,2024-04-18,4.8,,0.045,0.145,0.07,,,
-2026-10-24,claude-opus-5-5,anthropic,"Claude Opus 5.5 (Max, Default Fallback)",2026-09-22,57.6,,4.0,20.0,8.0,95.2,407.917,407.917
-2026-10-24,claude-sonnet-5-5,anthropic,"Claude Sonnet 5.5 (Max, Default Fallback)",2026-09-28,56.0,,2.0,10.0,4.0,136.4,261.38,261.38
+2026-10-24,claude-opus-5-5,anthropic,"Claude Opus 5.5 (Max, Default Fallback)",2026-09-22,57.6,,4.0,20.0,8.0,94.6,401.547,401.547
+2026-10-24,claude-sonnet-5-5,anthropic,"Claude Sonnet 5.5 (Max, Default Fallback)",2026-09-28,56.0,,2.0,10.0,4.0,137.8,264.723,264.723
 2026-10-24,claude-opus-5-5-xhigh,anthropic,"Claude Opus 5.5 (Xhigh, Default Fallback)",2026-09-22,56.0,,4.0,20.0,8.0,77.4,48.993,48.993
-2026-10-24,kimi-k3-1-pro,kimi,Kimi K3.1 Pro,2026-10-23,55.1,,2.0,10.0,4.0,66.0,1.865,32.153
-2026-10-24,claude-opus-5-5-high,anthropic,"Claude Opus 5.5 (High, Default Fallback)",2026-09-22,53.6,,4.0,20.0,8.0,74.7,14.302,14.302
+2026-10-24,kimi-k3-1-pro,kimi,Kimi K3.1 Pro,2026-10-23,55.1,,2.0,10.0,4.0,58.8,1.865,35.903
+2026-10-24,claude-opus-5-5-high,anthropic,"Claude Opus 5.5 (High, Default Fallback)",2026-09-22,53.6,,4.0,20.0,8.0,74.7,15.276,15.276
 2026-10-24,claude-fable-5-1,anthropic,"Claude Fable 5.1 (Max, Default Fallback)",2026-09-01,53.4,81.6,10.0,50.0,20.0,69.9,128.198,128.198
-2026-10-24,claude-fable-5-1-xhigh,anthropic,"Claude Fable 5.1 (Xhigh, Default Fallback)",2026-09-01,53.2,80.7,10.0,50.0,20.0,54.6,30.983,30.983
-2026-10-24,gpt-6-astra,openai,GPT-6 Astra (Max),2026-09-03,52.7,76.9,10.0,50.0,20.0,60.9,167.237,167.237
-2026-10-24,gemini-4-argon,google,Gemini 4 Argon (High),2026-09-30,52.6,,2.0,10.0,4.0,79.3,30.445,30.445
-2026-10-24,muse-wonder,meta,Muse Wonder (Max),2026-10-12,52.4,,4.0,20.0,8.0,139.1,31.086,45.469
-2026-10-24,gpt-6-astra-xhigh,openai,GPT-6 Astra (Xhigh),2026-09-03,52.4,75.9,10.0,50.0,20.0,56.3,60.913,60.913
+2026-10-24,claude-fable-5-1-xhigh,anthropic,"Claude Fable 5.1 (Xhigh, Default Fallback)",2026-09-01,53.2,80.7,10.0,50.0,20.0,54.6,37.137,37.137
+2026-10-24,gpt-6-astra,openai,GPT-6 Astra (Max),2026-09-03,52.7,76.9,10.0,50.0,20.0,63.0,167.237,167.237
+2026-10-24,gemini-4-argon,google,Gemini 4 Argon (High),2026-09-30,52.6,,2.0,10.0,4.0,79.3,31.034,31.034
+2026-10-24,muse-wonder,meta,Muse Wonder (Max),2026-10-12,52.4,,4.0,20.0,8.0,139.1,34.226,48.609
+2026-10-24,gpt-6-astra-xhigh,openai,GPT-6 Astra (Xhigh),2026-09-03,52.4,75.9,10.0,50.0,20.0,56.3,63.058,63.058
 2026-10-24,claude-sonnet-5-5-xhigh,anthropic,"Claude Sonnet 5.5 (Xhigh, Default Fallback)",2026-09-28,51.9,,2.0,10.0,4.0,97.4,11.888,11.888
 2026-10-24,gpt-6-1-sol,openai,GPT-6.1 Sol (Max),2026-09-29,51.8,,2.0,10.0,4.0,56.2,132.363,132.363
-2026-10-24,claude-opus-5-5-medium,anthropic,"Claude Opus 5.5 (Medium, Default Fallback)",2026-09-22,51.2,,4.0,20.0,8.0,70.1,9.304,9.304
-2026-10-24,claude-fable-5-1-high,anthropic,"Claude Fable 5.1 (High, Default Fallback)",2026-09-01,51.2,79.1,10.0,50.0,20.0,52.0,2.4,2.4
-2026-10-24,gpt-6-1-sol-xhigh,openai,GPT-6.1 Sol (Xhigh),2026-09-29,51.0,,2.0,10.0,4.0,53.9,53.48,53.48
-2026-10-24,gpt-6-astra-high,openai,GPT-6 Astra (High),2026-09-03,50.9,77.1,10.0,50.0,20.0,49.9,22.401,22.401
+2026-10-24,claude-opus-5-5-medium,anthropic,"Claude Opus 5.5 (Medium, Default Fallback)",2026-09-22,51.2,,4.0,20.0,8.0,70.1,10.113,10.113
+2026-10-24,claude-fable-5-1-high,anthropic,"Claude Fable 5.1 (High, Default Fallback)",2026-09-01,51.2,79.1,10.0,50.0,20.0,52.0,2.931,2.931
+2026-10-24,gpt-6-1-sol-xhigh,openai,GPT-6.1 Sol (Xhigh),2026-09-29,51.0,,2.0,10.0,4.0,53.9,55.331,55.331
+2026-10-24,gpt-6-astra-high,openai,GPT-6 Astra (High),2026-09-03,50.9,77.1,10.0,50.0,20.0,49.9,23.017,23.017
 2026-10-24,claude-opus-5,anthropic,Claude Opus 5 (Max),2026-07-24,50.8,78.0,5.0,25.0,10.0,,,
-2026-10-24,gpt-6-1-sol-high,openai,GPT-6.1 Sol (High),2026-09-29,50.2,,2.0,10.0,4.0,47.3,17.013,17.013
+2026-10-24,gpt-6-1-sol-high,openai,GPT-6.1 Sol (High),2026-09-29,50.2,,2.0,10.0,4.0,48.4,20.672,20.672
 2026-10-24,claude-opus-5-xhigh,anthropic,Claude Opus 5 (Xhigh),2026-07-24,49.7,77.0,5.0,25.0,10.0,,,
 2026-10-24,claude-fable-5,anthropic,"Claude Fable 5 (Max, Opus 4.8 Fallback)",2026-06-09,49.6,76.5,10.0,50.0,20.0,,,
-2026-10-24,gpt-6-astra-medium,openai,GPT-6 Astra (Medium),2026-09-03,49.6,76.7,10.0,50.0,20.0,51.5,2.607,2.607
-2026-10-24,claude-fable-5-1-medium,anthropic,"Claude Fable 5.1 (Medium, Default Fallback)",2026-09-01,48.9,77.1,10.0,50.0,20.0,51.5,2.048,2.048
+2026-10-24,gpt-6-astra-medium,openai,GPT-6 Astra (Medium),2026-09-03,49.6,76.7,10.0,50.0,20.0,50.4,3.488,3.488
+2026-10-24,claude-fable-5-1-medium,anthropic,"Claude Fable 5.1 (Medium, Default Fallback)",2026-09-01,48.9,77.1,10.0,50.0,20.0,51.5,2.515,2.515
 2026-10-24,claude-opus-5-high,anthropic,Claude Opus 5 (High),2026-07-24,48.1,76.5,5.0,25.0,10.0,,,
-2026-10-24,muse-spark-1-3,meta,Muse Spark 1.3 (Max),2026-09-02,48.1,75.8,1.25,4.25,2.0,94.4,54.571,75.751
-2026-10-24,gpt-6-1-sol-medium,openai,GPT-6.1 Sol (Medium),2026-09-29,47.8,,2.0,10.0,4.0,48.6,2.763,2.763
+2026-10-24,muse-spark-1-3,meta,Muse Spark 1.3 (Max),2026-09-02,48.1,75.8,1.25,4.25,2.0,124.7,80.55,96.591
+2026-10-24,gpt-6-1-sol-medium,openai,GPT-6.1 Sol (Medium),2026-09-29,47.8,,2.0,10.0,4.0,48.6,3.185,3.185
 2026-10-24,gpt-6-sol,openai,GPT-6 Sol (Max),2026-09-22,47.6,,2.0,10.0,4.0,,,
 2026-10-24,gpt-5-6-sol,openai,GPT-5.6 Sol (Max),2026-07-09,47.0,77.4,4.0,20.0,8.0,,,
-2026-10-24,claude-fable-5-1-low,anthropic,"Claude Fable 5.1 (Low, Default Fallback)",2026-09-01,46.8,75.2,10.0,50.0,20.0,51.8,1.023,1.023
-2026-10-24,claude-sonnet-5-5-high,anthropic,"Claude Sonnet 5.5 (High, Default Fallback)",2026-09-28,46.8,,2.0,10.0,4.0,92.8,7.094,7.094
-2026-10-24,grok-4-7,xai,Grok 4.7 (Xhigh),2026-09-21,46.4,,2.0,6.0,3.0,88.2,11.063,11.063
-2026-10-24,grok-4-7-high,xai,Grok 4.7 (High),2026-09-21,46.3,,2.0,6.0,3.0,79.7,8.298,8.298
-2026-10-24,mimo-v2-6-pro,xiaomi,MiMo-V2.6-Pro,2026-09-21,46.3,,0.435,0.87,0.544,44.6,2.358,47.202
-2026-10-24,gpt-6-astra-low,openai,GPT-6 Astra (Low),2026-09-03,45.8,75.7,10.0,50.0,20.0,51.7,1.826,1.826
-2026-10-24,qwen3-8-max,alibaba,Qwen3.8 Max (0902),2026-09-02,45.4,76.2,2.0,6.0,3.0,39.7,2.032,52.468
-2026-10-24,deepseek-v4-1-flash-1017,deepseek,DeepSeek V4.1 Flash 1017 (Max),2026-10-17,45.1,,0.3,1.2,0.525,181.5,0.972,11.993
-2026-10-24,muse-spark-1-3-xhigh,meta,Muse Spark 1.3 (Xhigh),2026-09-02,45.1,76.5,1.25,4.25,2.0,410.3,23.161,28.036
+2026-10-24,claude-fable-5-1-low,anthropic,"Claude Fable 5.1 (Low, Default Fallback)",2026-09-01,46.8,75.2,10.0,50.0,20.0,51.8,1.147,1.147
+2026-10-24,claude-sonnet-5-5-high,anthropic,"Claude Sonnet 5.5 (High, Default Fallback)",2026-09-28,46.8,,2.0,10.0,4.0,94.8,7.344,7.344
+2026-10-24,grok-4-7,xai,Grok 4.7 (Xhigh),2026-09-21,46.4,,2.0,6.0,3.0,89.3,15.456,15.456
+2026-10-24,grok-4-7-high,xai,Grok 4.7 (High),2026-09-21,46.3,,2.0,6.0,3.0,82.9,8.71,8.71
+2026-10-24,mimo-v2-6-pro,xiaomi,MiMo-V2.6-Pro,2026-09-21,46.3,,0.435,0.87,0.544,46.4,2.349,45.432
+2026-10-24,gpt-6-astra-low,openai,GPT-6 Astra (Low),2026-09-03,45.8,75.7,10.0,50.0,20.0,54.1,1.748,1.748
+2026-10-24,qwen3-8-max,alibaba,Qwen3.8 Max (0902),2026-09-02,45.4,76.2,2.0,6.0,3.0,40.2,1.988,51.754
+2026-10-24,deepseek-v4-1-flash-1017,deepseek,DeepSeek V4.1 Flash 1017 (Max),2026-10-17,45.1,,0.3,1.2,0.525,181.5,0.961,11.981
+2026-10-24,muse-spark-1-3-xhigh,meta,Muse Spark 1.3 (Xhigh),2026-09-02,45.1,76.5,1.25,4.25,2.0,711.0,26.222,29.035
 2026-10-24,claude-opus-5-medium,anthropic,Claude Opus 5 (Medium),2026-07-24,44.8,74.3,5.0,25.0,10.0,,,
-2026-10-24,glm-5-3,zai,GLM-5.3 (Max),2026-08-18,44.8,74.8,1.4,4.4,2.15,74.1,2.538,29.518
+2026-10-24,glm-5-3,zai,GLM-5.3 (Max),2026-08-18,44.8,74.8,1.4,4.4,2.15,77.9,2.496,28.169
 2026-10-24,grok-4-6,xai,Grok 4.6 (High),2026-08-12,44.3,76.8,2.0,6.0,3.0,,,
 2026-10-24,gpt-6-sol-xhigh,openai,GPT-6 Sol (Xhigh),2026-09-22,44.2,,2.0,10.0,4.0,,,
 2026-10-24,grok-4-6-xhigh,xai,Grok 4.6 (Xhigh),2026-08-12,44.2,75.9,2.0,6.0,3.0,,,
 2026-10-24,gpt-5-6-sol-xhigh,openai,GPT-5.6 Sol (Xhigh),2026-07-09,44.0,78.3,4.0,20.0,8.0,,,
 2026-10-24,ling-3-1-flash-1019,inclusionai,Ling 3.1 Flash 1019,2026-10-22,43.9,,0.3,0.9,0.45,,,
-2026-10-24,step-5,stepfun,Step 5 Preview,2026-09-18,43.7,,1.0,2.7,1.425,222.6,0.988,9.973
-2026-10-24,kimi-k3,kimi,Kimi K3 (Max),2026-07-16,43.6,76.2,3.0,15.0,6.0,38.9,2.852,54.324
-2026-10-24,claude-haiku-5-5,anthropic,Claude Haiku 5.5 (Max),2026-10-07,43.4,,0.1,0.5,0.2,241.1,216.078,216.078
+2026-10-24,step-5,stepfun,Step 5 Preview,2026-09-18,43.7,,1.0,2.7,1.425,220.0,0.964,10.056
+2026-10-24,kimi-k3,kimi,Kimi K3 (Max),2026-07-16,43.6,76.2,3.0,15.0,6.0,39.1,3.173,54.349
+2026-10-24,claude-haiku-5-5,anthropic,Claude Haiku 5.5 (Max),2026-10-07,43.4,,0.1,0.5,0.2,241.1,211.99,211.99
 2026-10-24,grok-4-6-medium,xai,Grok 4.6 (Medium),2026-08-12,42.8,74.4,2.0,6.0,3.0,,,
-2026-10-24,minimax-m3-1-flash,minimax,MiniMax-M3.1-Flash,2026-10-19,42.7,,0.15,0.6,0.262,89.3,0.997,23.397
+2026-10-24,minimax-m3-1-flash,minimax,MiniMax-M3.1-Flash,2026-10-19,42.7,,0.15,0.6,0.262,103.3,1.008,20.364
 2026-10-24,gpt-6-sol-high,openai,GPT-6 Sol (High),2026-09-22,42.4,,2.0,10.0,4.0,,,
 2026-10-24,gpt-5-6-sol-high,openai,GPT-5.6 Sol (High),2026-07-09,42.3,77.2,4.0,20.0,8.0,,,
-2026-10-24,claude-opus-5-5-low,anthropic,"Claude Opus 5.5 (Low, Default Fallback)",2026-09-22,42.3,,4.0,20.0,8.0,70.2,2.519,2.519
+2026-10-24,claude-opus-5-5-low,anthropic,"Claude Opus 5.5 (Low, Default Fallback)",2026-09-22,42.3,,4.0,20.0,8.0,70.3,2.561,2.561
 2026-10-24,grok-4-7-low,xai,Grok 4.7 (Low),2026-09-21,42.2,,2.0,6.0,3.0,68.9,3.053,3.053
-2026-10-24,gpt-6-1-sol-low,openai,GPT-6.1 Sol (Low),2026-09-29,42.1,,2.0,10.0,4.0,48.9,1.604,1.604
-2026-10-24,gpt-5-6-terra,openai,GPT-5.6 Terra (Max),2026-07-09,42.1,76.7,2.0,12.0,4.5,121.8,53.147,53.147
-2026-10-24,glm-5-3-flash,zai,GLM-5.3-Flash,2026-08-26,41.8,71.5,0.15,0.5,0.237,62.9,2.432,34.254
+2026-10-24,gpt-6-1-sol-low,openai,GPT-6.1 Sol (Low),2026-09-29,42.1,,2.0,10.0,4.0,48.9,1.487,1.487
+2026-10-24,gpt-5-6-terra,openai,GPT-5.6 Terra (Max),2026-07-09,42.1,76.7,2.0,12.0,4.5,125.6,65.502,65.502
+2026-10-24,glm-5-3-flash,zai,GLM-5.3-Flash,2026-08-26,41.8,71.5,0.15,0.5,0.237,62.8,2.465,34.31
 2026-10-24,claude-opus-4-8,anthropic,Claude Opus 4.8 (Max),2026-05-28,41.8,74.3,5.0,25.0,10.0,,,
-2026-10-24,claude-haiku-5-5-xhigh,anthropic,Claude Haiku 5.5 (Xhigh),2026-10-07,41.2,,0.1,0.5,0.2,181.9,33.854,33.854
+2026-10-24,claude-haiku-5-5-xhigh,anthropic,Claude Haiku 5.5 (Xhigh),2026-10-07,41.2,,0.1,0.5,0.2,181.9,34.635,34.635
 2026-10-24,ling-3-1-flash,inclusionai,Ling 3.1 Flash,2026-10-01,41.1,,0.3,0.9,0.45,218.3,1.293,10.454
-2026-10-24,gemini-3-8-flash,google,Gemini 3.8 Flash (High),2026-09-02,40.9,76.3,0.75,3.75,1.5,126.9,15.356,15.356
-2026-10-24,claude-sonnet-5-5-medium,anthropic,"Claude Sonnet 5.5 (Medium, Default Fallback)",2026-09-28,40.8,,2.0,10.0,4.0,91.6,0.883,0.883
+2026-10-24,gemini-3-8-flash,google,Gemini 3.8 Flash (High),2026-09-02,40.9,76.3,0.75,3.75,1.5,126.9,16.343,16.343
+2026-10-24,claude-sonnet-5-5-medium,anthropic,"Claude Sonnet 5.5 (Medium, Default Fallback)",2026-09-28,40.8,,2.0,10.0,4.0,91.6,0.827,0.827
 2026-10-24,claude-opus-4-7,anthropic,Claude Opus 4.7 (Max),2026-04-16,40.7,73.6,5.0,25.0,10.0,,,
 2026-10-24,qwen3-8-max-0803,alibaba,Qwen3.8 Max,2026-08-03,40.2,71.8,2.0,6.0,3.0,,,
-2026-10-24,qwen3-8-2-4t-a95b,alibaba,Qwen3.8 2.4T A95B,2026-08-12,39.9,71.9,2.0,6.0,3.0,39.7,1.957,52.367
-2026-10-24,qwen3-8-flash-next,alibaba,Qwen3.8-Flash-Next,2026-08-26,39.8,73.1,0.15,0.47,0.23,49.3,1.133,41.739
+2026-10-24,qwen3-8-2-4t-a95b,alibaba,Qwen3.8 2.4T A95B,2026-08-12,39.9,71.9,2.0,6.0,3.0,40.1,1.957,51.799
+2026-10-24,qwen3-8-flash-next,alibaba,Qwen3.8-Flash-Next,2026-08-26,39.8,73.1,0.15,0.47,0.23,49.3,1.13,41.736
 2026-10-24,gpt-6-sol-medium,openai,GPT-6 Sol (Medium),2026-09-22,39.8,,2.0,10.0,4.0,,,
 2026-10-24,gemini-3-8-flash-medium,google,Gemini 3.8 Flash (Medium),2026-09-02,39.8,74.1,0.75,3.75,1.5,,,
 2026-10-24,muse-spark-1-2,meta,Muse Spark 1.2 (Xhigh),2026-08-05,39.6,72.2,1.25,4.25,2.0,,,
@@ -20441,41 +20441,41 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,gpt-5-6-sol-medium,openai,GPT-5.6 Sol (Medium),2026-07-09,39.2,76.3,4.0,20.0,8.0,,,
 2026-10-24,gemini-3-7-flash,google,Gemini 3.7 Flash (High),2026-08-13,39.1,76.1,0.75,3.75,1.5,,,
 2026-10-24,gpt-5-4,openai,GPT-5.4 (Xhigh),2026-03-05,39.0,71.1,2.5,15.0,5.625,,,
-2026-10-24,muse-spark-open,meta,Muse Spark Open (Xhigh),2026-10-15,38.9,,1.25,4.25,2.0,142.6,0.586,14.608
+2026-10-24,muse-spark-open,meta,Muse Spark Open (Xhigh),2026-10-15,38.9,,1.25,4.25,2.0,142.6,0.628,14.649
 2026-10-24,grok-4-5,xai,Grok 4.5 (High),2026-07-08,38.8,72.4,2.0,6.0,3.0,,,
-2026-10-24,mistral-large-4,mistral,Mistral Large 4 Preview,2026-10-06,38.4,,1.36,4.18,2.065,88.4,1.624,24.261
+2026-10-24,mistral-large-4,mistral,Mistral Large 4 Preview,2026-10-06,38.4,,1.36,4.18,2.065,96.6,1.624,22.326
 2026-10-24,gpt-5-5,openai,GPT-5.5 (Xhigh),2026-04-23,38.4,74.9,5.0,30.0,11.25,,,
 2026-10-24,claude-sonnet-5,anthropic,Claude Sonnet 5 (Max),2026-06-30,38.2,71.5,2.0,10.0,4.0,,,
-2026-10-24,gpt-6-luna,openai,GPT-6 Luna (Max),2026-09-22,38.1,,0.1,0.5,0.2,131.5,61.083,61.083
-2026-10-24,gpt-5-6-terra-xhigh,openai,GPT-5.6 Terra (Xhigh),2026-07-09,38.0,70.6,2.0,12.0,4.5,115.3,5.16,5.16
-2026-10-24,mimo-v2-6-flash,xiaomi,MiMo-V2.6-Flash,2026-09-21,37.9,,0.14,0.28,0.175,44.6,4.38,49.178
-2026-10-24,claude-haiku-5-5-high,anthropic,Claude Haiku 5.5 (High),2026-10-07,37.8,,0.1,0.5,0.2,152.3,10.179,10.179
+2026-10-24,gpt-6-luna,openai,GPT-6 Luna (Max),2026-09-22,38.1,,0.1,0.5,0.2,134.6,63.933,63.933
+2026-10-24,gpt-5-6-terra-xhigh,openai,GPT-5.6 Terra (Xhigh),2026-07-09,38.0,70.6,2.0,12.0,4.5,116.4,6.639,6.639
+2026-10-24,mimo-v2-6-flash,xiaomi,MiMo-V2.6-Flash,2026-09-21,37.9,,0.14,0.28,0.175,47.5,4.38,46.457
+2026-10-24,claude-haiku-5-5-high,anthropic,Claude Haiku 5.5 (High),2026-10-07,37.8,,0.1,0.5,0.2,152.3,10.448,10.448
 2026-10-24,gpt-5-6-luna,openai,GPT-5.6 Luna (Max),2026-07-09,37.3,71.4,0.2,1.2,0.45,,,
 2026-10-24,gpt-5-5-high,openai,GPT-5.5 (High),2026-04-23,37.0,71.6,5.0,30.0,11.25,,,
-2026-10-24,deepseek-v4-pro,deepseek,DeepSeek V4 Pro 0813 (Max),2026-08-13,36.0,68.8,1.32,3.96,1.98,84.4,1.089,24.783
-2026-10-24,claude-sonnet-5-5-low,anthropic,"Claude Sonnet 5.5 (Low, Default Fallback)",2026-09-28,35.9,,2.0,10.0,4.0,92.5,0.838,0.838
-2026-10-24,agnes-2-5-pro-beta,agnes-ai,Agnes 2.5 Pro Beta,2026-08-26,35.2,62.3,0.1,0.3,0.15,120.3,0.667,17.289
+2026-10-24,deepseek-v4-pro,deepseek,DeepSeek V4 Pro 0813 (Max),2026-08-13,36.0,68.8,1.32,3.96,1.98,90.1,1.116,23.322
+2026-10-24,claude-sonnet-5-5-low,anthropic,"Claude Sonnet 5.5 (Low, Default Fallback)",2026-09-28,35.9,,2.0,10.0,4.0,92.5,0.83,0.83
+2026-10-24,agnes-2-5-pro-beta,agnes-ai,Agnes 2.5 Pro Beta,2026-08-26,35.2,62.3,0.1,0.3,0.15,118.1,0.674,17.608
 2026-10-24,grok-4-6-low,xai,Grok 4.6 (Low),2026-08-12,35.1,66.3,2.0,6.0,3.0,,,
-2026-10-24,deepseek-v4-flash-vision,deepseek,DeepSeek V4 Flash Vision (Max),2026-08-21,34.8,65.0,0.44,1.32,0.66,164.4,1.234,13.403
-2026-10-24,gpt-6-luna-xhigh,openai,GPT-6 Luna (Xhigh),2026-09-22,34.6,,0.1,0.5,0.2,105.5,14.243,14.243
+2026-10-24,deepseek-v4-flash-vision,deepseek,DeepSeek V4 Flash Vision (Max),2026-08-21,34.8,65.0,0.44,1.32,0.66,163.7,1.227,13.444
+2026-10-24,gpt-6-luna-xhigh,openai,GPT-6 Luna (Xhigh),2026-09-22,34.6,,0.1,0.5,0.2,109.7,14.243,14.243
 2026-10-24,gpt-5-6-luna-xhigh,openai,GPT-5.6 Luna (Xhigh),2026-07-09,34.6,68.6,0.2,1.2,0.45,,,
-2026-10-24,claude-haiku-5-5-medium,anthropic,Claude Haiku 5.5 (Medium),2026-10-07,34.5,,0.1,0.5,0.2,151.4,6.399,6.399
+2026-10-24,claude-haiku-5-5-medium,anthropic,Claude Haiku 5.5 (Medium),2026-10-07,34.5,,0.1,0.5,0.2,154.0,7.045,7.045
 2026-10-24,claude-sonnet-5-xhigh,anthropic,Claude Sonnet 5 (Xhigh),2026-06-30,34.4,,2.0,10.0,4.0,,,
 2026-10-24,deepseek-v4-flash,deepseek,DeepSeek V4 Flash 0731 (Max),2026-07-31,34.3,69.1,0.14,0.28,0.175,,,
-2026-10-24,glm-5-3-low,zai,GLM-5.3 (Low),2026-08-18,34.3,,1.4,4.4,2.15,71.6,3.095,31.036
-2026-10-24,gpt-5-6-terra-high,openai,GPT-5.6 Terra (High),2026-07-09,34.2,67.1,2.0,12.0,4.5,100.9,2.028,2.028
+2026-10-24,glm-5-3-low,zai,GLM-5.3 (Low),2026-08-18,34.3,,1.4,4.4,2.15,71.6,3.006,30.946
+2026-10-24,gpt-5-6-terra-high,openai,GPT-5.6 Terra (High),2026-07-09,34.2,67.1,2.0,12.0,4.5,106.1,2.203,2.203
 2026-10-24,gpt-6-sol-low,openai,GPT-6 Sol (Low),2026-09-22,34.2,,2.0,10.0,4.0,,,
 2026-10-24,gemini-3-6-flash,google,Gemini 3.6 Flash (High),2026-07-21,34.0,69.2,0.75,3.75,1.5,,,
 2026-10-24,gpt-5-5-medium,openai,GPT-5.5 (Medium),2026-04-23,33.8,71.5,5.0,30.0,11.25,,,
 2026-10-24,muse-spark-1-1,meta,Muse Spark 1.1 (Xhigh),2026-07-09,33.7,71.3,1.25,4.25,2.0,,,
 2026-10-24,glm-5-2,zai,GLM-5.2 (Max),2026-06-16,33.7,68.8,1.4,4.4,2.15,,,
-2026-10-24,qwen3-8-27b,alibaba,Qwen3.8 27B (Xhigh),2026-08-14,33.7,68.1,0.5,3.0,1.125,40.1,1.229,51.096
+2026-10-24,qwen3-8-27b,alibaba,Qwen3.8 27B (Xhigh),2026-08-14,33.7,68.1,0.5,3.0,1.125,40.8,1.193,50.237
 2026-10-24,gemini-3-5-flash-medium,google,Gemini 3.5 Flash (Medium),2026-05-19,33.6,,1.5,9.0,3.375,,,
 2026-10-24,gpt-5-6-sol-low,openai,GPT-5.6 Sol (Low),2026-07-09,33.5,69.7,4.0,20.0,8.0,,,
 2026-10-24,gemini-3-8-flash-low,google,Gemini 3.8 Flash (Low),2026-09-02,33.5,73.5,0.75,3.75,1.5,,,
-2026-10-24,gpt-6-luna-high,openai,GPT-6 Luna (High),2026-09-22,32.9,,0.1,0.5,0.2,116.2,9.81,9.81
+2026-10-24,gpt-6-luna-high,openai,GPT-6 Luna (High),2026-09-22,32.9,,0.1,0.5,0.2,117.7,11.284,11.284
 2026-10-24,gemini-3-5-flash,google,Gemini 3.5 Flash (High),2026-05-19,32.6,70.1,1.5,9.0,3.375,,,
-2026-10-24,gpt-5-3-codex,openai,GPT-5.3 Codex (Xhigh),2026-02-05,32.5,,1.75,14.0,4.813,78.7,40.436,40.436
+2026-10-24,gpt-5-3-codex,openai,GPT-5.3 Codex (Xhigh),2026-02-05,32.5,,1.75,14.0,4.813,84.2,42.473,42.473
 2026-10-24,gpt-5-6-luna-high,openai,GPT-5.6 Luna (High),2026-07-09,32.1,63.3,0.2,1.2,0.45,,,
 2026-10-24,claude-opus-4-6-adaptive,anthropic,Claude Opus 4.6 (Max),2026-02-05,31.9,,5.0,25.0,10.0,,,
 2026-10-24,claude-sonnet-5-high,anthropic,Claude Sonnet 5 (High),2026-06-30,31.7,,2.0,10.0,4.0,,,
@@ -20483,16 +20483,16 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,gpt-5-5-low,openai,GPT-5.5 (Low),2026-04-23,30.7,60.9,5.0,30.0,11.25,,,
 2026-10-24,deepseek-v4-pro-0424,deepseek,DeepSeek V4 Pro 0424 (Max),2026-04-24,30.4,59.4,0.435,0.87,0.544,,,
 2026-10-24,gpt-5-2,openai,GPT-5.2 (Xhigh),2025-12-11,30.4,,1.75,14.0,4.813,,,
-2026-10-24,reflection-beam,reflection,Beam 1.0,2026-10-16,30.3,,0.4,1.2,0.6,336.1,0.51,6.46
+2026-10-24,reflection-beam,reflection,Beam 1.0,2026-10-16,30.3,,0.4,1.2,0.6,338.3,0.51,6.423
 2026-10-24,deepseek-v4-pro-0424-high,deepseek,DeepSeek V4 Pro 0424 (High),2026-04-24,30.1,58.7,0.435,0.87,0.544,,,
-2026-10-24,gpt-5-6-terra-medium,openai,GPT-5.6 Terra (Medium),2026-07-09,30.1,64.7,2.0,12.0,4.5,100.5,1.422,1.422
-2026-10-24,kimi-k3-low,kimi,Kimi K3 (Low),2026-07-16,30.1,72.0,3.0,15.0,6.0,37.1,2.679,56.605
+2026-10-24,gpt-5-6-terra-medium,openai,GPT-5.6 Terra (Medium),2026-07-09,30.1,64.7,2.0,12.0,4.5,101.3,1.549,1.549
+2026-10-24,kimi-k3-low,kimi,Kimi K3 (Low),2026-07-16,30.1,72.0,3.0,15.0,6.0,37.2,2.679,56.494
 2026-10-24,claude-sonnet-4-6-adaptive,anthropic,Claude Sonnet 4.6 (Max),2026-02-17,30.1,63.0,3.0,15.0,6.0,,,
 2026-10-24,gpt-6-luna-medium,openai,GPT-6 Luna (Medium),2026-09-22,29.9,,0.1,0.5,0.2,125.4,5.517,5.517
-2026-10-24,gemini-3-1-pro-preview,google,Gemini 3.1 Pro Preview,2026-02-19,29.7,68.8,2.0,12.0,4.5,132.6,17.296,17.296
+2026-10-24,gemini-3-1-pro-preview,google,Gemini 3.1 Pro Preview,2026-02-19,29.7,68.8,2.0,12.0,4.5,134.0,17.314,17.314
 2026-10-24,qwen3-7-max,alibaba,Qwen3.7 Max,2026-05-19,29.5,66.0,2.5,7.5,3.75,,,
-2026-10-24,claude-haiku-5-5-low,anthropic,Claude Haiku 5.5 (Low),2026-10-07,29.5,,0.1,0.5,0.2,150.8,4.251,4.251
-2026-10-24,minimax-m3,minimax,MiniMax-M3,2026-06-01,29.2,58.6,0.3,1.2,0.525,82.4,1.023,25.309
+2026-10-24,claude-haiku-5-5-low,anthropic,Claude Haiku 5.5 (Low),2026-10-07,29.5,,0.1,0.5,0.2,150.8,4.294,4.294
+2026-10-24,minimax-m3,minimax,MiniMax-M3,2026-06-01,29.2,58.6,0.3,1.2,0.525,88.0,1.023,23.741
 2026-10-24,claude-opus-4-5-thinking,anthropic,Claude Opus 4.5 (Reasoning),2025-11-24,29.1,,5.0,25.0,10.0,,,
 2026-10-24,gpt-6-sol-non-reasoning,openai,GPT-6 Sol (Non-reasoning),2026-09-22,28.5,,2.0,10.0,4.0,,,
 2026-10-24,gpt-5-2-codex,openai,GPT-5.2 Codex (Xhigh),2025-12-11,28.5,,1.75,14.0,4.813,,,
@@ -20501,30 +20501,30 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,gemini-3-pro,google,Gemini 3 Pro Preview (High),2025-11-18,28.0,,2.0,12.0,4.5,,,
 2026-10-24,glm-5,zai,GLM-5 (Reasoning),2026-02-11,27.9,,1.0,3.2,1.55,,,
 2026-10-24,gpt-5-4-low,openai,GPT-5.4 (Low),2026-03-05,27.6,,2.5,15.0,5.625,,,
-2026-10-24,qwen3-8-27b-medium,alibaba,Qwen3.8 27B (Medium),2026-08-14,27.6,56.1,0.5,3.0,1.125,46.1,1.186,44.584
-2026-10-24,gpt-5-6-terra-low,openai,GPT-5.6 Terra (Low),2026-07-09,27.5,58.1,2.0,12.0,4.5,101.7,1.435,1.435
+2026-10-24,qwen3-8-27b-medium,alibaba,Qwen3.8 27B (Medium),2026-08-14,27.6,56.1,0.5,3.0,1.125,46.7,1.186,44.047
+2026-10-24,gpt-5-6-terra-low,openai,GPT-5.6 Terra (Low),2026-07-09,27.5,58.1,2.0,12.0,4.5,103.1,1.456,1.456
 2026-10-24,grok-build-0-1-06-16,xai,Grok Build 0.1 0616,2026-06-16,27.2,51.5,1.0,2.0,1.25,,,
 2026-10-24,qwen3-6-plus,alibaba,Qwen3.6 Plus,2026-04-02,27.0,54.5,0.5,3.0,1.125,,,
 2026-10-24,kimi-k2-6,kimi,Kimi K2.6 (Reasoning),2026-04-20,27.0,61.8,0.95,4.0,1.712,,,
-2026-10-24,quasar-438b,multiversecomputing,"Quasar 438B (Max, Based on GLM-5.2)",2026-08-10,26.7,61.2,0.11,0.33,0.165,155.9,0.554,13.382
+2026-10-24,quasar-438b,multiversecomputing,"Quasar 438B (Max, Based on GLM-5.2)",2026-08-10,26.7,61.2,0.11,0.33,0.165,152.7,0.554,13.652
 2026-10-24,solar-pro4,upstage,Solar Pro 4,2026-08-06,26.6,,0.3,1.2,0.525,,,
 2026-10-24,gpt-5-2-medium,openai,GPT-5.2 (Medium),2025-12-11,26.5,,1.75,14.0,4.813,,,
-2026-10-24,nemotron-3-5-super-vl,nvidia,Nemotron 3.5 Super VL,2026-10-15,26.5,,0.225,0.575,0.313,439.5,0.562,5.112
+2026-10-24,nemotron-3-5-super-vl,nvidia,Nemotron 3.5 Super VL,2026-10-15,26.5,,0.225,0.575,0.313,440.0,0.562,5.107
 2026-10-24,apodex-1-1,apodex,Apodex 1.1,2026-08-30,26.4,60.8,0.3,3.0,0.975,,,
 2026-10-24,claude-opus-4-6,anthropic,"Claude Opus 4.6 (Non-reasoning, High)",2026-02-05,26.4,,5.0,25.0,10.0,,,
 2026-10-24,gemini-3-flash-reasoning,google,Gemini 3 Flash Preview (Reasoning),2025-12-17,26.3,,0.5,3.0,1.125,,,
-2026-10-24,qwen3-8-27b-low,alibaba,Qwen3.8 27B (Low),2026-08-14,26.2,58.2,0.5,3.0,1.125,44.9,1.123,45.674
+2026-10-24,qwen3-8-27b-low,alibaba,Qwen3.8 27B (Low),2026-08-14,26.2,58.2,0.5,3.0,1.125,45.0,1.123,45.603
 2026-10-24,glm-5-1,zai,GLM-5.1 (Reasoning),2026-04-07,26.1,55.8,1.285,4.07,1.981,,,
 2026-10-24,gpt-5-5-instant-06-26,openai,GPT-5.5 Instant (June 2026),2026-06-25,26.0,39.4,5.0,30.0,11.25,156.9,0.805,13.556
 2026-10-24,mimo-v2-5-pro,xiaomi,MiMo-V2.5-Pro (Reasoning),2026-04-22,26.0,60.2,0.412,1.02,0.564,,,
-2026-10-24,kimi-k2-7-code,kimi,Kimi K2.7 Code,2026-06-12,25.8,60.8,0.95,4.0,1.712,48.6,1.091,46.951
-2026-10-24,inkling-small,thinking-machines,Inkling Small,2026-07-30,25.7,52.9,0.3,1.2,0.525,222.3,1.564,10.561
+2026-10-24,kimi-k2-7-code,kimi,Kimi K2.7 Code,2026-06-12,25.8,60.8,0.95,4.0,1.712,51.4,1.079,44.414
+2026-10-24,inkling-small,thinking-machines,Inkling Small,2026-07-30,25.7,52.9,0.3,1.2,0.525,225.1,1.564,10.45
 2026-10-24,grok-4-20,xai,Grok 4.20 0309 v2 (Reasoning),2026-04-07,25.7,,1.25,2.5,1.563,,,
-2026-10-24,hy3,tencent,Hy3,2026-07-06,25.3,58.8,0.136,0.555,0.241,85.1,1.844,25.344
+2026-10-24,hy3,tencent,Hy3,2026-07-06,25.3,58.8,0.136,0.555,0.241,85.9,1.841,25.111
 2026-10-24,grok-4-20-0309,xai,Grok 4.20 0309 (Reasoning),2026-03-10,25.2,,2.0,6.0,3.0,,,
-2026-10-24,qwen3-7-plus,alibaba,Qwen3.7 Plus,2026-06-01,25.2,55.9,0.4,1.6,0.7,57.4,1.629,36.499
+2026-10-24,qwen3-7-plus,alibaba,Qwen3.7 Plus,2026-06-01,25.2,55.9,0.4,1.6,0.7,57.4,1.616,36.485
 2026-10-24,gpt-5-6-luna-medium,openai,GPT-5.6 Luna (Medium),2026-07-09,25.0,50.7,0.2,1.2,0.45,,,
-2026-10-24,inkling,thinking-machines,Inkling (Xhigh),2026-07-15,25.0,52.1,1.0,4.05,1.762,216.1,2.104,11.361
+2026-10-24,inkling,thinking-machines,Inkling (Xhigh),2026-07-15,25.0,52.1,1.0,4.05,1.762,220.0,2.039,11.128
 2026-10-24,gpt-5-codex,openai,GPT-5 Codex (High),2025-09-23,24.9,,1.25,10.0,3.438,,,
 2026-10-24,grok-4-3,xai,Grok 4.3 (High),2026-04-30,24.9,42.2,1.25,2.5,1.563,,,
 2026-10-24,grok-4-3-medium,xai,Grok 4.3 (Medium),2026-04-30,24.8,,1.25,2.5,1.563,,,
@@ -20537,7 +20537,7 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,glm-5-1-non-reasoning,zai,GLM-5.1 (Non-reasoning),2026-04-07,24.2,,1.38,4.4,2.135,,,
 2026-10-24,deepseek-v4-flash-0420,deepseek,DeepSeek V4 Flash 0420 (Max),2026-04-24,24.2,56.2,0.112,0.234,0.142,,,
 2026-10-24,gpt-5-4-mini,openai,GPT-5.4 mini (Xhigh),2026-03-17,24.1,56.1,0.75,4.5,1.688,,,
-2026-10-24,solar-mini4,upstage,Solar Mini 4,2026-09-22,24.1,,0.1,0.4,0.175,101.4,1.092,20.817
+2026-10-24,solar-mini4,upstage,Solar Mini 4,2026-09-22,24.1,,0.1,0.4,0.175,101.9,1.112,20.74
 2026-10-24,gemini-3-5-flash-minimal,google,Gemini 3.5 Flash (Minimal),2026-05-19,23.8,,1.5,9.0,3.375,,,
 2026-10-24,gpt-5-1-codex,openai,GPT-5.1 Codex (High),2025-11-13,23.7,,1.25,10.0,3.438,,,
 2026-10-24,claude-opus-4-5,anthropic,Claude Opus 4.5 (Non-reasoning),2025-11-24,23.7,,5.0,25.0,10.0,,,
@@ -20547,7 +20547,7 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,claude-sonnet-5-non-reasoning,anthropic,"Claude Sonnet 5 (Non-reasoning, High)",2026-06-30,23.2,66.4,2.0,10.0,4.0,,,
 2026-10-24,gpt-5-5-non-reasoning,openai,GPT-5.5 (Non-reasoning),2026-04-23,23.2,56.5,5.0,30.0,11.25,,,
 2026-10-24,gpt-5,openai,GPT-5 (High),2025-08-07,23.0,37.8,1.25,10.0,3.438,,,
-2026-10-24,nvidia-nemotron-3-ultra-550b-a55b,nvidia,Nemotron 3 Ultra 550B A55B (Reasoning),2026-06-04,22.9,49.3,0.6,2.7,1.125,136.8,0.876,17.502
+2026-10-24,nvidia-nemotron-3-ultra-550b-a55b,nvidia,Nemotron 3 Ultra 550B A55B (Reasoning),2026-06-04,22.9,49.3,0.6,2.7,1.125,133.6,0.891,17.925
 2026-10-24,qwen3-5-27b,alibaba,Qwen3.5 27B (Reasoning),2026-02-24,22.9,,0.3,2.4,0.825,,,
 2026-10-24,gpt-5-medium,openai,GPT-5 (Medium),2025-08-07,22.9,,1.25,10.0,3.438,,,
 2026-10-24,claude-4-1-opus-thinking,anthropic,Claude 4.1 Opus (Reasoning),2025-08-05,22.8,,15.0,75.0,30.0,,,
@@ -20559,30 +20559,30 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,glm-5-2-non-reasoning,zai,GLM-5.2 (Non-reasoning),2026-06-16,22.4,46.5,1.4,4.4,2.15,,,
 2026-10-24,gemini-3-pro-low,google,Gemini 3 Pro Preview (Low),2025-11-18,22.3,,2.0,12.0,4.5,,,
 2026-10-24,glm-4-7,zai,GLM-4.7 (Reasoning),2025-12-22,22.2,45.3,0.525,2.1,0.919,,,
-2026-10-24,gemini-3-5-flash-lite,google,Gemini 3.5 Flash-Lite,2026-07-21,22.2,49.3,0.3,2.5,0.85,372.4,5.707,5.707
+2026-10-24,gemini-3-5-flash-lite,google,Gemini 3.5 Flash-Lite,2026-07-21,22.2,49.3,0.3,2.5,0.85,375.9,6.259,6.259
 2026-10-24,kimi-k2-thinking,kimi,Kimi K2 Thinking,2025-11-06,22.0,,0.6,2.5,1.075,,,
 2026-10-24,o3-pro,openai,o3-pro,2025-06-10,21.9,,20.0,80.0,35.0,,,
 2026-10-24,mimo-v2-5-0424,xiaomi,MiMo-V2.5,2026-04-22,21.8,56.8,0.133,0.266,0.166,,,
 2026-10-24,glm-5-non-reasoning,zai,GLM-5 (Non-reasoning),2026-02-11,21.8,,1.0,3.2,1.55,,,
-2026-10-24,gpt-6-luna-low,openai,GPT-6 Luna (Low),2026-09-22,21.5,,0.1,0.5,0.2,110.4,2.49,2.49
+2026-10-24,gpt-6-luna-low,openai,GPT-6 Luna (Low),2026-09-22,21.5,,0.1,0.5,0.2,111.1,2.49,2.49
 2026-10-24,deepseek-v3-2-reasoning,deepseek,DeepSeek V3.2 (Reasoning),2025-12-01,21.5,44.2,0.28,0.42,0.315,,,
-2026-10-24,qwen3-5-397b-a17b-non-reasoning,alibaba,Qwen3.5 397B A17B (Non-reasoning),2026-02-16,21.4,,0.6,3.6,1.35,57.8,1.532,1.532
+2026-10-24,qwen3-5-397b-a17b-non-reasoning,alibaba,Qwen3.5 397B A17B (Non-reasoning),2026-02-16,21.4,,0.6,3.6,1.35,59.2,1.532,1.532
 2026-10-24,qwen3-6-27b,alibaba,Qwen3.6 27B (Reasoning),2026-04-22,21.4,53.7,0.6,3.6,1.35,,,
 2026-10-24,gpt-5-6-luna-low,openai,GPT-5.6 Luna (Low),2026-07-09,21.0,44.2,0.2,1.2,0.45,,,
 2026-10-24,minimax-m2-1,minimax,MiniMax-M2.1,2025-12-23,20.9,,0.3,1.2,0.525,,,
 2026-10-24,deepseek-v4-pro-0424-non-reasoning,deepseek,DeepSeek V4 Pro 0424 (Non-reasoning),2026-04-24,20.8,,0.435,0.87,0.544,,,
 2026-10-24,mimo-v2-flash-reasoning,xiaomi,MiMo-V2-Flash (Reasoning),2025-12-16,20.8,,0.1,0.3,0.15,,,
 2026-10-24,gpt-5-low,openai,GPT-5 (Low),2025-08-07,20.8,,1.25,10.0,3.438,,,
-2026-10-24,gpt-5-6-terra-non-reasoning,openai,GPT-5.6 Terra (Non-reasoning),2026-07-09,20.8,52.3,2.0,12.0,4.5,96.8,0.782,0.782
+2026-10-24,gpt-5-6-terra-non-reasoning,openai,GPT-5.6 Terra (Non-reasoning),2026-07-09,20.8,52.3,2.0,12.0,4.5,102.6,0.742,0.742
 2026-10-24,gpt-5-4-nano,openai,GPT-5.4 nano (Xhigh),2026-03-17,20.7,56.1,0.2,1.25,0.463,,,
 2026-10-24,claude-4-5-sonnet-thinking,anthropic,Claude 4.5 Sonnet (Reasoning),2025-09-29,20.7,52.1,3.0,15.0,6.0,,,
 2026-10-24,claude-4-opus-thinking,anthropic,Claude 4 Opus (Reasoning),2025-05-22,20.6,,15.0,75.0,30.0,,,
 2026-10-24,gpt-5-mini-medium,openai,GPT-5 mini (Medium),2025-08-07,20.6,,0.25,2.0,0.688,,,
-2026-10-24,qwen3-5-omni-plus,alibaba,Qwen3.5 Omni Plus,2026-03-30,20.4,,0.4,4.8,1.5,111.7,1.081,1.081
+2026-10-24,qwen3-5-omni-plus,alibaba,Qwen3.5 Omni Plus,2026-03-30,20.4,,0.4,4.8,1.5,113.4,1.085,1.085
 2026-10-24,gpt-5-1-codex-mini,openai,GPT-5.1 Codex mini (High),2025-11-13,20.4,,0.25,2.0,0.688,,,
-2026-10-24,deepseek-v4-pro-non-reasoning,deepseek,DeepSeek V4 Pro 0813 (Non-reasoning),2026-08-13,20.4,,1.32,3.96,1.98,84.1,1.158,1.158
-2026-10-24,o3,openai,o3,2025-04-16,20.2,,2.0,8.0,3.5,121.6,5.457,5.457
-2026-10-24,qwen3-8-27b-non-reasoning,alibaba,Qwen3.8 27B (Non-reasoning),2026-08-14,20.2,44.6,0.5,3.0,1.125,46.3,1.171,1.171
+2026-10-24,deepseek-v4-pro-non-reasoning,deepseek,DeepSeek V4 Pro 0813 (Non-reasoning),2026-08-13,20.4,,1.32,3.96,1.98,85.5,1.149,1.149
+2026-10-24,o3,openai,o3,2025-04-16,20.2,,2.0,8.0,3.5,126.9,5.392,5.392
+2026-10-24,qwen3-8-27b-non-reasoning,alibaba,Qwen3.8 27B (Non-reasoning),2026-08-14,20.2,44.6,0.5,3.0,1.125,45.9,1.157,1.157
 2026-10-24,ling-3-0-flash,inclusionai,Ling 3.0 Flash,2026-08-04,20.1,50.6,0.075,0.22,0.111,,,
 2026-10-24,gpt-5-4-nano-medium,openai,GPT-5.4 nano (Medium),2026-03-17,20.0,,0.2,1.25,0.463,,,
 2026-10-24,qwen3-6-27b-non-reasoning,alibaba,Qwen3.6 27B (Non-reasoning),2026-04-22,19.8,46.6,0.6,3.6,1.35,,,
@@ -20592,20 +20592,20 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,qwen3-5-27b-non-reasoning,alibaba,Qwen3.5 27B (Non-reasoning),2026-02-24,19.4,,0.3,2.4,0.825,,,
 2026-10-24,claude-4-5-sonnet,anthropic,Claude 4.5 Sonnet (Non-reasoning),2025-09-29,19.3,,3.0,15.0,6.0,,,
 2026-10-24,qwen3-5-35b-a3b,alibaba,Qwen3.5 35B A3B (Reasoning),2026-02-24,19.3,,0.25,2.0,0.688,,,
-2026-10-24,longcat-2-0,longcat,LongCat 2.0,2026-06-29,19.1,45.3,0.75,2.95,1.3,69.4,1.76,30.562
+2026-10-24,longcat-2-0,longcat,LongCat 2.0,2026-06-29,19.1,45.3,0.75,2.95,1.3,69.9,1.76,30.37
 2026-10-24,deepseek-v4-flash-0420-non-reasoning,deepseek,DeepSeek V4 Flash 0420 (Non-reasoning),2026-04-24,18.9,,0.094,0.188,0.117,,,
 2026-10-24,minimax-m2,minimax,MiniMax-M2,2025-10-26,18.6,,0.3,1.2,0.525,,,
 2026-10-24,claude-4-1-opus,anthropic,Claude 4.1 Opus (Non-reasoning),2025-08-05,18.6,,15.0,75.0,30.0,,,
 2026-10-24,glm-4-6-reasoning,zai,GLM-4.6 (Reasoning),2025-09-30,18.5,45.8,0.55,2.2,0.963,,,
-2026-10-24,gpt-6-luna-non-reasoning,openai,GPT-6 Luna (Non-reasoning),2026-09-22,18.5,,0.1,0.5,0.2,114.9,0.803,0.803
-2026-10-24,qwen3-5-397b-a17b,alibaba,Qwen3.5 397B A17B (Reasoning),2026-02-16,18.4,48.2,0.6,3.6,1.35,58.5,1.481,55.917
+2026-10-24,gpt-6-luna-non-reasoning,openai,GPT-6 Luna (Non-reasoning),2026-09-22,18.5,,0.1,0.5,0.2,114.9,0.797,0.797
+2026-10-24,qwen3-5-397b-a17b,alibaba,Qwen3.5 397B A17B (Reasoning),2026-02-16,18.4,48.2,0.6,3.6,1.35,58.7,1.481,55.778
 2026-10-24,mimo-v2-5-pro-non-reasoning,xiaomi,MiMo-V2.5-Pro (Non-reasoning),2026-04-22,18.3,,0.39,1.17,0.585,,,
-2026-10-24,qwen3-6-35b-a3b,alibaba,Qwen3.6 35B A3B (Reasoning),2026-04-16,18.2,41.9,0.375,2.25,0.844,134.8,1.036,41.061
+2026-10-24,qwen3-6-35b-a3b,alibaba,Qwen3.6 35B A3B (Reasoning),2026-04-16,18.2,41.9,0.375,2.25,0.844,134.6,1.043,41.122
 2026-10-24,gpt-5-4-non-reasoning,openai,GPT-5.4 (Non-reasoning),2026-03-05,18.2,,2.5,15.0,5.625,,,
 2026-10-24,grok-4-fast-reasoning,xai,Grok 4 Fast (Reasoning),2025-09-19,17.9,,0.2,0.5,0.275,,,
 2026-10-24,gemini-3-flash,google,Gemini 3 Flash Preview (Non-reasoning),2025-12-17,17.9,,0.5,3.0,1.125,,,
-2026-10-24,qwen3-5-122b-a10b-non-reasoning,alibaba,Qwen3.5 122B A10B (Non-reasoning),2026-02-24,17.7,43.3,0.4,3.2,1.1,145.3,0.969,0.969
-2026-10-24,muse-glimmer,meta,Muse Glimmer (High),2026-08-10,17.5,49.0,0.3,1.2,0.525,121.4,0.479,16.948
+2026-10-24,qwen3-5-122b-a10b-non-reasoning,alibaba,Qwen3.5 122B A10B (Non-reasoning),2026-02-24,17.7,43.3,0.4,3.2,1.1,145.3,0.999,0.999
+2026-10-24,muse-glimmer,meta,Muse Glimmer (High),2026-08-10,17.5,49.0,0.3,1.2,0.525,121.4,0.462,16.932
 2026-10-24,glm-4-7-non-reasoning,zai,GLM-4.7 (Non-reasoning),2025-12-22,17.4,,0.525,2.1,0.919,,,
 2026-10-24,hy3-non-reasoning,tencent,Hy3-preview (Non-reasoning),2026-04-23,17.0,,0.063,0.21,0.1,,,
 2026-10-24,ling-2-6-1t,inclusionai,Ling-2.6-1T,2026-04-23,17.0,,0.3,2.5,0.85,,,
@@ -20613,15 +20613,15 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,step-3-5-flash,stepfun,Step 3.5 Flash 2603,2026-04-02,17.0,,0.1,0.3,0.15,,,
 2026-10-24,claude-4-5-haiku-reasoning,anthropic,Claude 4.5 Haiku (Reasoning),2025-10-15,16.9,43.9,1.0,5.0,2.0,,,
 2026-10-24,gpt-5-mini,openai,GPT-5 mini (High),2025-08-07,16.8,15.6,0.25,2.0,0.688,,,
-2026-10-24,gemma-4-26b-a4b,google,Gemma 4 26B A4B (Reasoning),2026-04-02,16.7,39.3,0.1,0.34,0.16,84.9,0.619,24.183
+2026-10-24,gemma-4-26b-a4b,google,Gemma 4 26B A4B (Reasoning),2026-04-02,16.7,39.3,0.1,0.34,0.16,86.1,0.61,23.838
 2026-10-24,o4-mini,openai,o4-mini (High),2025-04-16,16.7,,1.1,4.4,1.925,,,
-2026-10-24,ring-2-6-1t,inclusionai,Ring-2.6-1T,2026-05-08,16.6,42.8,0.3,2.5,0.85,118.1,2.154,19.094
+2026-10-24,ring-2-6-1t,inclusionai,Ring-2.6-1T,2026-05-08,16.6,42.8,0.3,2.5,0.85,121.8,2.184,18.6
 2026-10-24,step-3-5-flash-0202,stepfun,Step 3.5 Flash,2026-02-02,16.6,,0.1,0.3,0.15,,,
 2026-10-24,claude-4-opus,anthropic,Claude 4 Opus (Non-reasoning),2025-05-22,16.6,,15.0,75.0,30.0,,,
 2026-10-24,deepseek-v3-2-reasoning-0925,deepseek,DeepSeek V3.2 Exp (Reasoning),2025-09-29,16.6,,0.28,0.42,0.315,,,
 2026-10-24,gemini-2-5-pro,google,Gemini 2.5 Pro,2025-06-05,16.1,33.3,1.25,10.0,3.438,,,
 2026-10-24,deepseek-v3-2,deepseek,DeepSeek V3.2 (Non-reasoning),2025-12-01,16.0,,0.28,0.42,0.315,,,
-2026-10-24,qwen3-5-122b-a10b,alibaba,Qwen3.5 122B A10B (Reasoning),2026-02-24,15.6,45.7,0.4,3.2,1.1,135.1,0.994,15.797
+2026-10-24,qwen3-5-122b-a10b,alibaba,Qwen3.5 122B A10B (Reasoning),2026-02-24,15.6,45.7,0.4,3.2,1.1,133.8,0.984,15.932
 2026-10-24,gemini-3-1-flash-lite-preview,google,Gemini 3.1 Flash-Lite,2026-03-03,15.6,34.7,0.25,1.5,0.563,,,
 2026-10-24,gpt-5-6-luna-non-reasoning,openai,GPT-5.6 Luna (Non-reasoning),2026-07-09,15.5,39.3,0.2,1.2,0.45,,,
 2026-10-24,claude-4-5-haiku,anthropic,Claude 4.5 Haiku (Non-reasoning),2025-10-15,15.4,,1.0,5.0,2.0,,,
@@ -20637,87 +20637,87 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,grok-4-20-0309-non-reasoning,xai,Grok 4.20 0309 (Non-reasoning),2026-03-10,14.6,,2.0,6.0,3.0,,,
 2026-10-24,gemini-2-5-pro-05-06,google,Gemini 2.5 Pro Preview (May' 25),2025-05-06,14.5,,1.25,10.0,3.438,,,
 2026-10-24,grok-4-20-non-reasoning,xai,Grok 4.20 0309 v2 (Non-reasoning),2026-04-07,14.2,,1.25,2.5,1.563,,,
-2026-10-24,mistral-medium-3-5,mistral,Mistral Medium 3.5,2026-04-29,14.2,46.9,1.5,7.5,3.0,159.3,0.694,13.25
-2026-10-24,gemma-4-12b,google,Gemma 4 12B (Reasoning),2026-06-03,14.2,31.0,0.1,0.3,0.15,142.2,1.219,15.283
-2026-10-24,nova-2-0-pro-reasoning-medium,aws,Nova 2.0 Pro Preview (Medium),2025-11-27,14.2,34.0,1.25,10.0,3.438,131.7,12.699,27.881
+2026-10-24,mistral-medium-3-5,mistral,Mistral Medium 3.5,2026-04-29,14.2,46.9,1.5,7.5,3.0,159.3,0.674,13.231
+2026-10-24,gemma-4-12b,google,Gemma 4 12B (Reasoning),2026-06-03,14.2,31.0,0.1,0.3,0.15,143.3,1.221,15.178
+2026-10-24,nova-2-0-pro-reasoning-medium,aws,Nova 2.0 Pro Preview (Medium),2025-11-27,14.2,34.0,1.25,10.0,3.438,131.7,12.8,27.981
 2026-10-24,grok-4-3-non-reasoning,xai,Grok 4.3 (Non-reasoning),2026-04-30,14.0,35.2,1.25,2.5,1.563,,,
 2026-10-24,deepseek-v3-1-terminus,deepseek,DeepSeek V3.1 Terminus (Non-reasoning),2025-09-22,13.9,,0.27,1.0,0.453,,,
-2026-10-24,gemma-4-31b-non-reasoning,google,Gemma 4 31B (Non-reasoning),2026-04-02,13.9,33.2,0.165,0.4,0.224,61.8,0.613,0.613
+2026-10-24,gemma-4-31b-non-reasoning,google,Gemma 4 31B (Non-reasoning),2026-04-02,13.9,33.2,0.165,0.4,0.224,61.9,0.592,0.592
 2026-10-24,deepseek-v3-2-0925,deepseek,DeepSeek V3.2 Exp (Non-reasoning),2025-09-29,13.9,,0.28,0.42,0.315,,,
 2026-10-24,deepseek-v3-1,deepseek,DeepSeek V3.1 (Non-reasoning),2025-08-21,13.7,,0.56,1.68,0.84,,,
 2026-10-24,deepseek-v3-1-reasoning,deepseek,DeepSeek V3.1 (Reasoning),2025-08-21,13.5,,0.58,1.68,0.855,,,
-2026-10-24,nova-2-0-lite-reasoning,aws,Nova 2.0 Lite (High),2025-10-29,13.4,23.0,0.3,2.5,0.85,198.8,10.691,20.751
+2026-10-24,nova-2-0-lite-reasoning,aws,Nova 2.0 Lite (High),2025-10-29,13.4,23.0,0.3,2.5,0.85,207.0,10.726,20.389
 2026-10-24,gpt-5-1-non-reasoning,openai,GPT-5.1 (Non-reasoning),2025-11-13,13.3,,1.25,10.0,3.438,,,
-2026-10-24,qwen3-5-9b-non-reasoning,alibaba,Qwen3.5 9B (Non-reasoning),2026-03-02,13.3,23.5,0.17,0.25,0.19,80.8,0.495,0.495
-2026-10-24,gemma-4-26b-a4b-non-reasoning,google,Gemma 4 26B A4B (Non-reasoning),2026-04-02,13.1,,0.115,0.4,0.186,96.9,0.577,0.577
-2026-10-24,qwen3-5-4b,alibaba,Qwen3.5 4B (Reasoning),2026-03-02,13.1,22.6,0.03,0.15,0.06,13.4,0.614,149.789
+2026-10-24,qwen3-5-9b-non-reasoning,alibaba,Qwen3.5 9B (Non-reasoning),2026-03-02,13.3,23.5,0.17,0.25,0.19,80.2,0.487,0.487
+2026-10-24,gemma-4-26b-a4b-non-reasoning,google,Gemma 4 26B A4B (Non-reasoning),2026-04-02,13.1,,0.115,0.4,0.186,101.6,0.566,0.566
+2026-10-24,qwen3-5-4b,alibaba,Qwen3.5 4B (Reasoning),2026-03-02,13.1,22.6,0.03,0.15,0.06,13.4,0.652,149.827
 2026-10-24,deepseek-r1,deepseek,DeepSeek R1 0528 (May '25),2025-05-28,13.1,,1.85,2.75,2.075,,,
 2026-10-24,gemini-2-5-flash-reasoning,google,Gemini 2.5 Flash (Reasoning),2025-05-20,13.1,,0.3,2.5,0.85,,,
 2026-10-24,gpt-5-nano,openai,GPT-5 nano (High),2025-08-07,13.0,,0.05,0.4,0.138,,,
-2026-10-24,nemotron-3-5-lightning,nvidia,Nemotron 3.5 Lightning,2026-08-11,12.9,26.8,0.06,0.2,0.095,283.6,0.449,7.502
+2026-10-24,nemotron-3-5-lightning,nvidia,Nemotron 3.5 Lightning,2026-08-11,12.9,26.8,0.06,0.2,0.095,286.3,0.446,7.432
 2026-10-24,nvidia-nemotron-3-super-120b-a12b,nvidia,Nemotron 3 Super 120B A12B (Reasoning),2026-03-11,12.8,37.7,0.3,0.9,0.45,,,
-2026-10-24,nova-2-0-pro-reasoning-low,aws,Nova 2.0 Pro Preview (Low),2025-11-27,12.8,25.9,1.25,10.0,3.438,140.7,2.927,17.138
+2026-10-24,nova-2-0-pro-reasoning-low,aws,Nova 2.0 Pro Preview (Low),2025-11-27,12.8,25.9,1.25,10.0,3.438,140.7,3.202,17.414
 2026-10-24,kimi-k2,kimi,Kimi K2,2025-07-11,12.7,,0.57,2.3,1.002,,,
 2026-10-24,qwen3-235b-a22b-instruct-2507-reasoning,alibaba,Qwen3 235B A22B 2507 (Reasoning),2025-07-25,12.7,22.1,0.23,2.3,0.747,,,
 2026-10-24,gpt-4-1,openai,GPT-4.1,2025-04-14,12.7,,2.0,8.0,3.5,,,
-2026-10-24,granite-4-2-30b,ibm,Granite 4.2 30B,2026-08-25,12.7,29.9,0.16,0.65,0.282,94.9,0.341,21.42
-2026-10-24,nova-2-0-lite-reasoning-medium,aws,Nova 2.0 Lite (Medium),2025-10-29,12.5,,0.3,2.5,0.85,199.3,8.367,18.404
+2026-10-24,granite-4-2-30b,ibm,Granite 4.2 30B,2026-08-25,12.7,29.9,0.16,0.65,0.282,72.8,0.341,27.824
+2026-10-24,nova-2-0-lite-reasoning-medium,aws,Nova 2.0 Lite (Medium),2025-10-29,12.5,,0.3,2.5,0.85,200.7,9.162,19.125
 2026-10-24,gpt-5-nano-medium,openai,GPT-5 nano (Medium),2025-08-07,12.5,,0.05,0.4,0.138,,,
-2026-10-24,qwen3-5-omni-flash,alibaba,Qwen3.5 Omni Flash,2026-03-30,12.5,,0.1,0.8,0.275,235.0,0.959,0.959
+2026-10-24,qwen3-5-omni-flash,alibaba,Qwen3.5 Omni Flash,2026-03-30,12.5,,0.1,0.8,0.275,235.0,0.939,0.939
 2026-10-24,o3-mini,openai,o3-mini,2025-01-31,12.5,,1.1,4.4,1.925,,,
 2026-10-24,o1-pro,openai,o1-pro,2025-03-19,12.4,,150.0,600.0,262.5,,,
-2026-10-24,mercury-2-5,inception,Mercury 2.5,2026-09-08,12.3,,0.25,0.75,0.375,578.7,2.668,2.668
+2026-10-24,mercury-2-5,inception,Mercury 2.5,2026-09-08,12.3,,0.25,0.75,0.375,586.2,2.7,2.7
 2026-10-24,grok-3,xai,Grok 3,2025-02-19,12.1,,3.0,15.0,6.0,,,
 2026-10-24,seed-oss-36b-instruct,bytedance_seed,Seed-OSS-36B-Instruct,2025-08-20,12.1,,0.21,0.57,0.3,,,
 2026-10-24,qwen3-235b-a22b-instruct-2507,alibaba,Qwen3 235B A22B 2507 Instruct,2025-07-21,12.0,,0.21,0.84,0.368,,,
 2026-10-24,qwen3-coder-480b-a35b-instruct,alibaba,Qwen3 Coder 480B A35B Instruct,2025-07-22,11.9,,0.375,1.4,0.631,,,
-2026-10-24,nova-2-0-lite-reasoning-low,aws,Nova 2.0 Lite (Low),2025-10-29,11.8,,0.3,2.5,0.85,206.8,4.135,13.804
+2026-10-24,nova-2-0-lite-reasoning-low,aws,Nova 2.0 Lite (Low),2025-10-29,11.8,,0.3,2.5,0.85,209.8,4.214,13.745
 2026-10-24,minimax-m1-80k,minimax,MiniMax M1 80k,2025-06-17,11.7,,0.55,2.2,0.963,,,
 2026-10-24,gpt-5-4-nano-non-reasoning,openai,GPT-5.4 nano (Non-reasoning),2026-03-17,11.7,,0.2,1.25,0.463,,,
-2026-10-24,gpt-oss-120b,openai,gpt-oss-120b (High),2025-08-05,11.6,30.4,0.15,0.6,0.262,199.6,0.481,10.501
+2026-10-24,gpt-oss-120b,openai,gpt-oss-120b (High),2025-08-05,11.6,30.4,0.15,0.6,0.262,201.4,0.477,10.408
 2026-10-24,gpt-5-minimal,openai,GPT-5 (Minimal),2025-08-07,11.4,,1.25,10.0,3.438,,,
 2026-10-24,deepseek-r1-0120,deepseek,DeepSeek R1 (Jan '25),2025-01-20,11.4,24.6,2.0,4.0,2.5,,,
 2026-10-24,o1-preview,openai,o1-preview,2024-09-12,11.4,34.0,16.5,66.0,28.875,,,
-2026-10-24,mistral-small-4,mistral,Mistral Small 4 (Reasoning),2026-03-16,11.3,26.6,0.15,0.6,0.262,181.8,0.699,11.702
+2026-10-24,mistral-small-4,mistral,Mistral Small 4 (Reasoning),2026-03-16,11.3,26.6,0.15,0.6,0.262,182.0,0.642,11.631
 2026-10-24,glm-4-6v-reasoning,zai,GLM-4.6V (Reasoning),2025-12-08,11.2,,0.3,0.9,0.45,,,
-2026-10-24,qwen3-5-9b,alibaba,Qwen3.5 9B (Reasoning),2026-03-02,11.2,28.7,0.135,0.2,0.151,58.1,1.027,35.448
+2026-10-24,qwen3-5-9b,alibaba,Qwen3.5 9B (Reasoning),2026-03-02,11.2,28.7,0.135,0.2,0.151,60.2,1.047,34.265
 2026-10-24,gpt-5-4-mini-non-reasoning,openai,GPT-5.4 mini (Non-reasoning),2026-03-17,11.1,,0.75,4.5,1.688,,,
 2026-10-24,glm-4-5-air,zai,GLM-4.5-Air,2025-07-28,11.1,,0.17,0.98,0.372,,,
-2026-10-24,granite-4-2-8b,ibm,Granite 4.2 8B,2026-08-25,11.1,22.4,0.06,0.25,0.107,104.3,0.286,19.453
+2026-10-24,granite-4-2-8b,ibm,Granite 4.2 8B,2026-08-25,11.1,22.4,0.06,0.25,0.107,97.6,0.327,20.823
 2026-10-24,grok-4-fast,xai,Grok 4 Fast (Non-reasoning),2025-09-19,11.1,,0.2,0.5,0.275,,,
 2026-10-24,o3-mini-high,openai,o3-mini (High),2025-01-31,11.0,16.3,1.1,4.4,1.925,,,
-2026-10-24,trinity-large-thinking,arcee,Trinity Large Thinking,2026-04-01,10.8,25.8,0.25,0.8,0.388,359.3,1.112,6.679
+2026-10-24,trinity-large-thinking,arcee,Trinity Large Thinking,2026-04-01,10.8,25.8,0.25,0.8,0.388,359.3,1.163,6.73
 2026-10-24,qwen3-5-4b-non-reasoning,alibaba,Qwen3.5 4B (Non-reasoning),2026-03-02,10.8,20.3,0.03,0.15,0.06,11.6,0.635,0.635
 2026-10-24,mercury-2,inception,Mercury 2,2026-02-20,10.8,31.1,0.25,0.75,0.375,,,
 2026-10-24,glm-4-7-flash-non-reasoning,zai,GLM-4.7-Flash (Non-reasoning),2026-01-19,10.6,,0.07,0.4,0.153,,,
 2026-10-24,gemini-2-5-flash-lite-preview-09-2025-reasoning,google,Gemini 2.5 Flash-Lite Preview (Sep '25) (Reasoning),2025-09-25,10.4,,0.1,0.4,0.175,,,
-2026-10-24,nemotron-3-nano-omni-30b-a3b,nvidia,Nemotron 3 Nano Omni 30B A3B Reasoning,2026-04-29,10.3,13.8,0.4,1.365,0.641,236.4,0.428,8.889
-2026-10-24,gpt-oss-120b-low,openai,gpt-oss-120b (Low),2025-08-05,10.2,21.2,0.125,0.595,0.242,237.4,0.453,8.879
+2026-10-24,nemotron-3-nano-omni-30b-a3b,nvidia,Nemotron 3 Nano Omni 30B A3B Reasoning,2026-04-29,10.3,13.8,0.4,1.365,0.641,235.8,0.442,8.924
+2026-10-24,gpt-oss-120b-low,openai,gpt-oss-120b (Low),2025-08-05,10.2,21.2,0.125,0.595,0.242,247.3,0.46,8.548
 2026-10-24,gpt-4-1-mini,openai,GPT-4.1 mini,2025-04-14,10.2,20.2,0.4,1.6,0.7,,,
-2026-10-24,nova-2-0-pro,aws,Nova 2.0 Pro Preview (Non-reasoning),2025-11-27,10.0,20.9,1.25,10.0,3.438,131.9,0.634,0.634
-2026-10-24,gpt-oss-20b-low,openai,gpt-oss-20b (Low),2025-08-05,10.0,,0.07,0.3,0.128,200.5,0.462,10.439
+2026-10-24,nova-2-0-pro,aws,Nova 2.0 Pro Preview (Non-reasoning),2025-11-27,10.0,20.9,1.25,10.0,3.438,133.6,0.634,0.634
+2026-10-24,gpt-oss-20b-low,openai,gpt-oss-20b (Low),2025-08-05,10.0,,0.07,0.3,0.128,200.7,0.465,10.429
 2026-10-24,qwen3-vl-235b-a22b-instruct,alibaba,Qwen3 VL 235B A22B Instruct,2025-09-23,9.9,,0.215,1.39,0.509,,,
 2026-10-24,gpt-5-mini-minimal,openai,GPT-5 mini (Minimal),2025-08-07,9.9,,0.25,2.0,0.688,,,
 2026-10-24,gemini-2-5-flash,google,Gemini 2.5 Flash (Non-reasoning),2025-05-20,9.9,,0.3,2.5,0.85,,,
 2026-10-24,deepseek-v3-0324,deepseek,DeepSeek V3 0324,2025-03-25,9.7,21.2,0.24,0.9,0.405,,,
-2026-10-24,qwen3-next-80b-a3b-instruct,alibaba,Qwen3 Next 80B A3B Instruct,2025-09-11,9.6,,0.1,1.1,0.35,108.8,0.551,0.551
+2026-10-24,qwen3-next-80b-a3b-instruct,alibaba,Qwen3 Next 80B A3B Instruct,2025-09-11,9.6,,0.1,1.1,0.35,119.8,0.548,0.548
 2026-10-24,qwen3-coder-30b-a3b-instruct,alibaba,Qwen3 Coder 30B A3B Instruct,2025-07-31,9.6,,0.19,0.765,0.334,,,
 2026-10-24,qwen3-vl-30b-a3b-reasoning,alibaba,Qwen3 VL 30B A3B (Reasoning),2025-10-03,9.5,,0.5,0.5,0.5,,,
 2026-10-24,gemma-4-12b-non-reasoning,google,Gemma 4 12B (Non-reasoning),2026-06-03,9.4,,0.1,0.3,0.15,148.4,1.225,1.225
 2026-10-24,gemini-2-5-flash-lite-preview-09-2025,google,Gemini 2.5 Flash-Lite Preview (Sep '25) (Non-reasoning),2025-09-25,9.3,,0.1,0.4,0.175,,,
-2026-10-24,llama-4-maverick,meta,Llama 4 Maverick,2025-04-05,9.3,16.3,0.25,0.92,0.417,54.5,0.591,0.591
+2026-10-24,llama-4-maverick,meta,Llama 4 Maverick,2025-04-05,9.3,16.3,0.25,0.92,0.417,54.3,0.588,0.588
 2026-10-24,mistral-large-3,mistral,Mistral Large 3,2025-12-02,9.3,20.1,0.5,1.5,0.75,,,
-2026-10-24,qwen3-coder-next,alibaba,Qwen3 Coder Next,2026-02-03,9.2,36.2,0.31,1.0,0.482,84.1,0.766,0.766
-2026-10-24,granite-4-2-3b,ibm,Granite 4.2 3B,2026-08-25,9.1,17.5,0.03,0.12,0.052,90.1,0.312,22.51
+2026-10-24,qwen3-coder-next,alibaba,Qwen3 Coder Next,2026-02-03,9.2,36.2,0.31,1.0,0.482,86.8,0.724,0.724
+2026-10-24,granite-4-2-3b,ibm,Granite 4.2 3B,2026-08-25,9.1,17.5,0.03,0.12,0.052,72.3,0.312,27.981
 2026-10-24,mistral-medium-3,mistral,Mistral Medium 3,2025-05-07,9.0,,0.4,2.0,0.8,,,
-2026-10-24,mistral-small-4-non-reasoning,mistral,Mistral Small 4 (Non-reasoning),2026-03-16,9.0,,0.15,0.6,0.262,177.2,0.607,0.607
-2026-10-24,gpt-oss-20b,openai,gpt-oss-20b (High),2025-08-05,9.0,20.7,0.05,0.22,0.092,163.5,0.445,12.675
-2026-10-24,gemma-4-e4b,google,Gemma 4 E4B (Reasoning),2026-04-03,8.9,,0.02,0.1,0.04,49.5,0.362,40.793
-2026-10-24,nvidia-nemotron-3-nano-30b-a3b-reasoning,nvidia,NVIDIA Nemotron 3 Nano 30B A3B (Reasoning),2025-12-15,8.9,14.4,0.05,0.2,0.088,234.4,0.449,8.983
+2026-10-24,mistral-small-4-non-reasoning,mistral,Mistral Small 4 (Non-reasoning),2026-03-16,9.0,,0.15,0.6,0.262,181.4,0.624,0.624
+2026-10-24,gpt-oss-20b,openai,gpt-oss-20b (High),2025-08-05,9.0,20.7,0.05,0.22,0.092,163.2,0.427,12.685
+2026-10-24,gemma-4-e4b,google,Gemma 4 E4B (Reasoning),2026-04-03,8.9,,0.02,0.1,0.04,51.0,0.358,39.602
+2026-10-24,nvidia-nemotron-3-nano-30b-a3b-reasoning,nvidia,NVIDIA Nemotron 3 Nano 30B A3B (Reasoning),2025-12-15,8.9,14.4,0.05,0.2,0.088,233.0,0.454,9.037
 2026-10-24,sarvam-105b,sarvam,Sarvam 105B (High),2026-03-06,8.8,,0.042,0.17,0.074,179.4,0.941,12.087
-2026-10-24,nova-2-0-lite,aws,Nova 2.0 Lite (Non-reasoning),2025-10-29,8.7,,0.3,2.5,0.85,225.7,0.732,0.732
+2026-10-24,nova-2-0-lite,aws,Nova 2.0 Lite (Non-reasoning),2025-10-29,8.7,,0.3,2.5,0.85,231.1,0.728,0.728
 2026-10-24,claude-3-opus,anthropic,Claude 3 Opus,2024-03-04,8.7,19.5,15.0,75.0,30.0,,,
-2026-10-24,magistral-small-2509,mistral,Magistral Small 1.2,2025-09-17,8.6,14.7,0.5,1.5,0.75,87.0,0.792,23.782
+2026-10-24,magistral-small-2509,mistral,Magistral Small 1.2,2025-09-17,8.6,14.7,0.5,1.5,0.75,79.9,0.782,25.816
 2026-10-24,gemini-2-5-flash-lite-reasoning,google,Gemini 2.5 Flash-Lite (Reasoning),2025-06-17,8.5,,0.1,0.4,0.175,,,
 2026-10-24,deepseek-v3,deepseek,DeepSeek V3 (Dec '24),2024-12-26,8.5,23.0,0.32,0.89,0.463,,,
 2026-10-24,gpt-4o,openai,GPT-4o (Nov '24),2024-11-20,8.4,,2.5,10.0,4.375,,,
@@ -20728,17 +20728,17 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,gpt-4-1-nano,openai,GPT-4.1 nano,2025-04-14,7.8,11.1,0.1,0.4,0.175,,,
 2026-10-24,solar-pro-3,upstage,Solar Pro 3,2026-04-06,7.8,16.2,0.15,0.6,0.262,,,
 2026-10-24,ling-flash-2-0,inclusionai,Ling-flash-2.0,2025-09-17,7.8,,0.14,0.57,0.247,,,
-2026-10-24,qwen3-omni-30b-a3b-reasoning,alibaba,Qwen3 Omni 30B A3B (Reasoning),2025-09-22,7.8,,0.25,0.97,0.43,111.3,0.883,18.856
+2026-10-24,qwen3-omni-30b-a3b-reasoning,alibaba,Qwen3 Omni 30B A3B (Reasoning),2025-09-22,7.8,,0.25,0.97,0.43,111.1,0.883,18.878
 2026-10-24,gpt-4o-2024-08-06,openai,GPT-4o (Aug '24),2024-08-06,7.7,,2.5,10.0,4.375,,,
 2026-10-24,qwen2-5-72b-instruct,alibaba,Qwen2.5 Instruct 72B,2024-09-19,7.7,,0.475,0.495,0.48,,,
-2026-10-24,llama-3-3-instruct-70b,meta,Llama 3.3 Instruct 70B,2024-12-06,7.7,11.9,0.655,0.715,0.67,93.4,0.666,0.666
+2026-10-24,llama-3-3-instruct-70b,meta,Llama 3.3 Instruct 70B,2024-12-06,7.7,11.9,0.655,0.715,0.67,94.4,0.663,0.663
 2026-10-24,qwen3-30b-a3b-instruct-reasoning,alibaba,Qwen3 30B A3B (Reasoning),2025-04-28,7.6,,0.135,0.55,0.239,,,
 2026-10-24,glm-4-5v-reasoning,zai,GLM-4.5V (Reasoning),2025-08-11,7.6,,0.6,1.8,0.9,,,
 2026-10-24,qwen3-30b-a3b-2507,alibaba,Qwen3 30B A3B 2507 Instruct,2025-07-29,7.5,,0.1,0.3,0.15,,,
-2026-10-24,hermes-4-llama-3-1-405b-reasoning,nous-research,Hermes 4 - Llama-3.1 405B (Reasoning),2025-08-27,7.5,,1.0,3.0,1.5,40.5,0.71,50.074
-2026-10-24,gemma-4-e4b-non-reasoning,google,Gemma 4 E4B (Non-reasoning),2026-04-03,7.5,,0.02,0.1,0.04,45.3,0.471,0.471
-2026-10-24,nvidia-nemotron-nano-9b-v2-reasoning,nvidia,NVIDIA Nemotron Nano 9B V2 (Reasoning),2025-08-18,7.4,,0.04,0.16,0.07,106.9,0.362,19.069
-2026-10-24,hermes-4-llama-3-1-405b,nous-research,Hermes 4 - Llama-3.1 405B (Non-reasoning),2025-08-27,7.4,,1.0,3.0,1.5,42.8,0.639,0.639
+2026-10-24,hermes-4-llama-3-1-405b-reasoning,nous-research,Hermes 4 - Llama-3.1 405B (Reasoning),2025-08-27,7.5,,1.0,3.0,1.5,41.2,0.685,49.257
+2026-10-24,gemma-4-e4b-non-reasoning,google,Gemma 4 E4B (Non-reasoning),2026-04-03,7.5,,0.02,0.1,0.04,46.5,0.425,0.425
+2026-10-24,nvidia-nemotron-nano-9b-v2-reasoning,nvidia,NVIDIA Nemotron Nano 9B V2 (Reasoning),2025-08-18,7.4,,0.04,0.16,0.07,106.9,0.452,19.159
+2026-10-24,hermes-4-llama-3-1-405b,nous-research,Hermes 4 - Llama-3.1 405B (Non-reasoning),2025-08-27,7.4,,1.0,3.0,1.5,43.7,0.646,0.646
 2026-10-24,qwen3-32b-instruct,alibaba,Qwen3 32B (Non-reasoning),2025-04-28,7.3,,0.15,0.6,0.262,,,
 2026-10-24,gpt-4o-2024-05-13,openai,GPT-4o (May '24),2024-05-13,7.3,24.2,5.0,15.0,7.5,,,
 2026-10-24,qwen3-32b-instruct-reasoning,alibaba,Qwen3 32B (Reasoning),2025-04-28,7.2,15.3,0.24,0.54,0.315,,,
@@ -20748,10 +20748,10 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,gpt-4-turbo,openai,GPT-4 Turbo,2023-11-06,7.0,21.5,10.0,30.0,15.0,,,
 2026-10-24,mistral-small-3-2,mistral,Mistral Small 3.2,2025-06-20,7.0,12.5,0.075,0.2,0.106,,,
 2026-10-24,nova-pro,aws,Nova Pro,2024-12-03,7.0,,0.8,3.2,1.4,,,
-2026-10-24,command-a,cohere,Command A,2025-03-13,7.0,,2.5,10.0,4.375,49.3,0.372,0.372
+2026-10-24,command-a,cohere,Command A,2025-03-13,7.0,,2.5,10.0,4.375,48.4,0.497,0.497
 2026-10-24,llama-3-1-instruct-8b,meta,Llama 3.1 Instruct 8B,2024-07-23,6.9,5.4,0.035,0.065,0.043,,,
-2026-10-24,nvidia-nemotron-3-nano-30b-a3b,nvidia,NVIDIA Nemotron 3 Nano 30B A3B (Non-reasoning),2025-12-15,6.8,,0.05,0.2,0.088,252.5,0.394,0.394
-2026-10-24,nvidia-nemotron-nano-9b-v2,nvidia,NVIDIA Nemotron Nano 9B V2 (Non-reasoning),2025-08-18,6.8,,0.05,0.195,0.086,164.4,0.72,0.72
+2026-10-24,nvidia-nemotron-3-nano-30b-a3b,nvidia,NVIDIA Nemotron 3 Nano 30B A3B (Non-reasoning),2025-12-15,6.8,,0.05,0.2,0.088,252.5,0.386,0.386
+2026-10-24,nvidia-nemotron-nano-9b-v2,nvidia,NVIDIA Nemotron Nano 9B V2 (Non-reasoning),2025-08-18,6.8,,0.05,0.195,0.086,165.4,0.7,0.7
 2026-10-24,mistral-large-2407,mistral,Mistral Large 2 (Jul '24),2024-07-24,6.8,,2.0,6.0,3.0,,,
 2026-10-24,qwen3-14b-instruct,alibaba,Qwen3 14B (Non-reasoning),2025-04-28,6.7,,0.12,0.24,0.15,,,
 2026-10-24,gpt-4,openai,GPT-4,2023-03-14,6.7,13.1,30.0,60.0,37.5,,,
@@ -20762,33 +20762,33 @@ date,aa_slug,creator,name,release_date,intelligence_index,coding_index,price_1m_
 2026-10-24,gpt-4o-mini,openai,GPT-4o mini,2024-07-18,6.7,11.4,0.15,0.6,0.262,,,
 2026-10-24,qwen3-30b-a3b-instruct,alibaba,Qwen3 30B A3B (Non-reasoning),2025-04-28,6.6,,0.12,0.5,0.215,,,
 2026-10-24,llama-3-1-instruct-70b,meta,Llama 3.1 Instruct 70B,2024-07-23,6.6,,0.56,0.56,0.56,,,
-2026-10-24,llama-4-scout,meta,Llama 4 Scout,2025-04-05,6.5,8.2,0.18,0.66,0.3,101.9,0.633,0.633
+2026-10-24,llama-4-scout,meta,Llama 4 Scout,2025-04-05,6.5,8.2,0.18,0.66,0.3,101.9,0.609,0.609
 2026-10-24,reka-flash,reka-ai,Reka Flash (Sep '24),2024-10-04,6.4,,0.2,0.8,0.35,,,
 2026-10-24,solar-mini,upstage,Solar Mini,2024-01-25,6.4,,0.15,0.15,0.15,,,
 2026-10-24,qwen3-14b-instruct-reasoning,alibaba,Qwen3 14B (Reasoning),2025-04-28,6.4,13.8,0.12,0.24,0.15,,,
-2026-10-24,celeris-1,celeris,Celeris-1,2026-07-24,6.3,14.4,0.2,0.7,0.325,1689.4,0.401,0.401
-2026-10-24,phi-4-mini,azure,Phi-4 Mini Instruct,2024-02-26,6.3,3.8,0.075,0.3,0.131,46.2,0.332,0.332
-2026-10-24,ministral-3-14b,mistral,Ministral 3 14B,2025-12-02,6.0,14.4,0.2,0.2,0.2,87.7,0.574,0.574
+2026-10-24,celeris-1,celeris,Celeris-1,2026-07-24,6.3,14.4,0.2,0.7,0.325,1694.4,0.401,0.401
+2026-10-24,phi-4-mini,azure,Phi-4 Mini Instruct,2024-02-26,6.3,3.8,0.075,0.3,0.131,46.7,0.33,0.33
+2026-10-24,ministral-3-14b,mistral,Ministral 3 14B,2025-12-02,6.0,14.4,0.2,0.2,0.2,87.1,0.574,0.574
 2026-10-24,jamba-1-5-large,ai21-labs,Jamba 1.5 Large,2024-08-22,6.0,,2.0,8.0,3.5,,,
-2026-10-24,qwen3-omni-30b-a3b-instruct,alibaba,Qwen3 Omni 30B A3B Instruct,2025-09-22,6.0,,0.25,0.97,0.43,108.3,0.839,0.839
+2026-10-24,qwen3-omni-30b-a3b-instruct,alibaba,Qwen3 Omni 30B A3B Instruct,2025-09-22,6.0,,0.25,0.97,0.43,107.9,0.839,0.839
 2026-10-24,hermes-3-llama-3-1-70b,nous-research,Hermes 3 - Llama-3.1 70B,2024-08-15,6.0,,0.7,0.7,0.7,,,
 2026-10-24,qwen3-8b-instruct,alibaba,Qwen3 8B (Non-reasoning),2025-04-28,6.0,,0.2,0.2,0.2,,,
-2026-10-24,phi-4,azure,Phi-4,2024-12-12,5.9,,0.125,0.5,0.219,41.7,1.08,1.08
+2026-10-24,phi-4,azure,Phi-4,2024-12-12,5.9,,0.125,0.5,0.219,41.9,1.004,1.004
 2026-10-24,nova-micro,aws,Nova Micro,2024-12-03,5.9,,0.035,0.14,0.061,266.8,0.554,0.554
-2026-10-24,nvidia-nemotron-nano-12b-v2-vl,nvidia,NVIDIA Nemotron Nano 12B v2 VL (Non-reasoning),2025-10-28,5.8,,0.2,0.6,0.3,204.8,0.78,0.78
-2026-10-24,phi-4-multimodal,azure,Phi-4 Multimodal Instruct,2025-02-26,5.8,,0.08,0.32,0.14,17.1,0.383,0.383
+2026-10-24,nvidia-nemotron-nano-12b-v2-vl,nvidia,NVIDIA Nemotron Nano 12B v2 VL (Non-reasoning),2025-10-28,5.8,,0.2,0.6,0.3,207.0,0.76,0.76
+2026-10-24,phi-4-multimodal,azure,Phi-4 Multimodal Instruct,2025-02-26,5.8,,0.08,0.32,0.14,17.1,0.374,0.374
 2026-10-24,mistral-large,mistral,Mistral Large (Feb '24),2024-02-26,5.8,,4.0,12.0,6.0,,,
 2026-10-24,llama-2-chat-7b,meta,Llama 2 Chat 7B,2023-07-18,5.7,,0.05,0.25,0.1,,,
-2026-10-24,reka-flash-3,reka-ai,Reka Flash 3,2025-03-10,5.6,,0.2,0.8,0.35,86.9,0.833,23.844
+2026-10-24,reka-flash-3,reka-ai,Reka Flash 3,2025-03-10,5.6,,0.2,0.8,0.35,86.9,0.841,23.852
 2026-10-24,claude-3-haiku,anthropic,Claude 3 Haiku,2024-03-04,5.6,,0.25,1.25,0.5,,,
 2026-10-24,gpt-35-turbo,openai,GPT-3.5 Turbo,2022-11-30,5.5,10.7,0.5,1.5,0.75,,,
-2026-10-24,ministral-3-8b,mistral,Ministral 3 8B,2025-12-02,5.5,9.7,0.15,0.15,0.15,108.5,0.465,0.465
+2026-10-24,ministral-3-8b,mistral,Ministral 3 8B,2025-12-02,5.5,9.7,0.15,0.15,0.15,124.8,0.448,0.448
 2026-10-24,llama-3-instruct-70b,meta,Llama 3 Instruct 70B,2024-04-18,5.5,,0.65,2.75,1.175,,,
-2026-10-24,llama-3-2-instruct-11b-vision,meta,Llama 3.2 Instruct 11B (Vision),2024-09-25,5.4,,0.345,0.345,0.345,26.5,0.395,0.395
+2026-10-24,llama-3-2-instruct-11b-vision,meta,Llama 3.2 Instruct 11B (Vision),2024-09-25,5.4,,0.345,0.345,0.345,27.5,0.419,0.419
 2026-10-24,jamba-1-5-mini,ai21-labs,Jamba 1.5 Mini,2024-08-22,5.2,,0.2,0.4,0.25,,,
 2026-10-24,mixtral-8x7b-instruct,mistral,Mixtral 8x7B Instruct,2023-12-11,5.1,,0.45,0.7,0.512,,,
 2026-10-24,mistral-7b-instruct,mistral,Mistral 7B Instruct,2023-09-27,5.0,,0.15,0.2,0.162,,,
 2026-10-24,granite-3-3-8b-instruct,ibm,Granite 3.3 8B (Non-reasoning),2025-04-16,4.9,,0.03,0.25,0.085,,,
-2026-10-24,ministral-3-3b,mistral,Ministral 3 3B,2025-12-02,4.8,4.8,0.1,0.1,0.1,234.2,0.474,0.474
+2026-10-24,ministral-3-3b,mistral,Ministral 3 3B,2025-12-02,4.8,4.8,0.1,0.1,0.1,234.2,0.485,0.485
 2026-10-24,apertus-8b-instruct,swiss-ai-initiative,Apertus 8B Instruct,2025-09-02,4.8,,0.1,0.2,0.125,133.5,2.811,2.811
 2026-10-24,llama-3-instruct-8b,meta,Llama 3 Instruct 8B,2024-04-18,4.8,,0.045,0.145,0.07,,,
