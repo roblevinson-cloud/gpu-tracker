@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-25 04:38 UTC · latest snapshot: 2026-10-25 04:38:28 · 338 snapshots since 2026-07-21_
+_Last updated: 2026-10-25 11:24 UTC · latest snapshot: 2026-10-25 11:24:05 · 339 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -18,7 +18,7 @@ _Last updated: 2026-10-25 04:38 UTC · latest snapshot: 2026-10-25 04:38:28 · 3
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 7 |
 | z-ai/glm-5.2 | open | $0.47 | Baidu ($0.29) | 35 |
 
-**Closed/open price multiple right now: 6.9x** (closed median $10.00 vs open $1.45)
+**Closed/open price multiple right now: 6.7x** (closed median $10.00 vs open $1.48)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,7 +26,7 @@ _Last updated: 2026-10-25 04:38 UTC · latest snapshot: 2026-10-25 04:38:28 · 3
 |---|---|---|---|
 | DECENTRALIZED | 2 | 0.74 | $2.29 |
 | ASIA | 5 | 0.81 | $1.20 |
-| UNKNOWN | 63 | 0.97 | $1.42 |
+| UNKNOWN | 63 | 0.97 | $1.44 |
 | US | 30 | 1.00 | $2.15 |
 | CN | 20 | 1.08 | $1.60 |
 | EU | 1 | 1.51 | $2.15 |
