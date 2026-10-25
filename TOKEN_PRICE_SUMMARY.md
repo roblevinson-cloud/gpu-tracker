@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-25 11:24 UTC · latest snapshot: 2026-10-25 11:24:05 · 339 snapshots since 2026-07-21_
+_Last updated: 2026-10-25 16:15 UTC · latest snapshot: 2026-10-25 16:15:11 · 340 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -13,7 +13,7 @@ _Last updated: 2026-10-25 11:24 UTC · latest snapshot: 2026-10-25 11:24:05 · 3
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.89 | Baidu ($0.81) | 17 |
-| moonshotai/kimi-k3 | open | $2.31 | Sail Research ($2.27) | 29 |
+| moonshotai/kimi-k3 | open | $2.34 | Sail Research ($2.27) | 29 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 7 |
 | z-ai/glm-5.2 | open | $0.47 | Baidu ($0.29) | 35 |
@@ -26,7 +26,7 @@ _Last updated: 2026-10-25 11:24 UTC · latest snapshot: 2026-10-25 11:24:05 · 3
 |---|---|---|---|
 | DECENTRALIZED | 2 | 0.74 | $2.29 |
 | ASIA | 5 | 0.81 | $1.20 |
-| UNKNOWN | 63 | 0.97 | $1.44 |
+| UNKNOWN | 63 | 0.98 | $1.44 |
 | US | 30 | 1.00 | $2.15 |
 | CN | 20 | 1.08 | $1.60 |
 | EU | 1 | 1.51 | $2.15 |
