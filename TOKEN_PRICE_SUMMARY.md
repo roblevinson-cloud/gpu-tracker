@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-27 05:01 UTC · latest snapshot: 2026-10-27 05:01:09 · 345 snapshots since 2026-07-21_
+_Last updated: 2026-10-27 12:08 UTC · latest snapshot: 2026-10-27 12:08:13 · 346 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -12,8 +12,8 @@ _Last updated: 2026-10-27 05:01 UTC · latest snapshot: 2026-10-27 05:01:09 · 3
 | deepseek/deepseek-v4-pro | open | $1.15 | Relace ($1.05) | 15 |
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
-| moonshotai/kimi-k2.6 | open | $0.95 | Chutes ($0.74) | 17 |
-| moonshotai/kimi-k3 | open | $2.71 | Relace ($2.38) | 30 |
+| moonshotai/kimi-k2.6 | open | $0.82 | Baidu ($0.70) | 17 |
+| moonshotai/kimi-k3 | open | $2.84 | Relace ($2.78) | 30 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 7 |
 | z-ai/glm-5.2 | open | $0.84 | DeepInfra ($0.70) | 34 |
