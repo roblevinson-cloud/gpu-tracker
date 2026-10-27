@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-27 17:59 UTC · latest snapshot: 2026-10-27 17:59:15 · 347 snapshots since 2026-07-21_
+_Last updated: 2026-10-27 22:12 UTC · latest snapshot: 2026-10-27 22:12:08 · 348 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -13,7 +13,7 @@ _Last updated: 2026-10-27 17:59 UTC · latest snapshot: 2026-10-27 17:59:15 · 3
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.82 | Baidu ($0.70) | 17 |
-| moonshotai/kimi-k3 | open | $2.77 | Relace ($2.57) | 30 |
+| moonshotai/kimi-k3 | open | $2.84 | Relace ($2.75) | 30 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 7 |
 | z-ai/glm-5.2 | open | $0.62 | Baidu ($0.29) | 34 |
@@ -24,9 +24,9 @@ _Last updated: 2026-10-27 17:59 UTC · latest snapshot: 2026-10-27 17:59:15 · 3
 
 | Region | Offers | Rel. price (1.0=parity) | Median $/M |
 |---|---|---|---|
-| DECENTRALIZED | 2 | 0.62 | $2.25 |
+| DECENTRALIZED | 2 | 0.63 | $2.25 |
 | ASIA | 5 | 0.80 | $1.20 |
-| UNKNOWN | 62 | 0.97 | $1.47 |
+| UNKNOWN | 62 | 0.93 | $1.47 |
 | CN | 20 | 1.00 | $1.60 |
 | US | 33 | 1.00 | $2.15 |
 | EU | 1 | 1.45 | $2.15 |
