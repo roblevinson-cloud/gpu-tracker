@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-10-31 12:23 UTC · latest snapshot: 2026-10-31 12:23:54 · 359 snapshots since 2026-07-21_
+_Last updated: 2026-10-31 21:31 UTC · latest snapshot: 2026-10-31 21:31:16 · 360 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -9,14 +9,14 @@ _Last updated: 2026-10-31 12:23 UTC · latest snapshot: 2026-10-31 12:23:54 · 3
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
 | deepseek/deepseek-v4-flash | open | $0.07 | StreamLake ($0.05) | 17 |
-| deepseek/deepseek-v4-pro | open | $0.99 | StreamLake ($0.96) | 15 |
+| deepseek/deepseek-v4-pro | open | $0.83 | StreamLake ($0.71) | 15 |
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 13 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.82 | Baidu ($0.70) | 17 |
 | moonshotai/kimi-k3 | open | $1.91 | Sail Research ($1.90) | 30 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 8 |
-| z-ai/glm-5.2 | open | $0.66 | Morph ($0.41) | 34 |
+| z-ai/glm-5.2 | open | $0.37 | Baidu ($0.29) | 34 |
 
 **Closed/open price multiple right now: 6.7x** (closed median $10.00 vs open $1.50)
 
