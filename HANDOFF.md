@@ -33,7 +33,24 @@ and cron-job.org shows 401s, that's why.
 
 All workflows use a collision-proof commit pattern (commit, then
 pull --rebase + push with 5 retries) because concurrent workflows
-race on pushes.
+race on pushes. Since 2026-10-31 a push that still fails after 5
+tries FAILS THE JOB (exit 1) so GitHub emails you; before that the
+loop exited 0 and a rejected push looked green.
+
+**Outage 2026-10-22 -> 10-31 (nine days, unrecoverable):**
+data/perf_log.csv crossed GitHub's 100 MB per-file limit. Every
+poll ran, committed, and was rejected on push ("GH001: Large files
+detected"), then reported success. Build/token workflows kept
+pushing because they don't touch that file, so the freshness badge
+stayed green on chart-rebuild commits. Fix: the two 10-minute logs
+now ROTATE MONTHLY -- data/perf_log_YYYY-MM.csv and
+data/vast_utilization_YYYY-MM.csv (UTC month). The legacy
+perf_log.csv (99.99 MB) and vast_utilization.csv are frozen, never
+appended, and build_index.py's read_rotated_log() concatenates
+legacy + monthly files so the charts stay continuous. Monthly perf
+files land ~35 MB; if a month ever approaches 100 MB, switch the
+suffix to YYYY-MM-DD or thin the roster. Watch item: repo is 2.2 GB
+(history of rebuilt PNGs, not CSVs) -- separate problem, see below.
 
 ## Collectors
 - **check_availability.py** — every 10 min. Per GPU (h100/h200/b200/
@@ -42,7 +59,8 @@ race on pushes.
   hosts <0.90 reliability excluded, VRAM filter has 10% slack).
   Price caps: H100 $4, H200 $5.50, **B200 $5.75** (lowered from $8 on
   Jul 17 — small series discontinuity), B300 $12.
-- **check_perf.py** — same cadence. Top-8 models by 7d tokens: per-
+- **check_perf.py** — same cadence, writes data/perf_log_YYYY-MM.csv
+  (monthly since 2026-10-31; see outage note). Top-8 models by 7d tokens: per-
   provider throughput (tok/s) and latency from OpenRouter endpoints
   API. Deep/defensive field matching; prints schema debug if parsing
   fails. ALWAYS_TRACK list at top for forced models.
@@ -298,6 +316,11 @@ in cron-job.org.
 - Public repos idle 60 days get schedules disabled (email warning
   first); any commit resets the clock.
 - Perf stats are short-window medians; low-traffic endpoints noisy.
+- Repo history is 2.2 GB (Oct 2026) and grows ~16 MB/day: ~35 chart
+  PNGs re-rendered every 6h don't delta-compress. No GitHub limit
+  hit yet (soft guidance 1 GB, warnings ~5 GB). Options when it
+  matters: commit PNGs only when pixels changed, or publish charts as
+  a Pages artifact instead of committing them.
 
 ## Watch items
 - **2026-07-27: Kimi K3 open weights** — expect third-party hosts in

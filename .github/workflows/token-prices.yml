@@ -37,8 +37,13 @@ jobs:
           git config user.email actions@github.com
           git add data/token_prices.csv charts/ TOKEN_PRICE_SUMMARY.md
           git commit -m token-price-update || echo skip
+          pushed=0
           for i in 1 2 3 4 5; do
-            git pull --rebase && git push && break
-            echo retrying
+            if git pull --rebase && git push; then pushed=1; break; fi
+            echo "push blocked, retrying in 10s..."
             sleep 10
           done
+          # A rejected push used to exit 0 here (the loop's last command
+          # was sleep), so GitHub showed green while nothing landed for
+          # nine days in Oct 2026. Fail loudly so the failure email fires.
+          if [ "$pushed" != 1 ]; then echo "::error::push failed after 5 attempts"; exit 1; fi

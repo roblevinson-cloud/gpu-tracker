@@ -1,7 +1,7 @@
 """
 Collects two market-structure signals the price logs can't see:
 
-  data/vast_utilization.csv   how much of Vast's visible fleet is
+  data/vast_utilization_YYYY-MM.csv  (monthly) how much of Vast's visible fleet is
                               actually RENTED (not just listed), plus
                               an implied revenue run-rate = rented x price
   data/sfcompute_prices.csv   SF Compute cluster lease rates (a real
@@ -61,7 +61,12 @@ VAST_MODELS = {
     "b300": ["B300"],
 }
 
-UTIL_OUT = "data/vast_utilization.csv"
+# Monthly files (UTC). The 10-minute log grows without bound and
+# GitHub rejects any single file over 100 MB (perf_log.csv hit it on
+# 2026-10-22 and silently killed every poll for nine days). The legacy
+# data/vast_utilization.csv is frozen and still read by build_index.py.
+UTIL_PREFIX = "data/vast_utilization"
+UTIL_LEGACY = "data/vast_utilization.csv"
 # Newest snapshot only, rewritten every poll. The dashboard cards read
 # this so they show live numbers: the full log is too big for the page
 # to download, and the daily summary is only rebuilt by build_index.py,
@@ -127,10 +132,23 @@ def append_rows(path, fields, rows):
             w.writerow(r)
 
 
+def monthly_path(prefix, when=None):
+    when = when or datetime.now(timezone.utc)
+    return f"{prefix}_{when:%Y-%m}.csv"
+
+
+def previous_month_path(prefix, when=None):
+    when = when or datetime.now(timezone.utc)
+    first = when.replace(day=1)
+    prev = first.replace(month=first.month - 1) if first.month > 1 \
+        else first.replace(year=first.year - 1, month=12)
+    return monthly_path(prefix, prev)
+
+
 def last_logged_timestamp(path):
     """Timestamp of the final row, read from the file's tail so this
     stays cheap as the log grows. Assumes timestamp is column 0."""
-    if not os.path.exists(path):
+    if path is None or not os.path.exists(path):
         return None
     with open(path, "rb") as f:
         f.seek(0, os.SEEK_END)
@@ -284,7 +302,14 @@ def run_utilization():
     a strong intraday cycle — so the daily figure would be biased,
     not merely coarse."""
     try:
-        prev = last_logged_timestamp(UTIL_OUT)
+        util_out = monthly_path(UTIL_PREFIX)
+        # Dedupe key lives in this month's file; on the 1st (or first
+        # run after rotation) it is in last month's, or the legacy file.
+        prev = None
+        for cand in (util_out, previous_month_path(UTIL_PREFIX), UTIL_LEGACY):
+            prev = last_logged_timestamp(cand)
+            if prev:
+                break
         rows = collect_vast_utilization()
         if not rows:
             return
@@ -299,8 +324,8 @@ def run_utilization():
             print("[util] exporter hasn't refreshed since last poll — "
                   "skipping duplicate snapshot")
             return
-        append_rows(UTIL_OUT, UTIL_FIELDS, rows)
-        print(f"[util] appended {len(rows)} rows -> {UTIL_OUT}")
+        append_rows(util_out, UTIL_FIELDS, rows)
+        print(f"[util] appended {len(rows)} rows -> {util_out}")
     except Exception as e:
         print(f"[util] FAILED ({type(e).__name__}: {e}) — leaving CSV as-is")
 

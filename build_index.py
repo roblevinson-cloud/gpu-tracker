@@ -737,15 +737,37 @@ def build_price_history():
               f"{cut} cut, {raised} raised, {flat} unchanged")
 
 
+def read_rotated_log(prefix, **read_csv_kw):
+    """Concatenate a 10-minute log that is split into monthly files:
+    data/<prefix>.csv (legacy, frozen) + data/<prefix>_YYYY-MM.csv in
+    order. Returns None if no file exists. Rotation was added 2026-10-31
+    after perf_log.csv crossed GitHub's 100 MB per-file limit."""
+    paths = []
+    legacy = f"data/{prefix}.csv"
+    if os.path.exists(legacy):
+        paths.append(legacy)
+    paths += sorted(glob.glob(f"data/{prefix}_[0-9][0-9][0-9][0-9]-[0-9][0-9].csv"))
+    if not paths:
+        return None
+    frames = []
+    for p in paths:
+        try:
+            frames.append(pd.read_csv(p, **read_csv_kw))
+        except Exception as e:
+            print(f"[log] could not read {p}: {e}")
+    if not frames:
+        return None
+    return pd.concat(frames, ignore_index=True)
+
+
 def build_perf():
     """Per-model charts of provider throughput and latency over time.
     Emits one two-panel PNG per leading model plus a manifest the
     dashboard reads to know which charts exist."""
     import json
-    path = "data/perf_log.csv"
-    if not os.path.exists(path):
+    df = read_rotated_log("perf_log", parse_dates=["timestamp_utc"])
+    if df is None:
         return
-    df = pd.read_csv(path, parse_dates=["timestamp_utc"])
     df["throughput_tps"] = pd.to_numeric(df["throughput_tps"], errors="coerce")
     df["latency_s"] = pd.to_numeric(df["latency_s"], errors="coerce")
     df = df.dropna(subset=["timestamp_utc", "model", "provider"])
@@ -1331,13 +1353,8 @@ def build_utilization():
       bottom — implied revenue run-rate (rented x price) = price x quantity
     A price rise with rising revenue is demand; with flat/falling
     revenue and high utilization it's scarcity."""
-    path = "data/vast_utilization.csv"
-    if not os.path.exists(path):
-        return
-    try:
-        df = pd.read_csv(path, parse_dates=["timestamp_utc"])
-    except Exception as e:
-        print(f"[util] could not read {path}: {e}")
+    df = read_rotated_log("vast_utilization", parse_dates=["timestamp_utc"])
+    if df is None:
         return
     for c in ["utilization_pct", "revenue_usd_hr", "rented", "total"]:
         if c in df.columns:
@@ -1633,11 +1650,10 @@ def _write_daily(path, day, frame):
 def _or_daily_medians(on_or_before):
     """OpenRouter perf_log medians per (model, provider) for the latest
     logged day on or before `on_or_before`. Returns (day, frame)."""
-    path = "data/perf_log.csv"
-    if not os.path.exists(path):
+    df = read_rotated_log("perf_log", usecols=["timestamp_utc", "model", "provider",
+                                               "throughput_tps", "latency_s"])
+    if df is None:
         return None, None
-    df = pd.read_csv(path, usecols=["timestamp_utc", "model", "provider",
-                                    "throughput_tps", "latency_s"])
     df["day"] = pd.to_datetime(df["timestamp_utc"], errors="coerce").dt.normalize()
     df = df.dropna(subset=["day"])
     df = df[df["day"] <= pd.Timestamp(on_or_before)]

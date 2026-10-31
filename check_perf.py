@@ -3,7 +3,14 @@ Inference Performance Collector
 -------------------------------
 Every run, for the leading models by recent token volume, fetches
 OpenRouter's per-provider endpoint stats (throughput in tokens/sec and
-latency) and appends them to data/perf_log.csv.
+latency) and appends them to data/perf_log_YYYY-MM.csv (one file per
+calendar month, UTC).
+
+Why monthly files: the log grows ~1.1 MB/day (161 rows per 10-minute
+poll). A single data/perf_log.csv crossed GitHub's 100 MB per-file
+limit on 2026-10-22 and every poll push was rejected for nine days.
+Monthly files top out ~35 MB. The legacy perf_log.csv is frozen and
+still read by build_index.py; never append to it again.
 
 Runs inside the 10-minute poll workflow, so you get intraday resolution
 on provider slowdowns (e.g. a new model launch crushing capacity).
@@ -17,7 +24,7 @@ from datetime import datetime, timezone
 import requests
 
 API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
-PERF_FILE = os.path.join("data", "perf_log.csv")
+PERF_PREFIX = os.path.join("data", "perf_log")   # + _YYYY-MM.csv
 TOKENS_FILE = os.path.join("data", "tokens_by_model.csv")
 
 TOP_N = 8            # how many leading models to track
@@ -131,7 +138,9 @@ def main():
         print("[perf] no token data yet to rank models — skipping")
         return
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now(timezone.utc)
+    timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
+    perf_file = f"{PERF_PREFIX}_{now:%Y-%m}.csv"
     rows = []
     for i, m in enumerate(models):
         try:
@@ -152,14 +161,14 @@ def main():
         return
 
     os.makedirs("data", exist_ok=True)
-    file_exists = os.path.exists(PERF_FILE)
-    with open(PERF_FILE, "a", newline="") as f:
+    file_exists = os.path.exists(perf_file)
+    with open(perf_file, "a", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         if not file_exists:
             w.writeheader()
         w.writerows(rows)
     print(f"[perf] {timestamp}: logged {len(rows)} provider stats "
-          f"across {len(models)} models")
+          f"across {len(models)} models -> {perf_file}")
 
 
 if __name__ == "__main__":
