@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-11-07 05:55 UTC · latest snapshot: 2026-11-07 05:55:50 · 376 snapshots since 2026-07-21_
+_Last updated: 2026-11-07 12:57 UTC · latest snapshot: 2026-11-07 12:57:42 · 377 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,12 +8,12 @@ _Last updated: 2026-11-07 05:55 UTC · latest snapshot: 2026-11-07 05:55:50 · 3
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 6 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.08 | StreamLake ($0.06) | 14 |
-| deepseek/deepseek-v4-pro | open | $1.07 | Relace ($1.05) | 14 |
+| deepseek/deepseek-v4-flash | open | $0.07 | StreamLake ($0.05) | 14 |
+| deepseek/deepseek-v4-pro | open | $0.95 | Baidu ($0.90) | 14 |
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 12 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.82 | Baidu ($0.70) | 16 |
-| moonshotai/kimi-k3 | open | $2.78 | Relace ($2.47) | 30 |
+| moonshotai/kimi-k3 | open | $2.81 | Relace ($2.55) | 30 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 8 |
 | z-ai/glm-5.2 | open | $0.81 | DeepInfra ($0.70) | 33 |
