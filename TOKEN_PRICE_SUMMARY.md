@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-11-07 12:57 UTC · latest snapshot: 2026-11-07 12:57:42 · 377 snapshots since 2026-07-21_
+_Last updated: 2026-11-07 21:48 UTC · latest snapshot: 2026-11-07 21:48:02 · 378 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -9,26 +9,26 @@ _Last updated: 2026-11-07 12:57 UTC · latest snapshot: 2026-11-07 12:57:42 · 3
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
 | deepseek/deepseek-v4-flash | open | $0.07 | StreamLake ($0.05) | 14 |
-| deepseek/deepseek-v4-pro | open | $0.95 | Baidu ($0.90) | 14 |
+| deepseek/deepseek-v4-pro | open | $0.79 | StreamLake ($0.66) | 14 |
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 12 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.82 | Baidu ($0.70) | 16 |
-| moonshotai/kimi-k3 | open | $2.81 | Relace ($2.55) | 30 |
+| moonshotai/kimi-k3 | open | $2.78 | Relace ($2.46) | 30 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 8 |
-| z-ai/glm-5.2 | open | $0.81 | DeepInfra ($0.70) | 33 |
+| z-ai/glm-5.2 | open | $0.47 | Baidu ($0.29) | 33 |
 
-**Closed/open price multiple right now: 5.9x** (closed median $10.00 vs open $1.71)
+**Closed/open price multiple right now: 6.0x** (closed median $10.00 vs open $1.66)
 
 ## Regional comparison (open models, same model+quant only)
 
 | Region | Offers | Rel. price (1.0=parity) | Median $/M |
 |---|---|---|---|
-| DECENTRALIZED | 2 | 0.71 | $2.25 |
+| DECENTRALIZED | 2 | 0.72 | $2.25 |
 | ASIA | 4 | 0.90 | $0.81 |
-| UNKNOWN | 57 | 1.00 | $1.71 |
+| UNKNOWN | 57 | 0.97 | $1.71 |
 | CN | 19 | 1.00 | $1.48 |
-| US | 31 | 1.00 | $2.15 |
+| US | 31 | 1.04 | $2.15 |
 | EU | 2 | 1.19 | $2.17 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
