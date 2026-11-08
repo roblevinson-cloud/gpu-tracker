@@ -109,8 +109,15 @@ def build():
         "paid_tokens": g.loc[g["paid"], "tokens"].sum(),
     }), include_groups=False).sort_index()
     daily["rev_per_m"] = daily["revenue_usd"] / daily["tokens"] * 1e6
+    # Mask zero-paid days with NaN, NOT pd.NA: replace(0, pd.NA) flips the
+    # column to object dtype and the rolling mean below then raises
+    # "Cannot aggregate non-numeric type". That took the whole Build Index
+    # workflow down 2026-11-05 -> 11-08 the first time a day had only
+    # free-tier tokens priced.
     daily["rev_per_m_paid"] = (daily["paid_revenue_usd"] /
-                               daily["paid_tokens"].replace(0, pd.NA) * 1e6)
+                               daily["paid_tokens"].where(daily["paid_tokens"] > 0)
+                               * 1e6)
+    daily = daily.astype(float)
     daily.to_csv("data/econ_daily.csv")
 
     ma = daily.rolling(7, min_periods=3).mean()

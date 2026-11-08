@@ -52,6 +52,19 @@ files land ~35 MB; if a month ever approaches 100 MB, switch the
 suffix to YYYY-MM-DD or thin the roster. Watch item: repo is 2.2 GB
 (history of rebuilt PNGs, not CSVs) -- separate problem, see below.
 
+**Outage 2026-11-05 -> 11-08 (four days):** build_economics.py crashed
+on the first day whose priced tokens were all free-tier: `paid_tokens
+.replace(0, pd.NA)` turned the column to object dtype and the 7-day
+rolling mean raised "Cannot aggregate non-numeric type". Because the
+economics step runs AFTER build_index.py but BEFORE the commit step,
+every chart build_index.py had rendered was discarded too, and the
+dashboard froze at "data through 2026-11-04" while the 10-minute poll
+kept the freshness badge green. Fixed by masking with NaN
+(`.where(paid_tokens > 0)`) and casting the frame to float. Lesson: a
+failure in the LAST builder throws away the earlier builders' work, so
+when a collector or builder is optional, wrap it with `|| echo` in the
+workflow like the fetchers already are.
+
 ## Collectors
 - **check_availability.py** — every 10 min. Per GPU (h100/h200/b200/
   b300): binary availability under price cap across Vast.ai (no key),
