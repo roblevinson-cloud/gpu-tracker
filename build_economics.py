@@ -7,6 +7,7 @@ import os
 
 import pandas as pd
 import yaml
+from price_slugs import report as resolve_price_slugs
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -86,6 +87,12 @@ def build():
         pr[c] = pd.to_numeric(pr[c], errors="coerce")
     pr["blended"] = (ri * pr["prompt_usd_per_m"] +
                      ro * pr["completion_usd_per_m"]) / (ri + ro)
+
+    # Rankings slugs carry a -YYYYMMDD release tag the price list lacks;
+    # map them onto the price list's slugs or almost nothing joins
+    # (see price_slugs.py). Several dated releases may fold into one
+    # priced slug; the groupby below sums them, which is what we want.
+    tok["model"] = resolve_price_slugs(tok, set(pr["model"]), "econ")
 
     piv = pr.pivot_table(index="date", columns="model", values="blended",
                          aggfunc="last").sort_index()

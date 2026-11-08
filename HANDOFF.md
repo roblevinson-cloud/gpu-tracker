@@ -65,6 +65,19 @@ failure in the LAST builder throws away the earlier builders' work, so
 when a collector or builder is optional, wrap it with `|| echo` in the
 workflow like the fetchers already are.
 
+**Slug join fix 2026-11-08:** OpenRouter's rankings dataset names
+models with a release tag (`vendor/model-YYYYMMDD`, sometimes `:free`)
+while the price list uses the bare slug or a `-MMDD` variant. Every
+token-to-price join (build_economics.py revenue/margin, build_index.py
+weighted-price card and price-history watch list) matched on the raw
+string, so priced volume fell from ~25% in 2025 to ~2% by Nov 2026 and
+the economics charts were drawn from a sliver. price_slugs.py now
+resolves each rankings slug (exact -> `-MMDD` -> bare, suffix kept) and
+each builder prints "[x] price join: N% of token volume priced" -- if
+that number drops again, OpenRouter changed the slug format. ~86%
+priced after the fix; the remainder is mostly `:free` endpoints with no
+`:free` price row, which are deliberately NOT mapped to the paid price.
+
 ## Collectors
 - **check_availability.py** — every 10 min. Per GPU (h100/h200/b200/
   b300): binary availability under price cap across Vast.ai (no key),

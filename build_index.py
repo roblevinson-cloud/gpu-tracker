@@ -16,6 +16,7 @@ import os
 
 import numpy as np
 import pandas as pd
+from price_slugs import report as resolve_price_slugs
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -616,6 +617,9 @@ def build_pricing():
     if tok is None or prices.empty:
         return
 
+    # map dated rankings slugs onto price-list slugs (price_slugs.py)
+    tok = tok.assign(model=resolve_price_slugs(tok, set(prices["model"]),
+                                               "pricing"))
     merged = prices.merge(tok[["date", "model", "tokens"]],
                           on=["date", "model"], how="inner")
     merged = merged.dropna(subset=["tokens"])
@@ -679,6 +683,8 @@ def build_price_history():
     tok = _load_by_model()
     if tok is not None and not tok.empty:
         recent = tok[tok["date"] >= tok["date"].max() - pd.Timedelta(days=7)]
+        recent = recent.assign(model=resolve_price_slugs(
+            recent, set(priced["model"]), "price-history"))
         vol_rank = recent.groupby("model")["tokens"].sum().sort_values(ascending=False)
         watch = [m for m in vol_rank.index if m in set(priced["model"])][:10]
     else:
