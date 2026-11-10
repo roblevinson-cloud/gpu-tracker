@@ -8035,7 +8035,6 @@ date,or_model,aa_slug,host,variant,provider,price_1m_input,price_1m_output,cache
 2026-11-10,deepseek/deepseek-v4-flash-20260731,deepseek-v4-flash,SiliconFlow,,SiliconFlow,0.22,0.66,0.014,0.8668,,,,,,,,,,,1,1
 2026-11-10,deepseek/deepseek-v4-flash-20260731,deepseek-v4-flash,Baseten,,BaseTen,0.13,0.26,0.028,0.8639,,,,,,,,,,,1,1
 2026-11-10,deepseek/deepseek-v4-flash-20260731,deepseek-v4-flash,GMI,,GMICloud,0.286,0.858,0.0091,0.9446,,,,,,,,,,,1,1
-2026-11-10,deepseek/deepseek-v4-flash-20260731,deepseek-v4-flash,Databricks,,Databricks,0.14,0.28,0.028,0.9632,,,,,,,,,,,1,1
 2026-11-10,deepseek/deepseek-v4-flash-20260731,deepseek-v4-flash,Parasail,,Parasail,0.14,0.28,0.07,0.7885,,,,,,,,,,,1,1
 2026-11-10,deepseek/deepseek-v4-flash-20260731,deepseek-v4-flash,Novita,,Novita,0.44,1.32,0.028,0.9894,,,,,,,,,,,1,1
 2026-11-10,deepseek/deepseek-v4-flash-20260731,deepseek-v4-flash,DigitalOcean,,DigitalOcean,0.14,0.28,0.028,0.9778,,,,,,,,,,,1,1
@@ -8067,7 +8066,7 @@ date,or_model,aa_slug,host,variant,provider,price_1m_input,price_1m_output,cache
 2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,Baseten,FAST,BaseTen,2.1,6.6,0.21,0.8126,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,Novita,FP8,Novita,1.4,4.4,0.26,0.9903,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,Parasail,NVFP4,Parasail,1.4,4.4,0.26,0.9971,,,,,,,,,,,1,1
-2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,CoreWeave,,CoreWeave,0.76,2.42,0.14,0.8511,,,,,,,,,,,1,1
+2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,CoreWeave,,CoreWeave,0.62,2.42,0.14,0.8511,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,Multiverse Computing,,Multiverse Computing,0.17,0.54,0.0153,0.773,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,Together AI,,Together,1.4,4.4,0.26,0.9889,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.2-20260616,glm-5-2,Scaleway,,Scaleway,2.09,6.38,,,,,,,,,,,,,1,1
@@ -8096,8 +8095,8 @@ date,or_model,aa_slug,host,variant,provider,price_1m_input,price_1m_output,cache
 2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,FriendliAI,,FriendliAI,0.15,0.5,0.03,0.8353,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,Nebius,,Nebius,0.15,0.5,0.03,0.8061,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,DigitalOcean,,DigitalOcean,0.15,0.5,0.03,0.9796,,,,,,,,,,,1,1
-2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,Makora,,Makora,0.14,0.24,0.04,0.8891,,,,,,,,,,,1,1
-2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,CoreWeave,,CoreWeave,0.15,0.5,0.05,0.9167,,,,,,,,,,,1,1
+2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,Makora,,Makora,0.14,0.24,0.03,0.8891,,,,,,,,,,,1,1
+2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,CoreWeave,,CoreWeave,0.12,0.38,0.02,0.9167,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,Crusoe,FP4,Crusoe,0.15,0.5,0.03,0.8114,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,Inco,FAST,Inco,0.3,1.0,0.06,0.9994,,,,,,,,,,,1,1
 2026-11-10,z-ai/glm-5.3-flash-20260826,glm-5-3-flash,LithosAI,FP4,LithosAI,0.15,0.5,0.03,0.9921,,,,,,,,,,,1,1
@@ -8123,17 +8122,15 @@ date,or_model,aa_slug,host,variant,provider,price_1m_input,price_1m_output,cache
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Fireworks,,Fireworks,3.0,15.0,0.3,0.9867,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Modal,,Modal,3.0,15.0,0.3,0.8764,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Together AI,,Together,3.0,15.0,0.3,0.972,,,,,,,,,,,1,1
-2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Makora,,Makora,0.36,12.0,0.16,0.9887,,,,,,,,,,,1,1
+2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Makora,,Makora,1.0,15.0,0.5,0.9887,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,DigitalOcean,,DigitalOcean,3.0,15.0,0.3,0.9879,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Baseten,,BaseTen,3.0,15.0,0.3,0.856,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Parasail,,Parasail,3.0,15.0,0.3,0.9651,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Nebius,,Nebius,3.0,15.0,0.3,1.0,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Amazon Bedrock,,Amazon Bedrock,3.0,15.0,0.3,0.999,,,,,,,,,,,1,1
 2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Kimi,,Moonshot AI,3.0,15.0,0.3,0.9744,,,,,,,,,,,1,1
-2026-11-10,moonshotai/kimi-k3-20260715,kimi-k3,Inco,,Inco,3.0,15.0,0.3,0.835,,,,,,,,,,,1,1
 2026-11-10,minimax/minimax-m3-20260531,minimax-m3,Parasail,MXFP8,Parasail,0.3,1.2,0.06,0.9908,,,,,,,,,,,1,1
 2026-11-10,minimax/minimax-m3-20260531,minimax-m3,CoreWeave,NVFP4,CoreWeave,0.23,0.96,0.05,0.8155,,,,,,,,,,,1,1
-2026-11-10,minimax/minimax-m3-20260531,minimax-m3,Together AI,,Together,0.3,1.2,0.06,0.9082,,,,,,,,,,,1,1
 2026-11-10,minimax/minimax-m3-20260531,minimax-m3,Novita,,Novita,0.3,1.2,0.06,0.994,,,,,,,,,,,1,1
 2026-11-10,minimax/minimax-m3-20260531,minimax-m3,Modular,,Modular,0.3,1.2,0.06,0.9954,,,,,,,,,,,1,1
 2026-11-10,minimax/minimax-m3-20260531,minimax-m3,Nebius,FP8,Nebius,0.3,1.2,0.06,0.9573,,,,,,,,,,,1,1
