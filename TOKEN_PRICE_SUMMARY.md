@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-11-12 23:37 UTC · latest snapshot: 2026-11-12 23:36:59 · 390 snapshots since 2026-07-21_
+_Last updated: 2026-11-13 06:41 UTC · latest snapshot: 2026-11-13 06:41:07 · 391 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -8,8 +8,8 @@ _Last updated: 2026-11-12 23:37 UTC · latest snapshot: 2026-11-12 23:36:59 · 3
 | anthropic/claude-fable-5 | closed | $20.00 | Claude Platform on AWS ($20.00) | 7 |
 | anthropic/claude-opus-4.8 | closed | $10.00 | Claude Platform on AWS ($10.00) | 11 |
 | anthropic/claude-sonnet-4.6 | closed | $6.00 | Claude Platform on AWS ($6.00) | 9 |
-| deepseek/deepseek-v4-flash | open | $0.10 | StreamLake ($0.09) | 13 |
-| deepseek/deepseek-v4-pro | open | $1.10 | Relace ($1.05) | 13 |
+| deepseek/deepseek-v4-flash | open | $0.11 | StreamLake ($0.10) | 13 |
+| deepseek/deepseek-v4-pro | open | $1.12 | Relace ($1.05) | 13 |
 | minimax/minimax-m3 | open | $0.41 | DeepInfra ($0.39) | 9 |
 | moonshotai/kimi-k2.5 | open | $1.04 | AtlasCloud ($0.99) | 5 |
 | moonshotai/kimi-k2.6 | open | $0.95 | Chutes ($0.74) | 15 |
