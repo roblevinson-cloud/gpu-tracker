@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-11-15 06:25 UTC · latest snapshot: 2026-11-15 06:25:37 · 396 snapshots since 2026-07-21_
+_Last updated: 2026-11-15 18:49 UTC · latest snapshot: 2026-11-15 18:49:18 · 397 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -16,9 +16,9 @@ _Last updated: 2026-11-15 06:25 UTC · latest snapshot: 2026-11-15 06:25:37 · 3
 | moonshotai/kimi-k3 | open | $3.09 | Wafer ($2.61) | 27 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 7 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 8 |
-| z-ai/glm-5.2 | open | $0.47 | Baidu ($0.29) | 33 |
+| z-ai/glm-5.2 | open | $0.47 | Baidu ($0.29) | 34 |
 
-**Closed/open price multiple right now: 6.3x** (closed median $10.00 vs open $1.58)
+**Closed/open price multiple right now: 6.5x** (closed median $10.00 vs open $1.54)
 
 ## Regional comparison (open models, same model+quant only)
 
@@ -26,10 +26,10 @@ _Last updated: 2026-11-15 06:25 UTC · latest snapshot: 2026-11-15 06:25:37 · 3
 |---|---|---|---|
 | DECENTRALIZED | 2 | 0.71 | $2.25 |
 | ASIA | 4 | 0.92 | $0.81 |
-| UNKNOWN | 47 | 1.00 | $1.71 |
+| UNKNOWN | 48 | 0.99 | $1.71 |
 | CN | 18 | 1.04 | $1.60 |
 | US | 37 | 1.07 | $1.62 |
-| EU | 2 | 1.16 | $4.08 |
+| EU | 2 | 1.15 | $4.08 |
 
 _Caveat: this measures offer **price**, not underlying cost; regional gaps can reflect margin strategy, subsidies, or capacity, not just electricity and hardware costs._
 
