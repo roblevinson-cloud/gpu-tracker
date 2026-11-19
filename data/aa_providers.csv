@@ -9059,7 +9059,6 @@ date,or_model,aa_slug,host,variant,provider,price_1m_input,price_1m_output,cache
 2026-11-19,deepseek/deepseek-v4-pro-20260423,deepseek-v4-pro-0424,Microsoft Azure,,Azure,1.74,3.48,,0.7953,,,,,,,,,,,1,1
 2026-11-19,tencent/hy3-20260706,hy3,SiliconFlow,FP8,SiliconFlow,0.132,0.528,0.033,0.9385,,,,,,,,,,,0,1
 2026-11-19,tencent/hy3-20260706,hy3,Novita,,Novita,0.14,0.58,0.035,0.9575,,,,,,,,,,,0,1
-2026-11-19,tencent/hy3-20260706,hy3,DeepInfra,FP8,DeepInfra,0.13,0.53,0.033,0.9575,,,,,,,,,,,1,1
 2026-11-19,tencent/hy3-20260706,hy3,GMI,,GMICloud,0.14,0.58,0.035,0.8849,,,,,,,,,,,1,1
 2026-11-19,openai/gpt-5.6-luna-20260709,gpt-5-6-luna,OpenAI,,OpenAI,0.2,1.2,0.02,0.9934,,,,,,,,,,,1,1
 2026-11-19,openai/gpt-5.6-luna-20260709,gpt-5-6-luna,Amazon Bedrock,,Amazon Bedrock,0.2,1.2,0.02,0.9877,,,,,,,,,,,1,1
@@ -9114,7 +9113,6 @@ date,or_model,aa_slug,host,variant,provider,price_1m_input,price_1m_output,cache
 2026-11-19,xiaomi/mimo-v2.5-20260422,mimo-v2-5-0424,GMI,,GMICloud,0.112,0.224,0.002,,,,,,,,,,,,1,1
 2026-11-19,nvidia/nemotron-3-ultra-550b-a55b-20260604:free,nvidia-nemotron-3-ultra-550b-a55b,CoreWeave,,CoreWeave,0.5,2.15,0.1,0.3063,,,,,,,,,,,1,1
 2026-11-19,nvidia/nemotron-3-ultra-550b-a55b-20260604:free,nvidia-nemotron-3-ultra-550b-a55b,DeepInfra,,DeepInfra,0.5,2.2,0.1,0.7543,,,,,,,,,,,1,1
-2026-11-19,nvidia/nemotron-3-ultra-550b-a55b-20260604:free,nvidia-nemotron-3-ultra-550b-a55b,DeepInfra,BF16,DeepInfra,1.0,5.0,0.3,0.7706,,,,,,,,,,,1,1
 2026-11-19,nvidia/nemotron-3-ultra-550b-a55b-20260604:free,nvidia-nemotron-3-ultra-550b-a55b,Nebius,,Nebius,1.0,3.0,0.12,0.629,,,,,,,,,,,1,1
 2026-11-19,nvidia/nemotron-3-ultra-550b-a55b-20260604:free,nvidia-nemotron-3-ultra-550b-a55b,Fireworks,,Fireworks,0.6,2.4,0.12,0.7201,,,,,,,,,,,1,1
 2026-11-19,google/gemini-3.6-flash-20260721,gemini-3-6-flash,Google AI Studio,,Google AI Studio,0.75,3.75,0.15,0.5572,,,,,,,,,,,1,1
@@ -9146,4 +9144,3 @@ date,or_model,aa_slug,host,variant,provider,price_1m_input,price_1m_output,cache
 2026-11-19,minimax/minimax-m3-20260531,minimax-m3,GMI,,GMICloud,0.24,0.96,0.048,1.0,,,,,,,,,,,1,1
 2026-11-19,minimax/minimax-m3-20260531,minimax-m3,Fireworks,,Fireworks,0.3,1.2,0.06,0.9687,,,,,,,,,,,1,1
 2026-11-19,stepfun/step-3.7-flash-20260528,step-3-7-flash,StepFun,,StepFun,0.2,1.15,0.04,0.9435,,,,,,,,,,,1,1
-2026-11-19,stepfun/step-3.7-flash-20260528,step-3-7-flash,DeepInfra,,DeepInfra,0.16,0.92,0.032,0.995,,,,,,,,,,,1,1
