@@ -1,5 +1,5 @@
 # Token Price Tracker — Summary
-_Last updated: 2026-11-21 07:03 UTC · latest snapshot: 2026-11-21 07:03:11 · 408 snapshots since 2026-07-21_
+_Last updated: 2026-11-21 19:12 UTC · latest snapshot: 2026-11-21 19:12:44 · 409 snapshots since 2026-07-21_
 
 ## Latest market cost per model (cheapest-3 avg, blended 3:1)
 
@@ -13,10 +13,10 @@ _Last updated: 2026-11-21 07:03 UTC · latest snapshot: 2026-11-21 07:03:11 · 4
 | minimax/minimax-m3 | open | $0.43 | DeepInfra ($0.39) | 7 |
 | moonshotai/kimi-k2.5 | open | $1.11 | SiliconFlow ($1.00) | 3 |
 | moonshotai/kimi-k2.6 | open | $0.82 | Baidu ($0.70) | 15 |
-| moonshotai/kimi-k3 | open | $3.09 | Wafer ($2.61) | 29 |
+| moonshotai/kimi-k3 | open | $2.94 | Wafer ($2.61) | 29 |
 | openai/gpt-5.5 | closed | $9.38 | OpenAI ($5.62) | 4 |
 | openai/gpt-5.6-sol | closed | $6.67 | OpenAI ($4.00) | 5 |
-| z-ai/glm-5.2 | open | $0.55 | StreamLake ($0.46) | 30 |
+| z-ai/glm-5.2 | open | $0.47 | Baidu ($0.29) | 30 |
 
 **Closed/open price multiple right now: 6.5x** (closed median $10.00 vs open $1.54)
 
