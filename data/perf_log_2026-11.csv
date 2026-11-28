@@ -650468,3 +650468,193 @@ timestamp_utc,model,provider,throughput_tps,latency_s
 2026-11-28 10:50:24,minimax/minimax-m3.1-flash-20261019,Parasail,183.0,0.977
 2026-11-28 10:50:24,minimax/minimax-m3.1-flash-20261019,InferenceNet,79.0,0.56
 2026-11-28 10:50:24,minimax/minimax-m3.1-flash-20261019,Together,174.0,0.842
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Wafer,158.0,0.438
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Sail Research,114.0,1.052
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Sail Research,124.0,1.167
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Particle AI,177.0,0.397
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Ambient,95.0,0.955
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,OpenInference,182.0,0.676
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Pearl Research,145.0,0.955
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Particle AI,204.0,0.369
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Tenstorrent,78.0,1.398
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Morph,120.0,0.454
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Wafer,208.0,0.354
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Pareto Inference,99.0,0.997
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Cloudflare,112.0,1.693
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,DeepInfra,99.0,1.298
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,InferenceNet,136.0,0.299
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,InferenceNet,144.0,0.444
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,StreamLake,93.0,2.064
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,DeepInfra,39.0,13.204
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,ModelRun,138.5,0.759
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Inceptron,107.0,1.303
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Cohere,135.0,0.567
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,River,120.0,0.769
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Relace,163.0,0.795
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,DeepInfra,34.0,14.05
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Baidu,153.0,0.99
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Fireworks,136.0,0.556
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,SiliconFlow,37.0,2.276
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Makora,136.0,0.53
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Novita,201.0,0.652
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Nebius,252.0,0.38
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Alibaba,101.0,0.556
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Crusoe,195.0,0.485
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,PrimeIntellect,212.0,0.348
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,DigitalOcean,198.0,0.651
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Ionstream,185.0,0.54
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Featherless,82.0,0.624
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,PrimaLabs,125.0,2.526
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Modal,173.0,0.754
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Krea,242.0,0.388
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Google,118.0,0.47
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,CoreWeave,249.0,0.407
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Near AI,48.0,1.103
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Venice,93.5,1.933
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Mistral,145.0,1.18
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Reka,160.0,0.679
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Together,178.0,0.668
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Fireworks,147.0,0.664
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,BaseTen,129.0,0.406
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Parasail,202.0,0.544
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Together,176.0,0.664
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Fireworks,146.0,0.386
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Together,223.5,1.121
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Morph,276.0,0.341
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,BaseTen,494.0,0.444
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20261017,Venice,617.0,0.68
+2026-11-28 11:00:29,tencent/hy4-flash-20261116,Tencent,62.0,3.02
+2026-11-28 11:00:29,tencent/hy4-flash-20261116,Fireworks,131.0,0.857
+2026-11-28 11:00:29,tencent/hy4-flash-20261116,DeepInfra,71.0,2.383
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Baidu,106.0,1.088
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Wafer,217.0,0.253
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,OpenInference,166.0,0.807
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Cloudflare,99.0,1.416
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,InferenceNet,161.0,0.25
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,InferenceNet,178.0,0.234
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,DeepInfra,100.0,1.512
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,River,198.0,0.34
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Relace,124.0,0.803
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Reka,129.0,0.257
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,CoreWeave,251.5,0.509
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,DeepInfra,129.0,0.498
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,StreamLake,92.5,1.044
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Fireworks,135.0,0.627
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Novita,89.0,0.581
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Alibaba,134.0,0.724
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Crusoe,158.0,0.727
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Wafer,220.0,0.256
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Cohere,169.0,0.422
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Ionstream,164.0,0.396
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,DeepInfra,114.0,0.636
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Mancer 2,66.5,0.75
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,DigitalOcean,194.5,0.733
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Nebius,189.0,0.665
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Makora,188.0,0.49
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Featherless,154.0,0.833
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Google,127.0,0.563
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,BaseTen,178.0,0.26
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Together,281.0,0.232
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,SiliconFlow,40.0,1.825
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Modal,176.0,0.481
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,BaseTen,197.0,0.626
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Parasail,221.0,0.45
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Fireworks,196.0,0.366
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Venice,191.0,0.584
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Together,302.0,0.277
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Parasail,237.0,0.318
+2026-11-28 11:00:29,deepseek/deepseek-v4.1-flash-20260910,Fireworks,234.0,0.431
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Pareto Inference,68.0,0.846
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,OpenInference,141.0,0.547
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Wafer,153.0,0.337
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Darkbloom,33.0,2.882
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Wafer,171.0,0.301
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Fireworks,136.0,0.66
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Near AI,61.0,1.583
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Novita,34.0,2.667
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,StreamLake,41.0,2.28
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,DeepInfra,117.0,0.627
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,SiliconFlow,53.0,1.129
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Cohere,167.0,0.668
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,InferenceNet,102.0,0.269
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,InferenceNet,99.0,0.429
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,DigitalOcean,121.0,0.772
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Reka,152.0,0.355
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,CoreWeave,184.0,0.549
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,River,121.0,0.542
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Crusoe,91.0,0.789
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Morph,69.0,0.547
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Particle AI,221.0,0.395
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Makora,149.0,0.493
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Inceptron,90.0,0.639
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Baidu,50.5,2.312
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Mistral,149.0,0.901
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,KT,202.5,0.807
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Nebius,93.0,0.454
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Modal,133.0,0.446
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Fireworks,128.0,0.516
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Friendli,128.0,0.397
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Together,147.0,0.727
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Parasail,139.0,0.589
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,BaseTen,109.0,0.386
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Venice,117.0,0.71
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Z.AI,39.0,3.356
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Sail Research,66.5,1.111
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Sail Research,50.0,0.697
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Together,174.0,0.666
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Parasail,22.0,4.683
+2026-11-28 11:00:29,z-ai/glm-5.3-flash-20260826,Fireworks,117.0,0.534
+2026-11-28 11:00:29,openai/gpt-6-luna-20260922,OpenAI,42.0,4.335
+2026-11-28 11:00:29,openai/gpt-6-luna-20260922,Google,119.5,1.259
+2026-11-28 11:00:29,openai/gpt-6-luna-20260922,Amazon Bedrock,99.0,1.666
+2026-11-28 11:00:29,openai/gpt-6-luna-20260922,OpenAI,85.0,1.695
+2026-11-28 11:00:29,openai/gpt-6-luna-20260922,Azure,89.0,3.291
+2026-11-28 11:00:29,openai/gpt-6-luna-20260922,OpenAI,104.0,0.668
+2026-11-28 11:00:29,anthropic/claude-opus-5.5-20260921,Amazon Bedrock,76.0,4.058
+2026-11-28 11:00:29,anthropic/claude-opus-5.5-20260921,Azure,73.0,0.592
+2026-11-28 11:00:29,anthropic/claude-opus-5.5-20260921,Google,76.0,3.124
+2026-11-28 11:00:29,anthropic/claude-opus-5.5-20260921,Claude Platform on AWS,85.0,2.796
+2026-11-28 11:00:29,anthropic/claude-opus-5.5-20260921,Anthropic,81.0,2.296
+2026-11-28 11:00:29,anthropic/claude-opus-5.5-20260921,Anthropic,168.0,1.592
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Relace,93.0,1.225
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Wafer,111.0,0.888
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Decart,35.0,2.371
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Morph,79.0,1.492
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Pareto Inference,76.0,0.967
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,AkashML,33.0,1.412
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Io Net,29.0,3.248
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Wafer,118.0,0.902
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,InferenceNet,88.0,0.645
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,InferenceNet,87.0,0.719
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,DeepInfra,47.0,0.946
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,DigitalOcean,71.0,1.241
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Makora,35.0,1.087
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Reka,116.0,1.276
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Nebius,136.0,0.614
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Doubleword,92.0,1.015
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,River,74.0,1.032
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Fireworks,43.0,1.864
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,PrimaLabs,108.0,0.918
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Parasail,80.0,1.053
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Modal,125.0,0.763
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Together,36.0,1.185
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Moonshot AI,28.0,4.058
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Alibaba,30.0,3.795
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Fireworks,79.0,1.168
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,InferenceNet,110.0,0.612
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,InferenceNet,112.0,0.59
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Amazon Bedrock,45.0,4.24
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Moonshot AI,63.0,4.315
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Amazon Bedrock,205.0,0.771
+2026-11-28 11:00:29,moonshotai/kimi-k3.1-pro-20261023,Alibaba,47.0,3.939
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,Inferact vLLM,210.0,0.441
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,Wafer,222.0,0.362
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,Fireworks,100.0,0.361
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,InferenceNet,55.0,0.773
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,DigitalOcean,199.0,0.793
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,Nebius,149.0,0.294
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,SambaNova,57.0,0.883
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,ModelRun,178.0,0.274
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,Parasail,195.0,0.883
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,InferenceNet,76.0,0.758
+2026-11-28 11:00:29,minimax/minimax-m3.1-flash-20261019,Together,184.0,0.842
